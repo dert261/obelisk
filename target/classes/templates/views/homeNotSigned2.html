@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="fragment/header :: headerFragment" />
+	<script>
+	//<![CDATA[
+	var socket;
+        /* Fill in modal with content loaded with Ajax */
+        $(document).ready(function () {
+        /*    $('#myModal').on('show.bs.modal', function (e) {
+                $("#myModalBody").text("");
+                $.ajax({
+                    url: "signup",
+                    cache: false
+                })
+                        .done(function (html) {
+                            $("#myModalBody").append(html);
+                        });
+            })*/
+            
+            
+            $('#myModal2').on('show.bs.modal', function (event) {
+            	  var link = $(event.relatedTarget) // Button that triggered the modal
+            	  var recipient = link.data('whatever') // Extract info from data-* attributes
+            	  
+            	  //alert(recipient);
+            	  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            	  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            	  var modal = $(this)
+            	  modal.find('#chanspy_data').val(recipient);
+            	})
+        });
+        
+        function runningFormatter(value, row, index) {
+            return index+1;
+        }
+        
+        function actionFormatter(value, row, index) {
+            return [
+                '<a class="update" href="javascript:void(0)" data-toggle="modal" data-target="#myModal2" data-whatever="'+row.channel+'" title="Подслушать">',
+                //'<a class="update" href="javascript:void(0)" title="Изменить">',
+                '<i class="glyphicon glyphicon-headphones"></i>',
+                '</a>',
+                '<a class="delete" href="javascript:void(0)" title="Удалить">',
+                '<i class="glyphicon glyphicon-trash"></i>',
+                '</a>'
+            ].join('&nbsp;');
+        }
+        
+        function dateFormatter(value, row, index) {
+        	return moment(row.dateCreate).format("DD.MM.YYYY HH:mm:ss");
+        }
+        
+        function secondsFormatter(value, row, index) {
+        	var inSeconds = moment((moment().unix()*1000)-row.dateCreate).unix();
+        	return moment().startOf('day').seconds(inSeconds).format('HH:mm:ss');;
+        }
+
+        function originateCall(){
+        	var $channel = $('#originate_channel');
+        	var $extension = $('#originate_extension');
+        	if($channel[0].value==undefined || $extension[0].value==undefined){
+        		alert("Error: enter channel and/or extension to originate call");
+        		console.log($channel);
+        		console.log($extension);
+        	}
+        	
+        	var action = {action:"OriginateRequest"};
+            var data = {args:[]};
+            
+            var originateData = {
+            	type : "originateData",
+            	application : null,
+            	account : null,
+            	async : false,
+            	callerid : "Оригинация <0000>",
+            	callingPress:0,
+            	channel : $channel[0].value,
+            	codecs : null,
+            	context : "rost_local",
+            	data : null,
+            	exten : $extension[0].value,
+            	priority : 1,
+            	timeout : 30000,
+            	variables : null
+            }
+            
+            data.args.push(originateData);
+            
+            var content = {command: action, messageData: data};
+            var header = {from:"FROM", to:"TO"};
+            
+            var message ={header:header, content: content};
+            
+            var request=message; //{command:"HangupRequest", payload:row};
+            
+            console.log(JSON.stringify(request));
+            socket.send(JSON.stringify(request));
+            //console.log(value, row, index);
+        	
+        }
+        
+        
+        function spyCall(){
+        	var $channel = $('#chanspy_channel');
+        	var $spyChannel = $('#chanspy_data');
+        	if($channel[0].value==undefined){
+        		alert("Error: enter channel to spy channel");
+        		console.log($channel);
+        	}
+        	
+        	var action = {action:"OriginateRequest"};
+            var data = {args:[]};
+            var content;
+            var header;
+            var message;
+            var request;
+            var row={channel:$spyChannel[0].value}
+            
+            var originateData = {
+                	type : "originateData",
+                	application : "ChanSpy",
+                	account : null,
+                	async : false,
+                	callerid : "Прослушка <0000>",
+                	callingPress : 0,
+                	channel : $channel[0].value,
+                	codecs : null,
+                	context :"rost_local",
+                	data : row.channel.substring(0, row.channel.search("-"))+",qb",
+                	exten : null,
+                	priority : 0,
+                	timeout : 30000,
+                	variables : null
+            }
+            data.args.push(originateData);
+            content = {command: action, messageData: data};
+            header = {from:"FROM", to:"TO"};
+            message ={header:header, content: content};
+            
+            request=message; 
+            
+            console.log(JSON.stringify(request));
+            socket.send(JSON.stringify(request));
+        }
+        
+        function channelStateFormatter(value, row, index) {
+        	var onHold = row.onHold==true ? " (OnHold)" : "";
+        	var channelStateDesc = row.channelstatedesc;
+        	/*switch (row.channelstatedesc){
+        		case "Up" : channelStateDesc="Установлен"; break;
+        		case "Ring" : channelStateDesc=""; break;
+        		case "Ringing" : channelStateDesc=""; break;
+        		case "Down" : channelStateDesc=""; break;
+        		default : channelStateDesc=row.channelstatedesc; break;
+        	}*/
+        	
+        	return channelStateDesc+onHold;
+        }
+        
+        
+        window.actionEvents = {
+            'click .update': function (e, value, row, index) {
+            	
+            	/*var $channel = $('#originate_channel');
+            	var $extension = $('#originate_extension');
+            	alert("Channel: "+$channel[0].value+", extension: "+$extension[0].value);
+            	if($channel[0].value==undefined || $extension[0].value==undefined){
+            		alert("Error: enter channel and/or extension to originate call");
+            		console.log($channel);
+            		console.log($extension);
+            	}*/
+            	
+            /*	var action = {action:"OriginateRequest"};
+                var data = {args:[]};
+                
+                var originateData = {
+                	type : "originateData",
+                	application : "ChanSpy",
+                	account : null,
+                	async : false,
+                	callerid : "Боженков В.П. <41801>",
+                	callingPress : 0,
+                	channel : "SIP/41801",
+                	codecs : null,
+                	context :"rost_local",
+                	data : row.channel.substring(0, row.channel.search("-"))+",qb",
+                	exten : null,
+                	priority : 0,
+                	timeout : 30000,
+                	variables : null
+                }
+                
+                data.args.push(originateData);
+                
+                var content = {command: action, messageData: data};
+                var header = {from:"FROM", to:"TO"};
+                
+                var message ={header:header, content: content};
+                
+                var request=message; //{command:"HangupRequest", payload:row};
+                
+                console.log(JSON.stringify(request));
+                socket.send(JSON.stringify(request));*/
+            },
+            
+            'click .delete': function (e, value, row, index) {
+                //alert('You click remove icon, row: ' + JSON.stringify(row));
+                //alert(row.uniqueid);
+                
+                if(confirm("Разорвать соединение")){
+	                var action = {action:"HangupRequest"};
+	                var data = {args:[]};
+	                data.args.push(row);
+	                
+	                var content = {command: action, messageData: data};
+	                var header = {from:"FROM", to:"TO"};
+	                
+	                var message ={header:header, content: content};
+	                
+	                var request=message; //{command:"HangupRequest", payload:row};
+	                
+	                console.log(JSON.stringify(request));
+	                socket.send(JSON.stringify(request));
+	                console.log(value, row, index);
+                }    
+            }
+        };
+      //]]>  
+    </script>
+<body>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Позвонить</h4>
+            </div>
+                        
+	        <div class="modal-body" id="myModalBody">
+	        	<div class="form-group">
+	        		<label for="originate_channel">Канал</label>
+	            	<input type="text" class="form-control" placeholder="Канал" id="originate_channel" />
+	            	<label for="originate_extension">Номер</label>
+					<input type="text" class="form-control" placeholder="Номер" id="originate_extension" />
+				</div>
+			</div>	
+	                    
+            <div class="modal-footer">
+            	<button type="button" class="btn btn-default" data-dismiss="modal" onclick="originateCall();">Позвонить</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+            
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Прослушать разговор</h4>
+            </div>
+            <div class="modal-body" id="myModalBody">
+            	<div class="form-group">
+	        		<label for="originate_channel">Канал</label>
+	            	<input type="text" class="form-control" placeholder="Канал" id="chanspy_channel" />
+	            	<input id="chanspy_data" value="" type="hidden"/>
+	            </div>
+			</div>	
+            <div class="modal-footer">
+            	<button type="button" class="btn btn-default" data-dismiss="modal" onclick="spyCall();">Прослушать</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="wrapper">
+<!-- Header -->
+<div th:replace="fragment/header :: navbar_alt" > </div>
+
+
+
+<!-- <div class="container">  -->
+
+<!-- <div id="content"> -->
+		
+    <!-- <div class="hero-unit">
+        <h1>Test</h1>
+        <p>
+            Welcome to the Spring MVC Quickstart application!
+            Get started quickly by signing up. <small><em>(Please use the following credentials to login: <code>admin/admin</code>, <code>user/demo</code>
+            or create a new account.)</em></small>
+        </p>
+        <p>
+            <a href="#" class="btn btn-large btn-success" data-toggle="modal" data-target="#myModal">Sign up</a>
+        </p>
+    </div>  -->
+ <br/>
+ <div id="page-wrapper">
+  
+<!--  	<div class="row">
+		<div class="col-lg-12">
+    		<h1>Peers</h1>
+    	    	
+   				    
+    		<div id="toolbar" class="btn-group">
+			    <button type="button" class="btn btn-default">
+			        <i class="glyphicon glyphicon-phone-alt"></i>
+			    </button>
+			    <button type="button" class="btn btn-default">
+			        <i class="glyphicon glyphicon-heart"></i>
+			    </button>
+			    <button type="button" class="btn btn-default">
+			        <i class="glyphicon glyphicon-trash"></i>
+			    </button>
+			</div>
+    		
+         	<table 	id="table"
+         			data-toggle="table"
+         			data-height="700"
+         			data-search="true"
+         			data-pagination="true"
+         			data-page-list="[10,20,40,80, 100]" 
+         			data-show-refresh="true"
+         			data-show-toggle="true"
+         			data-show-columns="true" 
+         			data-url="json"
+					data-toolbar="#toolbar"      
+					data-maintain-selected="true"
+					data-row-style="myRowStyle">
+				<thead>
+        			<tr>
+        				<th data-formatter="runningFormatter">№</th>
+				        <th data-field="objectName" data-sortable="true">Наименование</th>
+				        <th data-field="channeltype" data-sortable="true">Тип канала</th>
+				        <th data-field="ipAddress" data-sortable="true">IP-адрес</th>
+				        <th data-field="ipPort" data-sortable="true">Порт</th>
+				        <th data-field="dynamic" data-sortable="true">Динамический</th>
+				        <th data-field="status" data-sortable="true">Статус</th>
+				        <th data-field="action" data-halign="center" data-align="center" data-formatter="actionFormatter" data-events="actionEvents">Действия</th>
+				    </tr>
+				</thead>    
+			</table> 
+    	</div>
+	</div>
+	-->
+	
+	<div class="row">
+ 		<div class="col-lg-12">
+    		<h1>Активные каналы</h1>
+    		
+    		<div id="toolbar" class="btn-group">
+    			
+    			<select id="refreshPeriod" onchange="setRefreshTimeout()" class="btn btn-default">
+    			<i class="glyphicon glyphicon-phone-alt"></i>
+					<option value="1">1</option>
+					<option value="3">3</option>
+					<option selected="selected" value="5">5</option>
+					<option value="10">10</option>
+				</select>
+				
+				<button type="button" class="btn btn-default" href="javascript:void(0)" data-toggle="modal" data-target="#myModal">
+			        <i class="glyphicon glyphicon-phone-alt"></i>
+			    </button>  			
+			</div>
+			
+    		<table 	id="activeChannelTable"
+    				data-toolbar="#toolbar"
+         			data-toggle="table"
+         			data-height="800"
+         			data-pagination="true"
+         			data-page-list="[10,20,30,40,50,60,70,80,90,100]" 
+         			data-search="true"
+         			
+         			
+					data-buttons-align="left"
+					data-toolbar-align="right"
+         			
+         			data-show-refresh="true"
+         			data-url="channels.json"
+         			data-show-columns="true" 
+         			data-maintain-selected="true"
+					data-row-style="myRowStyle">
+				<thead>
+				<!-- data-show-toggle="true"  -->
+        			<tr>
+        				
+        				<th data-formatter="runningFormatter">№</th>
+        				<th data-field="server" data-sortable="true">Сервер</th>
+        				<!-- <th data-field="channel" data-sortable="true">Channel</th> -->
+				        <!-- <th data-field="channelstate" data-sortable="true">ChannelState</th>  -->
+				        <th data-field="calleridname" data-sortable="true">А-имя</th>
+				        <!-- <th data-field="bridgedchannel" data-sortable="true">BridgedChannel</th> -->
+				        <!-- <th data-field="channelstatedesc" data-sortable="true">ChannelStateDesc</th> -->
+				        <th data-field="channelState" data-halign="center" data-align="center" data-formatter="channelStateFormatter" data-sortable="true" data-searchable="true">Статус канала</th>
+				        <th data-field="calleridnum" data-sortable="true">А-номер </th>
+				        <th data-field="extension" data-sortable="true">B-номер</th>
+				        <!-- <th data-field="uniqueid" data-sortable="true">UniqueId</th>  -->
+				        <th data-field="dateCreate" data-sortable="true">dateCreate</th>
+				        <th data-field="date" data-halign="center" data-align="center" data-formatter="dateFormatter" data-sortable="true" data-searchable="true">Дата создания</th>
+				        <th data-field="seconds" data-halign="center" data-align="center" data-formatter="secondsFormatter" data-sortable="true" data-searchable="true">Секунды</th>
+				        <th data-field="connectedlinenum" data-sortable="true">B-номер</th>
+				        <th data-field="connectedlinename" data-sortable="true">B-имя</th>
+				        <!-- <th data-field="context" data-sortable="true">Context</th>  -->
+				        <!-- <th data-field="onHold" data-sortable="true">OnHold</th>  -->
+				        <!-- <th data-field="accountcode" data-sortable="true">AccountCode</th>  -->
+				        
+				        
+				        
+				        
+				        
+				        
+				        <th data-field="action" data-halign="center" data-align="center" data-formatter="actionFormatter" data-events="actionEvents">Действия</th>
+				    </tr>
+				</thead>    
+			</table>
+		</div> 
+	</div>			
+
+
+</div>
+
+<!-- <div id="footer" th:include="fragment/header :: [//footer]" ></div> -->
+</div>
+
+<div th:include="fragment/header :: scripts" > </div>	
+
+<script type="text/javascript" src="../assets/socket.io.js" th:href="@{/assets/socket.io.js}" charset="utf-8"> </script>
+<script type="text/javascript" src="../assets/sockjs-0.3.4.js" th:href="@{/assets/sockjs-0.3.4.js}" charset="utf-8"> </script>
+<script type="text/javascript">
+
+var $table = $('#activeChannelTable');
+var refreshTimeout=5;
+
+function setRefreshTimeout() {
+	refreshTimeout=document.getElementById("refreshPeriod").value; 
+}
+
+var timer = setTimeout(function run() {
+	var $table = $('#activeChannelTable');
+	$table.bootstrapTable('refresh');
+	//socket.send("getCurrentChannels");
+	timer = setTimeout(run, refreshTimeout*1000);
+}, refreshTimeout*1000);
+
+window.onresize=function(){
+	$table.bootstrapTable('resetView');
+}
+
+window.onload=function(){
+	socket = new SockJS("http://msk02-ws-0762.corp.rostbank.ru:8080/websocket");
+	//var socket = new WebSocket("ws://192.168.100.181:8080/websocket.ws");
+		
+	socket.onopen = function () {
+		console.log("Соединение открылось");
+		
+		
+		//socket.send("Привет");
+	};
+	socket.onclose = function () {
+		console.log ("Соединение закрылось");
+		socket = new SockJS("http://msk02-ws-0762.corp.rostbank.ru:8080/websocket");
+		//socket = new WebSocket("ws://192.168.100.181:8080/websocket.ws");
+	};
+	socket.onmessage = function (event) {
+		console.log ("Пришло сообщение с содержанием:", event.data);
+		//socket.send("Привет");
+		//var parsed = JSON.parse(event.data);
+		//var operation = parsed.operation;
+		
+		//removeAll($table);
+		//addNewData($table,parsed);
+			
+		
+		
+		//removeChannels($table, parsed);
+		
+		
+		
+		/*for(var channel in parsed){
+			console.log (parsed[channel]);
+			createOrUpdateData($table, parsed[channel]);
+		}*/
+		
+		//table.bootstrapTable('append', data);
+		
+		
+		/*switch(operation){
+			case "create": createRow($table, parsed); break;
+			case "update": updateRow($table, parsed); break;
+			case "delete": deleteRow($table, parsed); break;
+		}*/
+		
+		
+		//$table.bootstrapTable('load', parsed);
+		//$table.bootstrapTable('append', parsed);
+		//$table.bootstrapTable('scrollTo', 0);
+		//$table.bootstrapTable('scrollTo', 'bottom');
+	};
+}
+
+function addNewData(table,data){
+	var newData = [];
+	
+	for(var entry in data) {
+		newData.push(data[entry]);
+	}	
+	table.bootstrapTable('append', data);
+}
+
+function removeAll(table){
+	var tableData = table.bootstrapTable('getData');
+	var uniqIds = [];	
+			
+	for(var entry in tableData){
+		uniqIds.push(tableData[entry].uniqueid);
+	}
+	table.bootstrapTable('remove', {field: 'uniqueid', values: uniqIds});
+}
+
+function createRow(table,data){
+	
+	table.bootstrapTable('append', data);
+	//table.bootstrapTable('scrollTo', 'bottom');
+}
+
+function updateRow(table,data){
+	var currentIndex=0;
+	var tableData = table.bootstrapTable('getData');
+	//console.log(data);
+	//console.log(tableData);
+	
+	for(var entry in tableData) {
+		//console.log(tableData[entry]);
+		if(tableData[entry].uniqueid==data.uniqueid){
+			if(data.onHold===true)
+				data.channelstatedesc = data.channelstatedesc+" (OnHold)"; 
+			table.bootstrapTable('updateRow', {index: currentIndex, row: data});
+		}
+		currentIndex++;	
+	}
+}
+
+
+/*function updateData(table,data){
+	var found=false;
+	var found2=false;
+	var currentIndex=0;
+	var tableData = table.bootstrapTable('getData');
+	//console.log(data);
+	//console.log(tableData);
+		
+	for (var channel in data){
+		for(var entry in tableData){
+			if(data[channel].uniqueid == tableData[entry].uniqueid){
+		}
+	}	
+	
+	for(var entry in tableData) {
+		for (var channel in data){
+			if(tableData[entry].uniqueid==data[channel].uniqueid){
+				if(data[channel].onHold===true)
+					data[channel].channelstatedesc = data[channel].channelstatedesc+" (OnHold)"; 
+				table.bootstrapTable('updateRow', {index: currentIndex, row: data[channel]});
+				found=true;
+				break;
+			}
+		}
+		
+		if(found==true)	{
+			break;
+		} else {
+			deleteRow(table, entry);
+		}
+		currentIndex++;	
+	}
+	
+	
+	
+}*/
+	
+	
+function removeChannels(table, channels){
+	var tableData = table.bootstrapTable('getData');
+	var remove=true;
+	
+	for(var entry in tableData){
+		for(var channel in channels){
+			if(channels[channel].uniqueid==tableData[entry].uniqueid){
+				return;
+			}	
+		}
+		deleteRow(table,tableData[entry]);
+	}
+	
+	
+	
+}
+
+
+
+
+
+
+
+function createOrUpdateData(table,data){
+		var currentIndex=0;
+		var tableData = table.bootstrapTable('getData');
+		var create=true;
+					
+		for(var entry in tableData){
+			if(data.uniqueid == tableData[entry].uniqueid){
+				create=false;
+			}
+		}	
+		
+		if(create==true){
+			createRow(table,data);
+		} else {
+			for(var entry in tableData) {
+				if(tableData[entry].uniqueid==data.uniqueid){
+					if(data.onHold==true)
+						data.channelstatedesc = data.channelstatedesc+" (OnHold)"; 
+					table.bootstrapTable('updateRow', {index: currentIndex, row: data});
+					break;
+				}
+				currentIndex++;
+			}
+		}
+}
+	
+	
+	
+
+
+
+function deleteRow(table,data){
+	var uniqIds = [];
+	uniqIds.push(data.uniqueid);
+	table.bootstrapTable('remove', {field: 'uniqueid', values: uniqIds});
+}
+
+
+
+/*           var socket = io.connect('http://localhost:9091', {
+             'reconnection delay' : 5000,
+             'force new connection' : true
+           });
+
+           socket.on('message', function(data) {
+                // here is your handler on messages from server
+           });
+
+       		socket.on('connect', function() {
+                // connection established, now we can send an objects
+
+
+                // send json-object to server
+                // '@class' property should be defined and should 
+                // equals to full class name.
+                /*var obj = { '@class' : 'com.sample.SomeClass',
+                             ...
+                          };
+                socket.json.send(obj);*/
+
+
+
+                // send event-object to server
+                // '@class' property is NOT necessary in this case
+                /*var event = { 
+                             ...
+                          };
+                socket.emit('someevent', event);
+
+       });*/
+
+    </script>
+
+</body>
+</html>

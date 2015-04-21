@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+	<Configuration status="info" name="web" packages="obelisk" monitorInterval="10">
+		<Appenders>
+			<RollingFile name="RollingFile" fileName="C:/logs/web.log" filePattern="C:/logs/web-%d{MM-dd-yyyy}.log.gz" ignoreExceptions="true">
+			<PatternLayout>
+				<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+			</PatternLayout>
+			<TimeBasedTriggeringPolicy />
+			</RollingFile>
+			
+			<Console name="STDOUT" target="SYSTEM_OUT" ignoreExceptions="false">
+				<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+			</Console>
+			
+			<Failover name="Failover" primary="RollingFile">
+				<Failovers>
+					<AppenderRef ref="STDOUT"/>
+				</Failovers>
+			</Failover>	
+		</Appenders>
+		
+		<Loggers>
+			<Root level="info">
+				<AppenderRef ref="Failover" />
+			</Root>
+		</Loggers>
+	</Configuration>
