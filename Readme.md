@@ -1,2 +1,1 @@
-Obelisk for VoIP applicationsss
-It's are develop branch
+Obelisk for VoIP applications
