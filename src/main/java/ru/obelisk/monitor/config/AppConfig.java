@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @ComponentScan(basePackages = {"ru.obelisk.*"})
 @EnableWebMvc
 @SpringBootApplication(exclude=JmsAutoConfiguration.class )
-@Import({SpringConfig.class,  JmsConfig.class, ThymeleafConfig.class, WebSocketConfig.class})
+@Import({SpringConfig.class,  JmsConfig.class, ThymeleafConfig.class, WebSocketConfig.class, DataConfig.class})
 public class AppConfig extends WebMvcConfigurerAdapter {
     
 	//Maps resources path to webapp/resources
