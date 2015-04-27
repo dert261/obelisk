@@ -1,5 +1,6 @@
 package ru.obelisk.monitor.database.models.entity;
 import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
  
 @Entity
