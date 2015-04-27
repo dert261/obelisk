@@ -19,9 +19,6 @@ import org.springframework.security.access.annotation.Secured;
 
 //import ru.obelisk.message.data.ChannelsListImpl;
 import ru.obelisk.message.data.HostInfoListImpl;
-import ru.obelisk.monitor.database.models.entity.Bank;
-import ru.obelisk.monitor.database.models.services.BankService;
-import ru.obelisk.monitor.database.models.services.impl.BankServiceImpl;
 //import ru.obelisk.message.data.HostInfo;
 //import ru.obelisk.message.data.HostInfoListImpl;
 //import ru.obelisk.message.data.PeersListImpl;
@@ -34,17 +31,10 @@ public class HomeController {
 	
 	private static Logger logger = LogManager.getLogger(HomeController.class);
 	
-	@Autowired
-	private BankService bankService;
-	
 	@RequestMapping(value = {"/", "/home.html", "/index.html"}, method = RequestMethod.GET)
 	@Secured("ROLE_ADMIN")
 	public String homePage(Model model) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting channels page");
-		Bank bank = new Bank();
-        bank.setName("Gold Bank");
-        
-        bankService.addBank(bank);
 		return "home";
 	}
 	
