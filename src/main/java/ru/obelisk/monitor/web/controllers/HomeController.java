@@ -19,10 +19,16 @@ import org.springframework.security.access.annotation.Secured;
 
 
 
+
+
+
 //import ru.obelisk.message.data.ChannelsListImpl;
 import ru.obelisk.message.data.HostInfoListImpl;
 import ru.obelisk.monitor.database.models.entity.Bank;
+import ru.obelisk.monitor.database.models.entity.User;
+import ru.obelisk.monitor.database.models.entity.enums.UserRole;
 import ru.obelisk.monitor.database.models.services.BankService;
+import ru.obelisk.monitor.database.models.services.UserService;
 //import ru.obelisk.message.data.HostInfo;
 //import ru.obelisk.message.data.HostInfoListImpl;
 //import ru.obelisk.message.data.PeersListImpl;
@@ -36,6 +42,9 @@ public class HomeController {
 	@Autowired
     private BankService bankService;
 	
+	@Autowired
+    private UserService userService;
+	
 	private static Logger logger = LogManager.getLogger(HomeController.class);
 	
 	@RequestMapping(value = {"/", "/home.html", "/index.html"}, method = RequestMethod.GET)
@@ -46,6 +55,11 @@ public class HomeController {
 		Bank bank = new Bank();
         bank.setName("Gold Bank");
         bankService.addBank(bank);
+        
+        User user = new User();
+        user.setName("Боженков Владимир Петрович");
+        user.setRole(UserRole.ADMIN);
+        userService.addUser(user);
 		
 		return "home";
 	}
