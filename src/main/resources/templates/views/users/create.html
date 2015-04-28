@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head th:include="fragment/header :: headerFragment" />
-
+<link rel="stylesheet" src="/static/assets/select2/css/select2.min.css" th:href="@{/static/assets/select2/css/select2.min.css}" />
 <body>
 <div id="wrapper">
 <!-- Header -->
@@ -40,7 +40,30 @@
 				</div>
 				
 				
-				
+				<div class="form-group">
+					<label class="control-label required" for="Users_status">
+						Статус <span class="required">*</span>
+					</label>
+					<div id="s2id_Users_status" class="select2-container form-control select2-allowclear" style="width: 100%;">
+						<a class="select2-choice" tabindex="-1" href="javascript:void(0)">
+							<span id="select2-chosen-1" class="select2-chosen">Активный</span>
+							<abbr class="select2-search-choice-close"></abbr>
+							<span class="select2-arrow" role="presentation">
+								<b role="presentation"></b>
+							</span>
+						</a>
+						<label class="select2-offscreen" for="s2id_autogen1">Статус *</label>
+						<input id="s2id_autogen1" class="select2-focusser select2-offscreen" type="text" role="button" aria-haspopup="true" aria-labelledby="select2-chosen-1" />
+					</div>
+	
+					<select id="Users_status" class="form-control select2-offscreen" name="Users[status]" tabindex="-1" title="Статус *">
+						<option value=""></option>
+						<option value="1">Активный</option>
+						<option selected="selected" value="0">Неактивный</option>
+					</select>
+					
+					<div id="Users_status_em_" class="help-block error" style="display:none"></div>
+				</div>
 			</fieldset>	
 			</div>
 		</div>	
@@ -107,10 +130,16 @@
 </div>
 
 <div th:include="fragment/header :: scripts" > </div>
-
+<script src="/static/assets/select2/js/select2.min.js" th:href="@{/static/assets/select2/js/select2.min.js}" > </script>
 <script type="text/javascript">
 	//<![CDATA[
+	           
+	           
 	$(document).ready(function() {
+		
+		 $('select').select2();
+		
+		
 		$(function () {
 			$('[data-toggle="tooltip"]').tooltip()
 		})
