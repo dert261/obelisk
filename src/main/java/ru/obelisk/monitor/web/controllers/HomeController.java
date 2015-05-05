@@ -9,41 +9,15 @@ import org.asteriskjava.manager.TimeoutException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-//import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.security.access.annotation.Secured;
-
-
-
-
-
-
-
-
-
-//import ru.obelisk.message.data.ChannelsListImpl;
 import ru.obelisk.message.data.HostInfoListImpl;
-import ru.obelisk.monitor.database.models.entity.Bank;
-import ru.obelisk.monitor.database.models.entity.User;
-import ru.obelisk.monitor.database.models.entity.enums.UserRole;
-import ru.obelisk.monitor.database.models.services.BankService;
-import ru.obelisk.monitor.database.models.services.UserService;
-//import ru.obelisk.message.data.HostInfo;
-//import ru.obelisk.message.data.HostInfoListImpl;
-//import ru.obelisk.message.data.PeersListImpl;
+
 
 @Controller
 public class HomeController {
-	//@Autowired private ChannelsListImpl channels;
-	//@Autowired private PeersListImpl peers;
 	@Autowired private HostInfoListImpl hostInfo;
-	
-	@Autowired
-    private BankService bankService;
-	
-	@Autowired
-    private UserService userService;
 	
 	private static Logger logger = LogManager.getLogger(HomeController.class);
 	
@@ -51,16 +25,6 @@ public class HomeController {
 	@Secured("ROLE_ADMIN")
 	public String homePage(Model model) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting channels page");
-		
-		Bank bank = new Bank();
-        bank.setName("Gold Bank");
-        bankService.addBank(bank);
-        
-        User user = new User();
-        user.setName("Боженков Владимир Петрович");
-        user.setRole(UserRole.ADMIN);
-        userService.addUser(user);
-		
 		return "home";
 	}
 	

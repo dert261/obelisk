@@ -2,6 +2,7 @@ package ru.obelisk.monitor.config;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -40,11 +41,18 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	  }*/
 	
 	  //Provides internationalization of messages
-	  @Bean
-	  public ResourceBundleMessageSource messageSource() {
+/*	  @Bean
+	  public ResourceBundleMessageSource i18nMessageSource() {
 		  ResourceBundleMessageSource source = new ResourceBundleMessageSource();
 		  source.setBasename("messages");
 		  return source;
 	  }
+*/	  
+	  	@Bean
+	    public MessageSource messageSource() {
+	        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+	        messageSource.setBasename("messages");
+	        return messageSource;
+	    }
 }
 

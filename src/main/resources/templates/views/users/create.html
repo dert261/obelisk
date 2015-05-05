@@ -2,181 +2,240 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head th:include="fragment/header :: headerFragment" />
-<link rel="stylesheet" src="/static/assets/select2/css/select2.min.css" th:href="@{/static/assets/select2/css/select2.min.css}" />
+<link rel="stylesheet" src="/static/assets/select2/3.4.8/css/select2.css" th:href="@{/static/assets/select2/3.4.8/css/select2.css}" />
+<link rel="stylesheet" src="/static/assets/select2/3.4.8/css/select2-bootstrap.css" th:href="@{/static/assets/select2/3.4.8/css/select2-bootstrap.css}" />
 <body>
 <div id="wrapper">
-<!-- Header -->
-<div th:replace="fragment/header :: navbar_alt" > </div>
-
-
-
-<br/>
-<div id="page-wrapper">
-	<div class="row">
-				
-		<ol class="breadcrumb">
-			<li><a href="/users/index.html">Пользователи</a></li>
-			<li class="active">Добавление пользователя</li>
-		</ol>
+	<!-- Header -->
+	<div th:replace="fragment/header :: navbar_alt" > </div>
 		
-		
-	</div> 
- <div class="row">
- 
- 	<form action="#" th:action="@{/users/create}" th:object="${user}" method="post" class="well form">
- 		<div class="row">
-	    	<div class="col-lg-12">
-			<fieldset>
-				<legend>
-					<h1>Добавление пользователя</h1>
-					<p class="note">Поля отмеченные	<span class="required" style="color:red">*</span>	обязательны.</p>
-					<div id="phones-form_es_" class="alert alert-block alert-danger" style="display:none" />
-				</legend>
-				
-				<div class="form-group">
-					<label class="control-label required" for="Users_lname">Фамилия <span class="required">*</span></label>
-						<input id="Users_lname" class="form-control" type="text" maxlength="50" name="Users[lname]" placeholder="Фамилия" />
-						<div id="Users_lname_em_" class="help-block error" style="display:none"></div>
-				</div>
-				
-				
-				<div class="form-group">
-					<label class="control-label required" for="Users_status">
-						Статус <span class="required">*</span>
-					</label>
-					<div id="s2id_Users_status" class="select2-container form-control select2-allowclear" style="width: 100%;">
-						<a class="select2-choice" tabindex="-1" href="javascript:void(0)">
-							<span id="select2-chosen-1" class="select2-chosen">Активный</span>
-							<abbr class="select2-search-choice-close"></abbr>
-							<span class="select2-arrow" role="presentation">
-								<b role="presentation"></b>
-							</span>
-						</a>
-						<label class="select2-offscreen" for="s2id_autogen1">Статус *</label>
-						<input id="s2id_autogen1" class="select2-focusser select2-offscreen" type="text" role="button" aria-haspopup="true" aria-labelledby="select2-chosen-1" />
+	<br/>
+	<div id="page-wrapper">
+		<div class="row">
+			<ol class="breadcrumb">
+				<li><a href="/users/index.html"><th:block th:text="#{breadcrumbs.users}" /></a></li>
+				<li class="active"><th:block th:text="#{breadcrumbs.users.create}" /></li>
+			</ol>
+		</div> 
+		<div class="row">
+			
+			<form action="#" th:action="@{/users/create}" th:object="${user}" method="post" class="well form">
+				<div class="row">
+			    	<div class="col-lg-12">
+			    		<fieldset>
+							<legend>
+								<h1><th:block th:text="#{users.title.create}" /></h1>
+								<p class="note"><th:block th:text="#{field.required.start}" />	<span class="required" style="color:red">*</span>	<th:block th:text="#{field.required.end}" /></p>
+								<div id="phones-form_es_" class="alert alert-block alert-danger" style="display:none" />
+							</legend>
+						
+						
+							<div class="alert alert-block alert-danger" th:if="${#fields.hasErrors('*')}"><p th:text="#{field.validation.error.global.message}" >Please fix the following input errors:</p>
+								<ul>
+	    							<li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
+		        						<span th:text="${e.global}? '*' : 'Поле \''+#{user.field+'.'+${e.fieldName}} +'\''">The field name</span> 
+		        						<span th:text="#{${e.message}}">The error message</span>
+	    							</li>
+								</ul>
+							</div>
+							
+							<div class="form-group" th:class="${#fields.hasErrors('lname')}? 'form-group has-error' : 'form-group'">
+								<label class="control-label required" th:class="${#fields.hasErrors('lname')}? 'control-label required error' : 'control-label required'" for="lname" th:text="#{user.field.lname}">
+									Фамилия <span class="required" style="color:red">*</span></label>
+								<input th:class="${#fields.hasErrors('lname')}? 'form-control error' : 'form-control'" th:field="*{lname}" class="form-control" type="text" maxlength="50" placeholder="Фамилия" th:attr="placeholder=#{user.field.lname}"/>
+								<div th:if="${#fields.hasErrors('lname')}" class="help-block error">
+									<ul>
+										<li th:each="err : ${#fields.errors('lname')}" th:text="#{${err}}" />
+									</ul>
+								</div>
+							</div>
+									
+							<div class="form-group" th:class="${#fields.hasErrors('fname')}? 'form-group has-error' : 'form-group'">
+								<label class="control-label required" th:class="${#fields.hasErrors('fname')}? 'control-label required error' : 'control-label required'" for="fname" th:text="#{user.field.fname}">
+									Имя <span class="required" style="color:red">*</span></label>
+								<input th:class="${#fields.hasErrors('fname')}? 'form-control error' : 'form-control'" th:field="*{fname}" class="form-control" type="text" maxlength="50" placeholder="Имя" th:attr="placeholder=#{user.field.fname}"/>
+								<div th:if="${#fields.hasErrors('fname')}" class="help-block error">
+									<ul>
+										<li th:each="err : ${#fields.errors('fname')}" th:text="#{${err}}" />
+									</ul>
+								</div>
+							</div>		
+							
+							<div class="form-group" th:class="${#fields.hasErrors('mname')}? 'form-group has-error' : 'form-group'">
+								<label class="control-label required" th:class="${#fields.hasErrors('mname')}? 'control-label required error' : 'control-label required'" for="mname" th:text="#{user.field.mname}">
+									Отчество <span class="required" style="color:red">*</span></label>
+								<input th:class="${#fields.hasErrors('mname')}? 'form-control error' : 'form-control'" th:field="*{mname}" class="form-control" type="text" maxlength="50" placeholder="Отчество" th:attr="placeholder=#{user.field.mname}"/>
+								<div th:if="${#fields.hasErrors('mname')}" class="help-block error">
+									<ul>
+										<li th:each="err : ${#fields.errors('mname')}" th:text="#{${err}}" />
+									</ul>
+								</div>
+							</div>
+							
+							<div class="form-group" th:class="${#fields.hasErrors('login')}? 'form-group has-error' : 'form-group'">
+								<label class="control-label required" th:class="${#fields.hasErrors('login')}? 'control-label required error' : 'control-label required'" for="login" th:text="#{user.field.login}">
+									Логин <span class="required" style="color:red">*</span></label>
+								<input th:class="${#fields.hasErrors('login')}? 'form-control error' : 'form-control'" th:field="*{login}" class="form-control" type="text" maxlength="50" placeholder="Логин" th:attr="placeholder=#{user.field.login}"/>
+								<div th:if="${#fields.hasErrors('login')}" class="help-block error">
+									<ul>
+										<li th:each="err : ${#fields.errors('login')}" th:text="#{${err}}" />
+									</ul>
+								</div>
+							</div>							
+									
+							<div class="form-group" th:class="${#fields.hasErrors('pass')}? 'form-group has-error' : 'form-group'">
+								<label class="control-label required" th:class="${#fields.hasErrors('pass')}? 'control-label required error' : 'control-label required'" for="pass" th:text="#{user.field.pass}">
+									Пароль <span class="required" style="color:red">*</span></label>
+								<input th:class="${#fields.hasErrors('pass')}? 'form-control error' : 'form-control'" th:field="*{pass}" class="form-control" type="password" maxlength="50" placeholder="Пароль" th:attr="placeholder=#{user.field.pass}"/>
+								<div th:if="${#fields.hasErrors('pass')}" class="help-block error">
+									<ul>
+										<li th:each="err : ${#fields.errors('pass')}" th:text="#{${err}}" />
+									</ul>
+								</div>
+							</div>
+							
+							
+							
+							<h4>
+								<a class="extended-button" href="#">Расширенные настройки</a>
+							</h4>
+												
+							<div class="extended-form" style="display:none">
+								
+								<div class="form-group" th:class="${#fields.hasErrors('email')}? 'form-group has-error' : 'form-group'">
+									<label class="control-label required" th:class="${#fields.hasErrors('email')}? 'control-label required error' : 'control-label required'" for="email" th:text="#{user.field.email}">
+										Почта <span class="required" style="color:red">*</span></label>
+									<input th:class="${#fields.hasErrors('email')}? 'form-control error' : 'form-control'" th:field="*{email}" class="form-control" type="text" maxlength="50" placeholder="Почта" th:attr="placeholder=#{user.field.email}"/>
+									<div th:if="${#fields.hasErrors('email')}" class="help-block error">
+										<ul>
+											<li th:each="err : ${#fields.errors('email')}" th:text="#{${err}}" />
+										</ul>
+									</div>
+								</div>
+								
+								
+								<div class="form-group" th:class="${#fields.hasErrors('status')}? 'form-group has-error' : 'form-group'">
+									<label class="control-label required" th:class="${#fields.hasErrors('status')}? 'control-label required error' : 'control-label required'" for="status" th:text="#{user.field.status}">
+										Статус <span class="required" style="color:red">*</span></label>
+									<select th:field="*{status}" class="select2-chosen" placeholder="Статус" th:attr="placeholder=#{user.field.status}">
+										<option th:each="status : ${userStatus}" 
+          									th:value="${status}" 
+          									th:text="#{${status}}">Status</option>
+									</select>
+									<div th:if="${#fields.hasErrors('status')}" class="help-block error">
+										<ul>
+											<li th:each="err : ${#fields.errors('status')}" th:text="#{${err}}" />
+										</ul>
+									</div>
+								</div>
+									
+								<div class="form-group" th:class="${#fields.hasErrors('status')}? 'form-group has-error' : 'form-group'">
+									<label class="control-label required" th:class="${#fields.hasErrors('status')}? 'control-label required error' : 'control-label required'" for="status" th:text="#{user.field.status}">
+										Роль <span class="required" style="color:red">*</span></label>
+									<select th:field="*{role}" class="select2-chosen" placeholder="Роль" th:attr="placeholder=#{user.field.role}">
+										<option th:each="role : ${userRole}" 
+          									th:value="${role}" 
+          									th:text="#{${role}}">Role</option>
+									</select>
+									<div th:if="${#fields.hasErrors('role')}" class="help-block error">
+										<ul>
+											<li th:each="err : ${#fields.errors('role')}" th:text="#{${err}}" />
+										</ul>
+									</div>
+								</div>	
+								
+								
+								<div class="form-group" th:class="${#fields.hasErrors('localUserFlag')}? 'form-group has-error' : 'form-group'">
+									<label class="control-label required" th:class="${#fields.hasErrors('localUserFlag')}? 'control-label required error' : 'control-label required'" for="localUserFlag" th:text="#{user.field.localUserFlag}">
+										Тип пользователя <span class="required" style="color:red">*</span></label>
+									<select th:field="*{localUserFlag}" class="select2-chosen" placeholder="Тип пользователя" th:attr="placeholder=#{user.field.localUserFlag}">
+										<option th:each="localUserFlag : ${userType}" 
+          									th:value="${localUserFlag}" 
+          									th:text="#{${localUserFlag}}">localUserFlag</option>
+									</select>
+									<div th:if="${#fields.hasErrors('localUserFlag')}" class="help-block error">
+										<ul>
+											<li th:each="err : ${#fields.errors('localUserFlag')}" th:text="#{${err}}" />
+										</ul>
+									</div>
+								</div>
+								
+								<div class="form-group" th:class="${#fields.hasErrors('mobile')}? 'form-group has-error' : 'form-group'">
+									<label class="control-label required" th:class="${#fields.hasErrors('mobile')}? 'control-label required error' : 'control-label required'" for="mobile" th:text="#{user.field.mobile}">
+										Почта <span class="required" style="color:red">*</span></label>
+									<input th:class="${#fields.hasErrors('mobile')}? 'form-control error' : 'form-control'" th:field="*{mobile}" class="form-control" type="text" maxlength="50" placeholder="Mobile" th:attr="placeholder=#{user.field.mobile}"/>
+									<div th:if="${#fields.hasErrors('mobile')}" class="help-block error">
+										<ul>
+											<li th:each="err : ${#fields.errors('mobile')}" th:text="#{${err}}" />
+										</ul>
+									</div>
+								</div>
+								
+								
+								
+								<div class="form-group">
+									<label class="control-label required" for="Users_company">Организация </label>
+									<input id="Users_company" class="form-control" type="text" maxlength="50" name="Users[company]" placeholder="Организация" />
+									<div id="Users_company_em_" class="help-block error" style="display:none"></div>
+								</div>
+								
+								<div class="form-group">
+									<label class="control-label required" for="Users_department">Отдел </label>
+									<input id="Users_department" class="form-control" type="text" maxlength="50" name="Users[department]" placeholder="Отдел" />
+									<div id="Users_department_em_" class="help-block error" style="display:none"></div>
+								</div>
+								
+								<div class="form-group">
+									<label class="control-label required" for="Users_title">Должность </label>
+									<input id="Users_title" class="form-control" type="text" maxlength="50" name="Users[title]" placeholder="Должность" />
+									<div id="Users_title_em_" class="help-block error" style="display:none"></div>
+								</div>
+								
+								<div class="form-group">
+									<label class="control-label required" for="Users_ad_location">Расположение (локация) </label>
+									<input id="Users_ad_location" class="form-control" type="text" maxlength="50" name="Users[ad_location]" placeholder="Расположение (локация)" />
+									<div id="Users_ad_location_em_" class="help-block error" style="display:none"></div>
+								</div>
+								
+								<div class="form-group">
+									<label class="control-label required" for="Users_street_address">Адрес </label>
+									<input id="Users_street_address" class="form-control" type="text" maxlength="50" name="Users[street_address]" placeholder="Адрес" />
+									<div id="Users_street_address_em_" class="help-block error" style="display:none"></div>
+								</div>
+							</div>
+						</fieldset>
+						<div class="form-actions">
+            				<button class="btn btn-primary" type="submit">Добавить</button>
+            				<button class="btn btn-default" type="reset">Сброс</button>
+            			</div>	
 					</div>
-	
-					<select id="Users_status" class="form-control select2-offscreen" name="Users[status]" tabindex="-1" title="Статус *">
-						<option value=""></option>
-						<option value="1">Активный</option>
-						<option selected="selected" value="0">Неактивный</option>
-					</select>
-					
-					<div id="Users_status_em_" class="help-block error" style="display:none"></div>
-				</div>
-			</fieldset>	
-			</div>
-		</div>	
-	</form>
- 
- 
- 
- 
- 
- 
- 	
- 	
- 	<table id="userstable" class="display" cellspacing="0" width="100%" >
-        <thead>
-            <tr>
-                <th>№ п/п</th>
-                <th>ФИО</th>
-                <th>Логин</th>
-                <th>Роль</th>
-                <th>Статус</th>
-                <th>Время последнего входа</th>
-                <th>Дата регистрации</th>
-                <th>Дата блокировки</th>
-                <th>Действия</th>
-                
-            </tr>
-        </thead>
- 
-        <tfoot>
-            <tr>
-                <th>№ п/п</th>
-                <th>ФИО</th>
-                <th>Логин</th>
-                <th>Роль</th>
-                <th>Статус</th>
-                <th>Время последнего входа</th>
-                <th>Дата регистрации</th>
-                <th>Дата блокировки</th>
-                <th>Действия</th>
-                
-            </tr>
-        </tfoot>
- 
-        <tbody>
-            <tr th:each="user, iterStat : ${users}" >
-                <td>№ п/п</td>
-                <td th:text="${user.name}">ФИО</td>
-                <td th:text="${user.login}">Логин</td>
-                <td th:text="${user.role}">Роль</td>
-                <td th:text="${user.status}">Статус</td>
-                <td th:text="${user.lastLogin}">Время последнего входа</td>
-                <td th:text="${user.signinDate}">Дата регистрации</td>
-                <td th:text="${user.blockDate}">Дата блокировки</td>
-                <td th:text="${user.id}">Идентификационный номер</td>
-                
-            </tr>
-        </tbody>
-    </table>
- 	
- 	
-</div>
-
-</div>
+				</div>	
+			</form>
+		</div>
+	</div>
 </div>
 
 <div th:include="fragment/header :: scripts" > </div>
-<script src="/static/assets/select2/js/select2.min.js" th:href="@{/static/assets/select2/js/select2.min.js}" > </script>
+<script src="/static/assets/select2/3.4.8/js/select2.min.js" th:href="@{/static/assets/select2/3.4.8/js/select2.min.js}" > </script>
 <script type="text/javascript">
 	//<![CDATA[
 	           
-	           
+	$('.extended-button').click(function(){
+		$('.extended-form').toggle();
+		return false;
+    });
+	
+	jQuery(function($) {
+		jQuery('#status').select2({'allowClear':true,'width':'100%'}).select2('val', "ACTIVE");
+		jQuery('#role').select2({'allowClear':true,'width':'100%'}).select2('val', 'USER');
+		jQuery('#localUserFlag').select2({'allowClear':true,'width':'100%'}).select2('val', 'LOCAL');
+	});  
+	
 	$(document).ready(function() {
-		
-		 $('select').select2();
-		
-		
+	
 		$(function () {
 			$('[data-toggle="tooltip"]').tooltip()
 		})
-		
-		
-	    var myTable = $('#userstable').DataTable({
-			"language": {
-	        	"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Russian.json"
-	        },
-	        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Все"]],
-	        "order": [[ 1, 'asc' ]],
-	        "columnDefs": [
-				{
-	    			"searchable": false,
-	    			"orderable": false,
-	    			"targets": 0
-				},
-	            {
-		         	"targets": -1,
-		         	"searchable": false,
-	    			"orderable": false,
-		            "data": "Действия",
-		            "render": function (data, type, full, meta) {
-		            	var updateField = '<a class="update" href="/users/update/'+data+'" data-toggle="tooltip" title="" data-original-title="Редактировать"> \
-		     	 								<i class="glyphicon glyphicon-pencil"></i></a>';
-		     	 		var deleteField = '<a class="delete" href="/users/delete/'+data+'" data-toggle="tooltip" title="" data-original-title="Удалить"> \
-		         								<i class="glyphicon glyphicon-trash"></i> </a>'; 	 
-			            return "<center>"+updateField+"&nbsp;&nbsp;&nbsp;"+deleteField+"</center>";
-	           	}
-	        }]
-	    });
-		
-		myTable.on( 'order.dt search.dt', function () {
-			myTable.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-	            cell.innerHTML = i+1;
-	        } );
-	    } ).draw();
 		
 	});
 	//]]>

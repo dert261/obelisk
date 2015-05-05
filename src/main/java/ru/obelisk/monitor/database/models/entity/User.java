@@ -7,10 +7,18 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
 
+
+
+
 import ru.obelisk.monitor.database.models.entity.enums.UserRole;
+import ru.obelisk.monitor.database.models.entity.enums.UserStatus;
+import ru.obelisk.monitor.database.models.entity.enums.UserType;
+import ru.obelisk.monitor.web.validators.Email;
+import ru.obelisk.monitor.web.validators.NotEmpty;
 
 @Entity
 @Table(name = "users")
@@ -22,23 +30,29 @@ public class User {
     @Column(name = "id", length = 11, nullable = false)
     private int id;
      
-    @Column(name = "login", length = 50)
+    @Column(name = "login", length = 50, nullable = false)
+    @NotNull
+    @NotEmpty
     private String login=null;
     
     @Column(name = "pass", length = 50)
-    private String pass=null;
+    @NotNull
+    @NotEmpty
+    private String pass;
     
     @Column(name = "status")
-    private int status=0;
+    @Enumerated(EnumType.STRING)
+    private UserStatus status=UserStatus.NONACTIVE;
     
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private UserRole role=UserRole.USER;
         
-    @Column(name = "name", length = 50)
+    @Column(name = "name", length = 150)
     private String name=null;
     
     @Column(name = "email", length = 50)
+    @Email
     private String email=null;
     
     @Column(name = "last_login")
@@ -50,17 +64,22 @@ public class User {
     @Column(name = "ip_address", length = 16)
     private String ipAddress=null;
     
-    @Column(name = "local_user", length = 1)
-    private short localUserFlag=0;
+    @Column(name = "local_user")
+    @Enumerated(EnumType.STRING)
+    private UserType localUserFlag=UserType.LOCAL;
     
     @Column(name = "fname", length = 100)
-    private String fname=null;
+    @NotNull
+    @NotEmpty
+    private String fname;
     
     @Column(name = "mname", length = 100)
     private String mname=null;
     
     @Column(name = "lname", length = 100)
-    private String lname=null;
+    @NotNull
+    @NotEmpty
+    private String lname;
         
     @Column(name = "ad_guid", length = 100)
     private String adGuid=null;
@@ -114,11 +133,11 @@ public class User {
 		this.pass = pass;
 	}
 
-	public int getStatus() {
+	public UserStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(UserStatus status) {
 		this.status = status;
 	}
 
@@ -170,11 +189,11 @@ public class User {
 		this.ipAddress = ipAddress;
 	}
 
-	public short getLocalUserFlag() {
+	public UserType getLocalUserFlag() {
 		return localUserFlag;
 	}
 
-	public void setLocalUserFlag(short localUserFlag) {
+	public void setLocalUserFlag(UserType localUserFlag) {
 		this.localUserFlag = localUserFlag;
 	}
 
