@@ -1,0 +1,14 @@
+{
+    "bundle" : "jquery-flot",
+    "dependencies" : [ "jquery" ],
+    "assets": [
+        {
+            "name": "jquery-flot",
+            "version": "1.0.0",
+            "type": "js",
+            "locations": {
+                "webapp": "/static/assets/flot/jquery.flot.js"
+            }
+        }
+    ]
+}

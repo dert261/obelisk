@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<!-- TEXT FIELD TEMPLATE -->
+<div th:fragment="textFormField(fieldName,requiredFlag,inputType,i18nName)" th:remove="all">
+	<div	class="form-group" 
+			th:classappend="${#fields.hasErrors(fieldName)}? 'has-error'">
+		<label 	class="control-label"
+				th:classappend="${requiredFlag} ? 'required'"
+				th:class="${#fields.hasErrors(fieldName)}? 'control-label error' : 'control-label'" 
+				for="fieldName" 
+				th:inline="text">[[#{${i18nName}+'.'+${fieldName}}]] <span th:if="${requiredFlag}" class="required" style="color:red">*</span>
+		</label>
+		<input 	class="form-control" 
+				th:classappend="${#fields.hasErrors(fieldName)}? 'error'"
+				th:field="*{__${fieldName}__}"
+				type="text"
+				th:type="${inputType}" 
+				maxlength="50" 
+				placeholder="field" 
+				th:attr="placeholder=#{${i18nName}+'.'+${fieldName}}"/>
+		<div th:if="${#fields.hasErrors(fieldName)}" class="help-block error">
+			<ul>
+				<li th:each="err : ${#fields.errors(fieldName)}" th:text="#{${err}}" />
+			</ul>
+		</div>
+	</div>
+</div>
+
+<!-- DROPDOWN ENUM (SELECT) FIELD TEMPLATE -->
+<div th:fragment="selectEnumFormField(fieldName, requiredFlag, dataSet, i18nName, activeValue)" th:remove="all">
+	<div	class="form-group" 
+			th:classappend="${#fields.hasErrors(fieldName)}? 'has-error'">
+		<label 	class="control-label"
+				th:classappend="${requiredFlag} ? 'required'"
+				th:class="${#fields.hasErrors(fieldName)}? 'control-label error' : 'control-label'" 
+				for="fieldName" 
+				th:inline="text">[[#{${i18nName}+'.'+${fieldName}}]] <span th:if="${requiredFlag}" class="required" style="color:red">*</span>
+		</label>
+		
+		<select th:field="*{__${fieldName}__}" 
+				class="select2-chosen" 
+				placeholder="select field" 
+				th:attr="placeholder=#{${i18nName}+'.'+${fieldName}}">
+				<option th:each="data : ${__${dataSet}__}" 
+        				th:value="${data}" 
+          				th:text="#{${data}}">
+          		</option>
+		</select>
+		<div th:if="${#fields.hasErrors(fieldName)}" class="help-block error">
+			<ul>
+				<li th:each="err : ${#fields.errors(fieldName)}" th:text="#{${err}}" />
+			</ul>
+		</div>
+	</div>
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+    	
+    	jQuery(function($) {
+    		jQuery([['#'+${fieldName}]]).select2({'allowClear':true,'width':'100%'}).select2('val', [[${activeValue}]]);
+    		
+    	});  
+	/*]]>*/
+	</script>
+</div>
+
+</html>
+
+
+
+
+<!-- Last name field -->
+							<!-- <div class="form-group" th:class="${#fields.hasErrors('lname')}? 'form-group has-error' : 'form-group'">
+								<label 	class="control-label required" 
+										th:class="${#fields.hasErrors('lname')}? 'control-label required error' : 'control-label required'" 
+										for="lname" 
+										th:inline="text">
+											[[#{user.field.lname}]] <span class="required" style="color:red">*</span>
+											
+								</label>
+								<input 	th:class="${#fields.hasErrors('lname')}? 'form-control error' : 'form-control'" 
+										th:field="*{lname}" 
+										class="form-control" 
+										type="text" 
+										maxlength="50" 
+										placeholder="Last name" 
+										th:attr="placeholder=#{user.field.lname}"/>
+								<div th:if="${#fields.hasErrors('lname')}" class="help-block error">
+									<ul>
+										<li th:each="err : ${#fields.errors('lname')}" th:text="#{${err}}" />
+									</ul>
+								</div>
+							</div> -->
+<!-- UserStatus field -->
+								<!-- <div class="form-group" th:class="${#fields.hasErrors('status')}? 'form-group has-error' : 'form-group'">
+									<label 	class="control-label required" 
+											th:class="${#fields.hasErrors('status')}? 'control-label required error' : 'control-label required'" 
+											for="status" 
+											th:text="#{user.field.status}">
+												Status <span class="required" style="color:red">*</span>
+									</label>
+									<select th:field="*{status}" 
+											class="select2-chosen" 
+											placeholder="Status" 
+											th:attr="placeholder=#{user.field.status}">
+												<option th:each="status : ${userStatus}" 
+          												th:value="${status}" 
+          												th:text="#{${status}}">
+          											Status
+          										</option>
+									</select>
+									<div th:if="${#fields.hasErrors('status')}" class="help-block error">
+										<ul>
+											<li th:each="err : ${#fields.errors('status')}" th:text="#{${err}}" />
+										</ul>
+									</div>
+								</div> -->
+								
+								<!-- UserRole field -->	
+								<!-- <div class="form-group" th:class="${#fields.hasErrors('status')}? 'form-group has-error' : 'form-group'">
+									<label 	class="control-label required" 
+											th:class="${#fields.hasErrors('status')}? 'control-label required error' : 'control-label required'" 
+											for="status" 
+											th:text="#{user.field.status}">
+												Role <span class="required" style="color:red">*</span>
+									</label>
+									<select th:field="*{role}" 
+											class="select2-chosen" 
+											placeholder="Role" 
+											th:attr="placeholder=#{user.field.role}">
+												<option th:each="role : ${userRole}" 
+          												th:value="${role}" 
+          												th:text="#{${role}}">
+          											Role
+          										</option>
+									</select>
+									<div th:if="${#fields.hasErrors('role')}" class="help-block error">
+										<ul>
+											<li th:each="err : ${#fields.errors('role')}" th:text="#{${err}}" />
+										</ul>
+									</div>
+								</div> -->	
+								
+								<!-- UserType field -->
+								<!-- <div class="form-group" th:class="${#fields.hasErrors('localUserFlag')}? 'form-group has-error' : 'form-group'">
+									<label 	class="control-label required" 
+											th:class="${#fields.hasErrors('localUserFlag')}? 'control-label required error' : 'control-label required'" 
+											for="localUserFlag" 
+											th:text="#{user.field.localUserFlag}">
+												User type <span class="required" style="color:red">*</span>
+									</label>
+									<select th:field="*{localUserFlag}" 
+											class="select2-chosen" 
+											placeholder="User type" 
+											th:attr="placeholder=#{user.field.localUserFlag}">
+												<option th:each="localUserFlag : ${userType}" 
+          												th:value="${localUserFlag}" 
+          												th:text="#{${localUserFlag}}">
+          												localUserFlag
+          										</option>
+									</select>
+									<div th:if="${#fields.hasErrors('localUserFlag')}" class="help-block error">
+										<ul>
+											<li th:each="err : ${#fields.errors('localUserFlag')}" th:text="#{${err}}" />
+										</ul>
+									</div>
+								</div> -->
+
+
+<!-- <div th:fragment="banner(color, text)" th:remove="all">
+            <div class="banner " th:attrappend="class=${color}">
+                <img src="../../../images/logo.png" th:src="@{/images/logo.png}" alt="Thymeleaf logo" />
+                <span th:text="${text}">The Thymeleaf tutorial</span>
+            </div>
+        </div>
+ -->

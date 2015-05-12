@@ -1,0 +1,30 @@
+{
+    "bundle" : "select2",
+    "dependencies" : [ "jquery" ],
+    "assets": [
+        {
+            "name": "select2",
+            "version": "3.4.8",
+            "type": "css",
+            "locations": {
+                "webapp": "/static/assets/select2/3.4.8/css/select2.css"
+            }
+        },
+        {
+            "name": "select2",
+            "version": "3.4.8",
+            "type": "css",
+            "locations": {
+                "webapp": "/static/assets/select2/3.4.8/css/select2-bootstrap.css"
+            }
+        },
+        {
+            "name": "select2",
+            "version": "3.4.8",
+            "type": "js",
+            "locations": {
+                "webapp": "/static/assets/select2/3.4.8/js/select2.min.js"
+            }
+        }
+    ]
+}

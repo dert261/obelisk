@@ -1,0 +1,46 @@
+{
+    "bundle" : "bootstrap-table-master",
+    "dependencies" : [ "jquery", "bootstrap" ],
+    "assets": [
+        {
+            "name": "bootstrap-table",
+            "version": "1.7.0",
+            "type": "css",
+            "locations": {
+                "webapp": "/static/assets/bootstrap-table-master/dist/bootstrap-table.min.css"
+            }
+        },
+        {
+            "name": "bootstrap-table",
+            "version": "1.7.0",
+            "type": "js",
+            "locations": {
+                "webapp": "/static/assets/bootstrap-table-master/dist/bootstrap-table.min.js"
+            }
+        },
+        {
+            "name": "bootstrap-table",
+            "version": "1.7.0",
+            "type": "js",
+            "locations": {
+                "webapp": "/static/assets/bootstrap-table-master/dist/locale/bootstrap-table-ru-RU.min.js"
+            }
+        },
+        {
+            "name": "bootstrap-table",
+            "version": "1.7.0",
+            "type": "js",
+            "locations": {
+                "webapp": "/static/assets/bootstrap-table-master/dist/extensions/export/bootstrap-table-export.min.js"
+            }
+        },
+        {
+            "name": "bootstrap-table",
+            "version": "1.7.0",
+            "type": "js",
+            "locations": {
+                "webapp": "/static/assets/bootstrap-table-master/dist/extensions/filter/bootstrap-table-filter.min.js"
+            }
+        }
+    ]
+}

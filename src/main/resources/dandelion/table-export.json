@@ -1,0 +1,22 @@
+{
+    "bundle" : "table-export",
+    "dependencies" : [ "jquery" ],
+    "assets": [
+        {
+            "name": "jquery.base64",
+            "version": "0.0.0",
+            "type": "js",
+            "locations": {
+                "webapp": "/static/assets/tableExport.jquery.plugin-master/jquery.base64.js"
+            }
+        },
+        {
+            "name": "tableExport",
+            "version": "0.0.0",
+            "type": "css",
+            "locations": {
+                "webapp": "/static/assets/tableExport.jquery.plugin-master/tableExport.js"
+            }
+        }
+    ]
+}

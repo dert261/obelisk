@@ -32,9 +32,29 @@
 		
 	</div> 
  <div class="row">
+ 	<a id="reload">Click me to refresh the table!</a> 
+ 	<table 	id="myTableId" 
+ 			dt:table="true" 
+ 			dt:url="@{/users/ajax/userdata.json}" 
+ 			dt:serverside="true" 
+ 			dt:processing="true" 
+ 			dt:reloadSelector="#reload"
+ 			dt:reloadFunction="customReload">
+   		<thead>
+      		<tr>
+		         <th dt:property="id">Id</th>
+		         <th dt:property="name">Firstname</th>
+		         <th dt:property="login">Lastname</th>
+		         <th dt:property="role">City</th>
+		         <th dt:property="status">Mail</th>
+      		</tr>
+   		</thead>
+	</table>
  	
  	
- 	<table id="userstable" class="display" cellspacing="0" width="100%" >
+ 	
+ 	
+ 	<!-- <table id="userstable" class="display" cellspacing="0" width="100%" >
         <thead>
             <tr>
                 <th>№ п/п</th>
@@ -65,7 +85,7 @@
             </tr>
         </tfoot>
  
-        <tbody>
+         <tbody>
             <tr th:each="user, iterStat : ${users}" >
                 <td>№ п/п</td>
                 <td th:text="${user.name}">ФИО</td>
@@ -78,8 +98,8 @@
                 <td th:text="${user.id}">Идентификационный номер</td>
                 
             </tr>
-        </tbody>
-    </table>
+        </tbody>  
+    </table>-->
  	
  	
 </div>
@@ -87,17 +107,42 @@
 </div>
 </div>
 
-<div th:include="fragment/header :: scripts" > </div>
+<div th:replace="fragment/header :: scripts" > </div>
 
 <script type="text/javascript">
 	//<![CDATA[
+	           
+	 function customReload() {
+   			// Some custom code...
+   			oTable_myTableId.fnReloadAjax();
+   			// Some custom code...
+		}
+		          
+	           
 	$(document).ready(function() {
 		$(function () {
 			$('[data-toggle="tooltip"]').tooltip()
 		})
 		
 		
+		
+		
+		
+		
 	    var myTable = $('#userstable').DataTable({
+	    	"ajax": '/users/ajax/userdata.json',
+	    	"columns": [
+	    	            { "data": "name" },
+	    	            { "data": "login" },
+	    	            { "data": "role" },
+	    	            { "data": "status" },
+	    	            { "data": "lastLogin" },
+	    	            { "data": "signinDate" },
+	    	            { "data": "blockDate" },
+	    	            { "data": "id" }
+	    	        ],
+	    	
+	    	
 			"language": {
 	        	"url": "/static/assets/data-tables-1.10.6/i18n/russian.lang"
 	        },

@@ -1,0 +1,14 @@
+{
+    "bundle" : "data-tables",
+    "dependencies" : [ ],
+    "assets": [
+        {
+            "name": "data-tables",
+            "version": "1.10.6",
+            "type": "css",
+            "locations": {
+                "webapp": "/static/assets/data-tables-1.10.6/css/jquery.dataTables.css"
+            }
+        }
+    ]
+}

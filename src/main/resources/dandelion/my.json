@@ -1,0 +1,14 @@
+{
+    "bundle" : "my",
+    "dependencies" : [ "jquery" ],
+    "assets": [
+        {
+            "name": "my",
+            "version": "1.0.0",
+            "type": "js",
+            "locations": {
+                "webapp": "/static/assets/my/my.js"
+            }
+        }
+    ]
+}

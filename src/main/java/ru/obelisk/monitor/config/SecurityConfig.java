@@ -29,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	    	.ignoring()
 	    		.antMatchers("/static/**")
 	        	.antMatchers("/assets/**")
+	        	.antMatchers("/dandelion-assets/**")
 	        	.antMatchers("/login*")
 	        	.antMatchers("/logout*")
 	        	.antMatchers("/favicon.ico");

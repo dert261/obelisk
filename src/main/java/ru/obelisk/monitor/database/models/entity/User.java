@@ -1,5 +1,7 @@
 package ru.obelisk.monitor.database.models.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,9 +12,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
-
-
-
 
 import ru.obelisk.monitor.database.models.entity.enums.UserRole;
 import ru.obelisk.monitor.database.models.entity.enums.UserStatus;
@@ -28,7 +27,7 @@ public class User {
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name= "increment", strategy= "increment")
     @Column(name = "id", length = 11, nullable = false)
-    private int id;
+    private Integer id;
      
     @Column(name = "login", length = 50, nullable = false)
     @NotNull
@@ -36,9 +35,8 @@ public class User {
     private String login=null;
     
     @Column(name = "pass", length = 50)
-    @NotNull
     @NotEmpty
-    private String pass;
+    private String pass=null;
     
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
@@ -56,10 +54,10 @@ public class User {
     private String email=null;
     
     @Column(name = "last_login")
-    private java.sql.Date lastLogin=null;
+    private Date lastLogin=null;
     
     @Column(name = "signin_date")
-    private java.sql.Date signinDate=null;
+    private Date signinDate=null;
     
     @Column(name = "ip_address", length = 16)
     private String ipAddress=null;
@@ -103,17 +101,17 @@ public class User {
     private String streetAddress=null;
     
     @Column(name = "block_date")
-    private java.sql.Date blockDate=null;
+    private Date blockDate=null;
     
     public User(){
     	
     }
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -165,19 +163,19 @@ public class User {
 		this.email = email;
 	}
 
-	public java.sql.Date getLastLogin() {
+	public Date getLastLogin() {
 		return lastLogin;
 	}
 
-	public void setLastLogin(java.sql.Date lastLogin) {
+	public void setLastLogin(Date lastLogin) {
 		this.lastLogin = lastLogin;
 	}
 
-	public java.sql.Date getSigninDate() {
+	public Date getSigninDate() {
 		return signinDate;
 	}
 
-	public void setSigninDate(java.sql.Date signinDate) {
+	public void setSigninDate(Date signinDate) {
 		this.signinDate = signinDate;
 	}
 
@@ -277,12 +275,16 @@ public class User {
 		this.streetAddress = streetAddress;
 	}
 
-	public java.sql.Date getBlockDate() {
+	public Date getBlockDate() {
 		return blockDate;
 	}
 
 	public void setBlockDate(java.sql.Date blockDate) {
 		this.blockDate = blockDate;
+	}
+	
+	public boolean isNew() {
+		return (this.id == null);
 	}
     
 }    

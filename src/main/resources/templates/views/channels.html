@@ -289,7 +289,7 @@
 	</div>
 </div>
 
-<div th:include="fragment/header :: scripts" > </div>	
+<div th:replace="fragment/header :: scripts" > </div>	
 
 <script type="text/javascript" src="../static/assets/socket.io.js" th:href="@{/static/assets/socket.io.js}" charset="utf-8"> </script>
 <script type="text/javascript" src="../static/assets/sockjs-0.3.4.js" th:href="@{/static/assets/sockjs-0.3.4.js}" charset="utf-8"> </script>

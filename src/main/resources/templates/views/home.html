@@ -2,9 +2,122 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head th:include="fragment/header :: headerFragment" />
+<!-- <script type="text/javascript" src="../static/assets/flot/jquery.flot.js" th:href="@{/static/assets/flot/jquery.flot.js}" charset="utf-8"> </script>  -->
+<div ddl:bundle-includes="jquery-flot" />
+<body>
+<div id="wrapper">
+<!-- Header -->
+<div th:replace="fragment/header :: navbar_alt" > </div>
 
-<script type="text/javascript" src="../static/assets/flot/jquery.flot.js" th:href="@{/static/assets/flot/jquery.flot.js}" charset="utf-8"> </script>
 
+
+<br/>
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">Общая информация</h1>
+		</div>
+	</div> 
+ <div class="row">
+ 	<div class="col-lg-4 col-md-6">
+ 		<div class="panel panel-primary">
+ 			<div class="panel-heading">
+ 				<div class="row">
+ 					<div class="col-xs-3">
+ 						<i class="fa fa-cloud fa-5x"></i>
+ 					</div>
+ 					<div class="col-xs-9 text-right">
+ 						<div id="activeHostsCount" class="huge">0</div>
+ 						<div>Cерверов</div>
+ 					</div>
+ 				</div>
+ 			</div>
+ 			<a href="/server/all">
+				<div class="panel-footer">
+					<span class="pull-left">Подробнее</span>
+					<span class="pull-right">
+						<i class="fa fa-arrow-circle-right"></i>
+					</span>
+					<div class="clearfix"></div>
+				</div>
+			</a>
+ 		</div>
+ 	</div>
+ 	
+ 	<div class="col-lg-4 col-md-6">
+ 		<div class="panel panel-green">
+ 			<div class="panel-heading">
+ 				<div class="row">
+ 					<div class="col-xs-3"> 
+ 						<i class="fa fa-exchange fa-5x"></i>
+ 					</div>
+ 					<div class="col-xs-9 text-right">
+ 						<div id="activeChannelsCount" class="huge">0</div>
+ 						<div>Активных каналов</div>
+ 					</div>
+ 				</div>
+ 			</div>
+ 			<a href="channels.html">
+				<div class="panel-footer">
+					<span class="pull-left">Подробнее</span>
+					<span class="pull-right">
+						<i class="fa fa-arrow-circle-right"></i>
+					</span>
+					<div class="clearfix"></div>
+				</div>
+			</a>
+ 		</div>
+ 	</div>
+ 	
+ 	
+ 	<div class="col-lg-4 col-md-6">
+ 		<div class="panel panel-yellow">
+ 			<div class="panel-heading">
+ 				<div class="row">
+ 					<div class="col-xs-3">
+ 						<i class="fa fa-phone fa-5x"></i>
+ 					</div>
+ 					<div class="col-xs-9 text-right">
+ 						<div id="activePeersCount" class="huge">0</div>
+ 						<div>Устройств</div>
+ 					</div>
+ 				</div>
+ 			</div>
+ 			<a href="peers.html">
+				<div class="panel-footer">
+					<span class="pull-left">Подробнее</span>
+					<span class="pull-right">
+						<i class="fa fa-arrow-circle-right"></i>
+					</span>
+					<div class="clearfix"></div>
+				</div>
+			</a>
+ 		</div>
+ 	</div>
+</div>
+
+<!-- График -->
+<div class="row">
+	<div class="col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading"> Количество активных каналов </div>
+			<div class="panel-body">
+				<div class="flot-chart">
+					<div id="active-channel-graph" class="flot-chart-content" style="padding: 0px; position: relative;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+ 
+  
+
+
+
+</div>
+</div>
+
+<div th:replace="fragment/header :: scripts" > </div>	
 <script type="text/javascript">
 	//<![CDATA[
 	$(function() {	
@@ -191,128 +304,5 @@
 	});
 	 //]]>
 </script>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-<body>
-<div id="wrapper">
-<!-- Header -->
-<div th:replace="fragment/header :: navbar_alt" > </div>
-
-
-
-<br/>
-<div id="page-wrapper">
-	<div class="row">
-		<div class="col-lg-12">
-			<h1 class="page-header">Общая информация</h1>
-		</div>
-	</div> 
- <div class="row">
- 	<div class="col-lg-4 col-md-6">
- 		<div class="panel panel-primary">
- 			<div class="panel-heading">
- 				<div class="row">
- 					<div class="col-xs-3">
- 						<i class="fa fa-cloud fa-5x"></i>
- 					</div>
- 					<div class="col-xs-9 text-right">
- 						<div id="activeHostsCount" class="huge">0</div>
- 						<div>Cерверов</div>
- 					</div>
- 				</div>
- 			</div>
- 			<a href="/server/all">
-				<div class="panel-footer">
-					<span class="pull-left">Подробнее</span>
-					<span class="pull-right">
-						<i class="fa fa-arrow-circle-right"></i>
-					</span>
-					<div class="clearfix"></div>
-				</div>
-			</a>
- 		</div>
- 	</div>
- 	
- 	<div class="col-lg-4 col-md-6">
- 		<div class="panel panel-green">
- 			<div class="panel-heading">
- 				<div class="row">
- 					<div class="col-xs-3"> 
- 						<i class="fa fa-exchange fa-5x"></i>
- 					</div>
- 					<div class="col-xs-9 text-right">
- 						<div id="activeChannelsCount" class="huge">0</div>
- 						<div>Активных каналов</div>
- 					</div>
- 				</div>
- 			</div>
- 			<a href="channels.html">
-				<div class="panel-footer">
-					<span class="pull-left">Подробнее</span>
-					<span class="pull-right">
-						<i class="fa fa-arrow-circle-right"></i>
-					</span>
-					<div class="clearfix"></div>
-				</div>
-			</a>
- 		</div>
- 	</div>
- 	
- 	
- 	<div class="col-lg-4 col-md-6">
- 		<div class="panel panel-yellow">
- 			<div class="panel-heading">
- 				<div class="row">
- 					<div class="col-xs-3">
- 						<i class="fa fa-phone fa-5x"></i>
- 					</div>
- 					<div class="col-xs-9 text-right">
- 						<div id="activePeersCount" class="huge">0</div>
- 						<div>Устройств</div>
- 					</div>
- 				</div>
- 			</div>
- 			<a href="peers.html">
-				<div class="panel-footer">
-					<span class="pull-left">Подробнее</span>
-					<span class="pull-right">
-						<i class="fa fa-arrow-circle-right"></i>
-					</span>
-					<div class="clearfix"></div>
-				</div>
-			</a>
- 		</div>
- 	</div>
-</div>
-
-<!-- График -->
-<div class="row">
-	<div class="col-lg-12">
-		<div class="panel panel-default">
-			<div class="panel-heading"> Количество активных каналов </div>
-			<div class="panel-body">
-				<div class="flot-chart">
-					<div id="active-channel-graph" class="flot-chart-content" style="padding: 0px; position: relative;"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
- 
-  
-
-
-
-</div>
-</div>
-
-<div th:include="fragment/header :: scripts" > </div>	
 </body>
 </html>
