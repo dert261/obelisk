@@ -3,7 +3,10 @@
 
 <head th:include="fragment/header :: headerFragment" />
 <div ddl:bundle-includes="websockets,channels-home,bootstrap-table-master,moment-with-locales" />
-	
+
+<script src="/static/assets/views/channels/js/channels.js" th:href="@{/static/assets/views/channels/js/channels.js}" > </script>
+<script src="/static/assets/socket.io.js" th:href="@{/static/assets/socket.io.js}" > </script>
+<script src="/static/assets/sockjs-0.3.4.js" th:href="@{/static/assets/sockjs-0.3.4.js}" > </script>
 <body>
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

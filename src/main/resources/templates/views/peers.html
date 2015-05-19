@@ -2,7 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head th:include="fragment/header :: headerFragment" />
-<div ddl:bundle-includes="websockets,peers-home,bootstrap-table-master,moment-with-locales" />
+<!-- <div ddl:bundle-includes="websockets,peers-home,bootstrap-table-master,moment-with-locales" />  -->
+
+<script src="/static/assets/views/peers/js/peers.js" th:href="@{/static/assets/views/peers/js/peers.js}" > </script>
+<script src="/static/assets/socket.io.js" th:href="@{/static/assets/socket.io.js}" > </script>
+<script src="/static/assets/sockjs-0.3.4.js" th:href="@{/static/assets/sockjs-0.3.4.js}" > </script>
 <body>
 
 <div id="wrapper">

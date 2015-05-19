@@ -1,23 +1,14 @@
 
-	function customReload() {
-		   // Some custom code...
-		   oTable_myTableId.fnReloadAjax();
-		   // Some custom code...
-		}
+	
 
 	$(document).ready(function() {
 		$(function () {
 			$('[data-toggle="tooltip"]').tooltip()
 		})
-		
-		
-		
-		
-		
-		
-	/*    var myTable = $('#userstable').DataTable({
-	    	"ajax": '/users/ajax/userdata.json',
-	    	"columns": [
+				
+	    var myTable = $('#userstable').DataTable({
+	    	//"ajax": '/users/ajax/userdata.json',
+	    	/*"columns": [
 	    	            { "data": "name" },
 	    	            { "data": "login" },
 	    	            { "data": "role" },
@@ -28,7 +19,7 @@
 	    	            { "data": "id" }
 	    	        ],
 	    	
-	    	
+	    	*/
 			"language": {
 	        	"url": "/static/assets/data-tables-1.10.6/i18n/russian.lang"
 	        },
@@ -55,11 +46,11 @@
 	        }]
 	    });
 		
-		/*myTable.on( 'order.dt search.dt', function () {
+		myTable.on( 'order.dt search.dt', function () {
 			myTable.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
 	            cell.innerHTML = i+1;
 	        } );
-	    } ).draw();*/
+	    } ).draw();
 		
 		
 		

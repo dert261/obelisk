@@ -11,14 +11,14 @@ import ru.obelisk.monitor.database.models.repository.UserRepository;
 //import ru.obelisk.monitor.database.models.service.utils.UserServiceUtils;
 import ru.obelisk.monitor.database.models.services.UserService;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+//import java.util.ArrayList;
+//import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+//import javax.persistence.Query;
+//import javax.persistence.TypedQuery;
  
 @Service
 public class UserServiceImpl implements UserService {
