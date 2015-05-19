@@ -7,7 +7,7 @@
             "version": "1.0.0",
             "type": "js",
             "locations": {
-                "webapp": "/static/assets/my/my.js"
+                "classpath": "static/assets/my/my.js"
             }
         }
     ]

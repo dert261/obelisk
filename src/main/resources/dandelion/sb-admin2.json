@@ -7,7 +7,7 @@
             "version": "1.0.0",
             "type": "css",
             "locations": {
-                "webapp": "/static/assets/startbootstrap/dist/css/sb-admin-2.css"
+                "classpath": "static/assets/startbootstrap/dist/css/sb-admin-2.css"
             }
         },
         {
@@ -15,7 +15,7 @@
             "version": "1.0.0",
             "type": "js",
             "locations": {
-                "webapp": "/static/assets/startbootstrap/dist/js/sb-admin-2.js"
+                "classpath": "static/assets/startbootstrap/dist/js/sb-admin-2.js"
             }
         }
     ]

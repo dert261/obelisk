@@ -55,8 +55,7 @@
 	</div>
 	<script th:inline="javascript">
 	/*<![CDATA[*/
-    	
-    	jQuery(function($) {
+		jQuery(function($) {
     		jQuery([['#'+${fieldName}]]).select2({'allowClear':true,'width':'100%'}).select2('val', [[${activeValue}]]);
     		
     	});  

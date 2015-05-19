@@ -11,7 +11,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.TimeoutException;
-import org.neo4j.cypher.internal.compiler.v2_1.planner.logical.findShortestPaths;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,18 +23,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.security.access.annotation.Secured;
 
-import com.github.dandelion.datatables.core.ajax.DataSet;
-import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
-import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
-import com.github.dandelion.datatables.extras.spring3.ajax.DatatablesParams;
-
 import ru.obelisk.monitor.database.models.entity.User;
 import ru.obelisk.monitor.database.models.entity.enums.UserRole;
 import ru.obelisk.monitor.database.models.entity.enums.UserStatus;
 import ru.obelisk.monitor.database.models.entity.enums.UserType;
 import ru.obelisk.monitor.database.models.services.UserService;
-import ru.obelisk.monitor.web.utils.conversion.DataTablesResponse;
-
 
 @Controller
 @RequestMapping("/users")
@@ -70,24 +62,34 @@ public class UsersController {
         return "/users/index";
 	}
 	
-	/*@RequestMapping(value = {"/ajax/userdata.json"}, method = RequestMethod.GET)
+	@RequestMapping(value = {"/ajax/clientside/userdata.json"}, method = RequestMethod.GET)
 	@Secured("ROLE_ADMIN")
 	@ResponseBody
-	public List<User> usersData(Model model) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
+	public List<User> usersDataClientSide(Model model) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting users data for table on index page");
 		List<User> users = userService.getAllUsers();
 		return users;
+	}
+	
+	
+	/*@RequestMapping(value = "/ajax/serverside/userdata.json")
+	@Secured("ROLE_ADMIN")
+	public @ResponseBody DatatablesResponse<User> usersDataServerSide(@DatatablesParams DatatablesCriterias criterias){
+		List<User> users = userService.findUserWithDatatablesCriterias(criterias);
+		Long count = userService.getTotalCount();
+		Long countFiltered = userService.getFilteredCount(criterias);
+	    return DatatablesResponse.build(new DataSet<User>(users,count,countFiltered), criterias);
 	}*/
 	
-	
-	@RequestMapping(value = "/ajax/userdata.json")
+/*	@RequestMapping(value = "/ajax/serverside/userdata.json")
 	@Secured("ROLE_ADMIN")
-	public @ResponseBody DatatablesResponse<User> data(@DatatablesParams DatatablesCriterias criterias){
-		List<User> users = userService.getAllUsers();
-		Long size= new Long(users.size());
-	    DataSet<User> dataset = new DataSet<User>(users,size,size);
-	    return DatatablesResponse.build(dataset, criterias);
+	public @ResponseBody DatatablesResponse<User> myusersDataServerSide(HttpServletRequest request, @DatatablesParams DatatablesCriterias criterias){
+		List<User> users = userService.findUserWithDatatablesCriterias(criterias);
+		Long count = userService.getTotalCount();
+		Long countFiltered = userService.getFilteredCount(criterias);
+	    return DatatablesResponse.build(new DataSet<User>(users,count,countFiltered), criterias);
 	}
+*/
 	
 	/*@RequestMapping(value = "/persons")
 	public @ResponseBody DatatablesResponse findAll(@DatatablesParams DatatablesCriterias criterias) {

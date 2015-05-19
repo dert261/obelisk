@@ -1,13 +1,13 @@
 {
     "bundle" : "bootstrap-table-master",
-    "dependencies" : [ "jquery", "bootstrap" ],
+    "dependencies" : [ "bootstrap3" ],
     "assets": [
         {
             "name": "bootstrap-table",
             "version": "1.7.0",
             "type": "css",
             "locations": {
-                "webapp": "/static/assets/bootstrap-table-master/dist/bootstrap-table.min.css"
+                "classpath": "static/assets/bootstrap-table-master/dist/bootstrap-table.min.css"
             }
         },
         {
@@ -15,31 +15,15 @@
             "version": "1.7.0",
             "type": "js",
             "locations": {
-                "webapp": "/static/assets/bootstrap-table-master/dist/bootstrap-table.min.js"
+                "classpath": "static/assets/bootstrap-table-master/dist/bootstrap-table.min.js"
             }
         },
         {
-            "name": "bootstrap-table",
+            "name": "bootstrap-table-ru-RU",
             "version": "1.7.0",
             "type": "js",
             "locations": {
-                "webapp": "/static/assets/bootstrap-table-master/dist/locale/bootstrap-table-ru-RU.min.js"
-            }
-        },
-        {
-            "name": "bootstrap-table",
-            "version": "1.7.0",
-            "type": "js",
-            "locations": {
-                "webapp": "/static/assets/bootstrap-table-master/dist/extensions/export/bootstrap-table-export.min.js"
-            }
-        },
-        {
-            "name": "bootstrap-table",
-            "version": "1.7.0",
-            "type": "js",
-            "locations": {
-                "webapp": "/static/assets/bootstrap-table-master/dist/extensions/filter/bootstrap-table-filter.min.js"
+                "classpath": "static/assets/bootstrap-table-master/dist/locale/bootstrap-table-ru-RU.min.js"
             }
         }
     ]

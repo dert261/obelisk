@@ -3,11 +3,11 @@
     "dependencies" : [ "jquery" ],
     "assets": [
         {
-            "name": "moment-with-locales",
+            "name": "moment-with-locales-js",
             "version": "1.0.0",
             "type": "js",
             "locations": {
-                "webapp": "/static/assets/moment-with-locales.js"
+                "classpath": "static/assets/moment-with-locales.js"
             }
         }
     ]

@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head th:include="fragment/header :: headerFragment" />
+<div ddl:bundle-includes="select2,users-form" />
 <body>
 <div id="wrapper">
 	<!-- Header -->
@@ -73,23 +74,7 @@
 </div>
 
 <div th:replace="fragment/header :: scripts" > </div>
-<script type="text/javascript">
-	//<![CDATA[
-	           
-	$('.extended-button').click(function(){
-		$('.extended-form').toggle();
-		return false;
-    });
-		
-	$(document).ready(function() {
-	
-		$(function () {
-			$('[data-toggle="tooltip"]').tooltip()
-		})
-		
-	});
-	//]]>
-</script>
+
 
 </body>
 </html>

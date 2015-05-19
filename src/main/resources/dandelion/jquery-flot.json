@@ -7,7 +7,7 @@
             "version": "1.0.0",
             "type": "js",
             "locations": {
-                "webapp": "/static/assets/flot/jquery.flot.js"
+                "classpath": "static/assets/flot/jquery.flot.js"
             }
         }
     ]

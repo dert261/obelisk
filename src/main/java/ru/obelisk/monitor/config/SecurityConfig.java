@@ -28,11 +28,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		web
 	    	.ignoring()
 	    		.antMatchers("/static/**")
+	    		.antMatchers("/resources/**")
 	        	.antMatchers("/assets/**")
+	        	.antMatchers("/dandelion/**")
 	        	.antMatchers("/dandelion-assets/**")
+	        	.antMatchers("/css/**")
+	        	.antMatchers("/webjars/**")
+	        	.antMatchers("/images/**")
+	        	.antMatchers("/error*")
 	        	.antMatchers("/login*")
 	        	.antMatchers("/logout*")
 	        	.antMatchers("/favicon.ico");
+		
+		
+		
 	}
 	
 

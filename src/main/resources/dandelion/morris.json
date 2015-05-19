@@ -3,11 +3,11 @@
     "dependencies" : [ ],
     "assets": [
         {
-            "name": "morris",
+            "name": "morris-css",
             "version": "0.0.0",
             "type": "css",
             "locations": {
-                "webapp": "/static/assets/startbootstrap/bower_components/morrisjs/morris.css"
+                "classpath": "static/assets/startbootstrap/bower_components/morrisjs/morris.css"
             }
         }
     ]

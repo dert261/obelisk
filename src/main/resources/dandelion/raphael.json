@@ -7,7 +7,7 @@
             "version": "1.0.0",
             "type": "js",
             "locations": {
-                "webapp": "/static/assets/startbootstrap/bower_components/raphael/raphael-min.js"
+                "classpath": "static/assets/startbootstrap/bower_components/raphael/raphael-min.js"
             }
         }
     ]

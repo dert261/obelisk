@@ -3,19 +3,19 @@
     "dependencies" : [ "jquery" ],
     "assets": [
         {
-            "name": "metisMenu",
+            "name": "metisMenu-css",
             "version": "2.0.0",
             "type": "css",
             "locations": {
-                "webapp": "/static/assets/startbootstrap/bower_components/metisMenu/dist/metisMenu.min.css"
+                "classpath": "static/assets/startbootstrap/bower_components/metisMenu/dist/metisMenu.min.css"
             }
         },
         {
-            "name": "metisMenu",
+            "name": "metisMenu-js",
             "version": "2.0.0",
             "type": "js",
             "locations": {
-                "webapp": "/static/assets/startbootstrap/bower_components/metisMenu/dist/metisMenu.min.js"
+                "classpath": "static/assets/startbootstrap/bower_components/metisMenu/dist/metisMenu.min.js"
             }
         }
     ]

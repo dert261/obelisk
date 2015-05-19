@@ -1,13 +1,23 @@
 {
     "bundle" : "data-tables",
-    "dependencies" : [ ],
+    "dependencies" : [ "jquery" ],
     "assets": [
         {
-            "name": "data-tables",
+            "name": "datatables",
             "version": "1.10.6",
             "type": "css",
             "locations": {
-                "webapp": "/static/assets/data-tables-1.10.6/css/jquery.dataTables.css"
+                "classpath": "static/assets/data-tables-1.10.6/css/jquery.dataTables.min.css"
+                
+            }
+        },
+        {
+            "name": "datatables",
+            "version": "1.10.6",
+            "type": "js",
+            "locations": {
+                "classpath": "static/assets/data-tables-1.10.6/js/jquery.dataTables.min.js"
+                
             }
         }
     ]

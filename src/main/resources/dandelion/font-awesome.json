@@ -3,7 +3,7 @@
     "dependencies" : [ ],
     "assets": [
         {
-            "name": "font-awesome",
+            "name": "font-awesome-css",
             "version": "0.0.0",
             "type": "css",
             "locations": {

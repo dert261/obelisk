@@ -1,0 +1,14 @@
+{
+    "bundle" : "servers-all",
+    "dependencies" : [ "bootstrap-table-master" ],
+    "assets": [
+        {
+            "name": "servers-all",
+            "version": "1.0.0",
+            "type": "js",
+            "locations": {
+                "classpath": "static/assets/views/servers/js/servers.js"
+            }
+        }
+    ]
+}

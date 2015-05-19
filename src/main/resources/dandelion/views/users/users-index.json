@@ -1,0 +1,14 @@
+{
+    "bundle" : "users-index",
+    "dependencies" : [ "jquery", "data-tables" ],
+    "assets": [
+        {
+            "name": "users-index",
+            "version": "1.0.0",
+            "type": "js",
+            "locations": {
+                "classpath": "static/assets/views/users/js/index.js"
+            }
+        }
+    ]
+}

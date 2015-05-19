@@ -7,14 +7,16 @@
             "version": "3.4.8",
             "type": "css",
             "locations": {
+                "classpath": "static/assets/select2/3.4.8/css/select2.css",
                 "webapp": "/static/assets/select2/3.4.8/css/select2.css"
             }
         },
         {
-            "name": "select2",
+            "name": "select2-bootstrap",
             "version": "3.4.8",
             "type": "css",
             "locations": {
+                "classpath": "static/assets/select2/3.4.8/css/select2-bootstrap.css",
                 "webapp": "/static/assets/select2/3.4.8/css/select2-bootstrap.css"
             }
         },
@@ -23,6 +25,7 @@
             "version": "3.4.8",
             "type": "js",
             "locations": {
+                "classpath": "static/assets/select2/3.4.8/js/select2.min.js",
                 "webapp": "/static/assets/select2/3.4.8/js/select2.min.js"
             }
         }

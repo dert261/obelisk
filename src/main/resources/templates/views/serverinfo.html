@@ -2,29 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head th:include="fragment/header :: headerFragment" />
-
-	<style>
-		.popover{max-width:100%}
-	</style>
-
+<div ddl:bundle-includes="servers-info" />
+	
 	<script th:inline="javascript">
 	//<![CDATA[
-	    $(document).ready(function(){
-    		$('[data-toggle="popover"]').popover({
-    			content: function() {
-    				var intName;
-    				$(this).each(function() {
-    					$.each(this.attributes, function() {
-    						if(this.specified) {
-    					    	if(this.name == "data-element")
-    					    		intName = this.value;
-    					    }
-    					});
-    				});
-    				return getIntDetail(intName); 
-    			}
-    		});
-		});
+	   
 	    
 	    function getIntDetail(intName){
 	    	
@@ -44,13 +26,7 @@
 	    			}
 	    		})
 	    	});
-	    	
-	    	
-	    	/*
-	    	private long txCollisions;
-	    	private long rxBytes;
-	    	private long txBytes;*/
-	    	
+	    		    	
 	    	retHtml = " \
 	    	<div class='row'> \
 	    		<table class='table table-bordered'> \
@@ -98,23 +74,7 @@
 	    	return retHtml;
 	    }
 	    
-	    function formatHuman(value){
-			
-			var res=null;
-			
-			if(value<1024){											
-				res = value+" b";									//b
-			}else if(value>1024 && value<1048576){						
-				res = (Math.ceil(value/1024))+" Kb";					//Kb
-			}else if(value>1048576 && value<1073741824){					
-				res = (Math.ceil(value/1024/1024))+" Mb";				//Mb
-			}else if(value>1073741824 && value < 1099511627776){			
-				res = (Math.ceil(value/1024/1024/1024))+" Gb";		//Gb
-			}else if(value > 1099511627776){								
-				res = (Math.ceil(value/1024/1024/1024/1024))+" Tb";	//Tb
-			}
-			return res;
-		}
+	    
 	//]]>  
     </script>
 <body>

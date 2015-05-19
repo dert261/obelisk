@@ -1,0 +1,14 @@
+{
+    "bundle" : "index-home",
+    "dependencies" : [ "jquery-flot" ],
+    "assets": [
+        {
+            "name": "index-home",
+            "version": "1.0.0",
+            "type": "js",
+            "locations": {
+                "classpath": "static/assets/views/index/js/home.js"
+            }
+        }
+    ]
+}

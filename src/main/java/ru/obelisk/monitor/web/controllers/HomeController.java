@@ -1,6 +1,9 @@
 package ru.obelisk.monitor.web.controllers;
 
 import java.io.IOException;
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,9 +12,12 @@ import org.asteriskjava.manager.TimeoutException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.security.access.annotation.Secured;
+
 import ru.obelisk.message.data.HostInfoListImpl;
 
 
@@ -57,4 +63,16 @@ public class HomeController {
 		model.addAttribute("host", host);
 		return "serverinfo";
 	}*/
+	
+	
+	@ExceptionHandler(Exception.class)
+	public ModelAndView handleException(HttpServletRequest req, Exception e) {
+		logger.warn("In handleException");
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("exception", e);
+		mav.addObject("timestamp", new Date());
+		mav.addObject("url", req.getRequestURL());
+		mav.setViewName("exception");
+		return mav;
+	}
 }
