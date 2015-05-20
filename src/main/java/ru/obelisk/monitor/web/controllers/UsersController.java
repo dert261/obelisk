@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
@@ -28,6 +29,12 @@ import ru.obelisk.monitor.database.models.entity.enums.UserRole;
 import ru.obelisk.monitor.database.models.entity.enums.UserStatus;
 import ru.obelisk.monitor.database.models.entity.enums.UserType;
 import ru.obelisk.monitor.database.models.services.UserService;
+import ru.obelisk.monitor.datatables.DataSet;
+import ru.obelisk.monitor.datatables.DatatablesCriterias;
+import ru.obelisk.monitor.datatables.DatatablesResponse;
+import ru.obelisk.monitor.web.utils.conversion.DataTablesRequest;
+import ru.obelisk.monitor.web.utils.conversion.DataTablesRequestFactory;
+import ru.obelisk.monitor.web.utils.conversion.DataTablesResponse;
 
 @Controller
 @RequestMapping("/users")
@@ -98,14 +105,21 @@ public class UsersController {
 	}*/
 	
 	
-	/*@RequestMapping(value = {"/ajax/userdata.json"}, method = RequestMethod.GET)
-	@Secured("ROLE_ADMIN")
-	@ResponseBody
-	public DataTablesResponse<Object> usersDatatables(Model model) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
+	@RequestMapping(value = {"/ajax/userdata.json"}, method = RequestMethod.GET)
+	//@Secured("ROLE_ADMIN")
+	
+	public @ResponseBody DatatablesResponse<User> usersDatatables(Model model, HttpServletRequest httpServletRequest) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting users data for table on index page");
+		
+		//DataTablesRequest req = DataTablesRequestFactory.getInstance(httpServletRequest);
 		List<User> users = userService.getAllUsers();
-		return users;
-	}*/
+		Long totalRecords = new Long(10);
+		Long totalDisplayRecords = new Long(10);
+		//DatatablesResponse<User> responce = 
+		System.out.println(httpServletRequest);
+		//httpServletRequest.getAttribute("")
+		return DatatablesResponse.build(new DataSet<User>(users,totalRecords,totalDisplayRecords), Integer.parseInt(httpServletRequest.getParameter("draw")!=null ?httpServletRequest.getParameter("draw"):"1"));
+	}
 	
 	@RequestMapping(value = {"/create"}, method = RequestMethod.GET)
 	@Secured("ROLE_ADMIN")
@@ -149,7 +163,7 @@ public class UsersController {
         return "/users/form";
 	}
 	
-	@RequestMapping(value = {"/delete/{id}"}, method = RequestMethod.GET)
+	@RequestMapping(value = {"/delete/{id}"}, method = RequestMethod.POST)
 	@Secured("ROLE_ADMIN")
 	public String deleteUser(final ModelMap model, @PathVariable(value = "id") int id) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting delete user");

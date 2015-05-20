@@ -15,35 +15,46 @@ import java.util.List;
  */
 public class DatatablesResponse<T> {
 
-	private final List<T> aaData;
-	private final Long iTotalRecords;
-	private final Long iTotalDisplayRecords;
-	private final Integer sEcho;
+	private final List<T> data;
+	private final Long recordsTotal;
+	private final Long recordsFiltered;
+	private final Integer draw;
 
 	private DatatablesResponse(DataSet<T> dataSet, DatatablesCriterias criterias) {
-		this.aaData = dataSet.getRows();
-		this.iTotalRecords = dataSet.getTotalRecords();
-		this.iTotalDisplayRecords = dataSet.getTotalDisplayRecords();
-		this.sEcho = criterias.getInternalCounter();
+		this.data = dataSet.getRows();
+		this.recordsTotal = dataSet.getTotalRecords();
+		this.recordsFiltered = dataSet.getTotalDisplayRecords();
+		this.draw = criterias.getInternalCounter();
+	}
+	
+	private DatatablesResponse(DataSet<T> dataSet, int draw) {
+		this.data = dataSet.getRows();
+		this.recordsTotal = dataSet.getTotalRecords();
+		this.recordsFiltered = dataSet.getTotalDisplayRecords();
+		this.draw = draw;
 	}
 
-	public List<T> getAaData() {
-		return aaData;
+	public List<T> getdata() {
+		return data;
 	}
 
-	public Long getiTotalRecords() {
-		return iTotalRecords;
+	public Long getrecordsTotal() {
+		return recordsTotal;
 	}
 
-	public Long getiTotalDisplayRecords() {
-		return iTotalDisplayRecords;
+	public Long getrecordsFiltered() {
+		return recordsFiltered;
 	}
 
-	public Integer getsEcho() {
-		return sEcho;
+	public Integer getdraw() {
+		return draw;
 	}
 
 	public static <T> DatatablesResponse<T> build(DataSet<T> dataSet, DatatablesCriterias criterias) {
 		return new DatatablesResponse<T>(dataSet, criterias);
+	}
+	
+	public static <T> DatatablesResponse<T> build(DataSet<T> dataSet, int draw) {
+		return new DatatablesResponse<T>(dataSet, draw);
 	}
 }
