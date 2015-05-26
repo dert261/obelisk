@@ -77,10 +77,10 @@
 	    var myTable = $('#userstable').DataTable({
 	    	//"stateSave": true,
 	    	"processing": true,
-	        "serverSide": false,
+	        "serverSide": true,
 	        "ajax": {
 	        	"method": "GET",
-	        	"url": "/users/ajax/clientside/userdata.json"
+	        	"url": "/users/ajax/serverside/userdata.json"
 	        },
 	    	"columns": [
 	    	            { "data": "id" },
