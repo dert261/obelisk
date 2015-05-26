@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -41,10 +42,14 @@ public class User {
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private UserStatus status=UserStatus.NONACTIVE;
+    @Transient
+    private String statusLocalized=null;
     
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private UserRole role=UserRole.USER;
+    @Transient
+    private String roleLocalized=null;
         
     @Column(name = "name", length = 150)
     private String name=null;
@@ -65,6 +70,8 @@ public class User {
     @Column(name = "local_user")
     @Enumerated(EnumType.STRING)
     private UserType localUserFlag=UserType.LOCAL;
+    @Transient
+    private String localUserFlagLocalized=null;
     
     @Column(name = "fname", length = 100)
     @NotNull
@@ -102,7 +109,7 @@ public class User {
     
     @Column(name = "block_date")
     private Date blockDate=null;
-    
+       
     public User(){
     	
     }
@@ -285,6 +292,30 @@ public class User {
 	
 	public boolean isNew() {
 		return (this.id == null);
+	}
+
+	public String getStatusLocalized() {
+		return statusLocalized;
+	}
+
+	public void setStatusLocalized(String statusLocalized) {
+		this.statusLocalized = statusLocalized;
+	}
+
+	public String getRoleLocalized() {
+		return roleLocalized;
+	}
+
+	public void setRoleLocalized(String roleLocalized) {
+		this.roleLocalized = roleLocalized;
+	}
+
+	public String getLocalUserFlagLocalized() {
+		return localUserFlagLocalized;
+	}
+
+	public void setLocalUserFlagLocalized(String localUserFlagLocalized) {
+		this.localUserFlagLocalized = localUserFlagLocalized;
 	}
     
 }    

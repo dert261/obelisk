@@ -2,12 +2,8 @@ package ru.obelisk.monitor.database.models.services;
 
 import java.util.List;
 
-
-
-
-//import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
-
 import ru.obelisk.monitor.database.models.entity.User;
+import ru.obelisk.monitor.datatables.DatatablesCriterias;
 
 public interface UserService {
 
@@ -27,9 +23,9 @@ public interface UserService {
 	* (maxResult, filtering, paging, ...)
 	* @return a filtered list of persons.
 	*/
-//	List<User> findUserWithDatatablesCriterias(DatatablesCriterias criterias);
+	List<User> findUserWithDatatablesCriterias(DatatablesCriterias criterias);
 	
-	//List<User> findUserWithDatatablesCriterias(ru.obelisk.monitor.datatables.DatatablesCriterias criterias);
+
 	
 	/**
 	* <p>
@@ -40,9 +36,9 @@ public interface UserService {
 	* (maxResult, filtering, paging, ...)
 	* @return the number of filtered persons.
 	*/
-//	Long getFilteredCount(DatatablesCriterias criterias);
+	Long getFilteredCount(DatatablesCriterias criterias);
 	/**
 	* @return the total count of persons.
 	*/
-//	Long getTotalCount();
+	Long getTotalCount();
 }

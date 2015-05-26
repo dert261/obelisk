@@ -1,13 +1,12 @@
 package ru.obelisk.monitor.database.models.service.utils;
-/*
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.github.dandelion.core.utils.StringUtils;
-import com.github.dandelion.datatables.core.ajax.ColumnDef;
-import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
-
+import ru.obelisk.monitor.datatables.ColumnDef;
+import ru.obelisk.monitor.datatables.DatatablesCriterias;
+import ru.obelisk.monitor.datatables.utils.StringUtils;
 
 public class UserServiceUtils {
 	/**
@@ -16,16 +15,16 @@ public class UserServiceUtils {
 	* @param criterias
 	* @return
 	*/
-/*	public static StringBuilder getFilterQuery(DatatablesCriterias criterias){
+	public static StringBuilder getFilterQuery(DatatablesCriterias criterias){
 		StringBuilder queryBuilder = new StringBuilder();
 		List<String> paramList = new ArrayList<String>();
 		/**
 		* Step 1.1: global filtering
 		*/
-/*		if (StringUtils.isNotBlank(criterias.getSearch()) && criterias.hasOneFilterableColumn()) {
+		if (StringUtils.isNotBlank(criterias.getSearch()) && criterias.hasOneFilterableColumn()) {
 			queryBuilder.append(" WHERE ");
 			for (ColumnDef columnDef : criterias.getColumnDefs()) {
-				if (columnDef.isFilterable() && StringUtils.isBlank(columnDef.getSearch())) {
+				if (!columnDef.getName().endsWith("Localized") && columnDef.isFilterable() && StringUtils.isBlank(columnDef.getSearch())) {
 					paramList.add(" LOWER(u." + columnDef.getName()
 							+ ") LIKE '%?%'".replace("?", criterias.getSearch().toLowerCase()));
 				}
@@ -42,7 +41,7 @@ public class UserServiceUtils {
 		/**
 		* Step 1.2: individual column filtering
 		*/
-/*		if (criterias.hasOneFilterableColumn() && criterias.hasOneFilteredColumn()) {
+		if (criterias.hasOneFilterableColumn() && criterias.hasOneFilteredColumn()) {
 			paramList = new ArrayList<String>();
 			if(!queryBuilder.toString().contains("WHERE")){
 				queryBuilder.append(" WHERE ");
@@ -84,4 +83,4 @@ public class UserServiceUtils {
 		}
 		return queryBuilder;
 	}
-}*/
+}
