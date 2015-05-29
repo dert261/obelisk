@@ -16,8 +16,10 @@
 	<link rel="stylesheet" src="/static/assets/data-tables-1.10.6/css/jquery.dataTables.css" th:href="@{/static/assets/data-tables-1.10.6/css/jquery.dataTables.css}" />  
 	<!-- <link rel="stylesheet" src="//cdn.datatables.net/1.10.7/css/jquery.dataTables.css" th:href="@{//cdn.datatables.net/1.10.7/css/jquery.dataTables.css}" /> -->
 	
-	<link rel="stylesheet" src="/static/assets/select2/3.4.8/css/select2.css" th:href="@{/static/assets/select2/3.4.8/css/select2.css}" />
-	<link rel="stylesheet" src="/static/assets/select2/3.4.8/css/select2-bootstrap.css" th:href="@{/static/assets/select2/3.4.8/css/select2-bootstrap.css}" />
+	<!-- <link rel="stylesheet" src="/static/assets/select2/3.4.8/css/select2.css" th:href="@{/static/assets/select2/3.4.8/css/select2.css}" />  -->
+	<!-- <link rel="stylesheet" src="/static/assets/select2/3.4.8/css/select2-bootstrap.css" th:href="@{/static/assets/select2/3.4.8/css/select2-bootstrap.css}" /> -->
+	<link rel="stylesheet" src="/static/assets/select2/css/select2.css" th:href="@{/static/assets/select2/css/select2.css}" />
+	
 	<link rel="stylesheet" src="/static/assets/metisMenu/metisMenu.min.css" th:href="@{/static/assets/metisMenu/metisMenu.min.css}" />
 	<script src="/static/assets/jquery-1.11.2.min.js" th:href="@{/static/assets/jquery-1.11.2.min.js}" > </script>  
 </head>
@@ -547,36 +549,39 @@
 			
 	</footer>
 <div th:fragment="scripts">	
-  	<script src="/static/assets/data-tables-1.10.6/js/jquery.dataTables.min.js" th:href="@{/static/assets/data-tables-1.10.6/js/jquery.dataTables.min.js}" > </script> 
+  	<script src="/static/assets/data-tables-1.10.6/js/jquery.dataTables.min.js" th:src="@{/static/assets/data-tables-1.10.6/js/jquery.dataTables.min.js}" > </script> 
   	<!-- <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js" th:href="@{//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js}" > </script> -->
   	
-	<script src="/static/assets/metisMenu/metisMenu.min.js" th:href="@{/static/assets/metisMenu/metisMenu.min.js}" > </script>
-	<script src="/static/assets/select2/3.4.8/js/select2.min.js" th:href="@{/static/assets/select2/3.4.8/js/select2.min.js}" > </script>
-	<script src="/static/assets/bootstrap/js/bootstrap.min.js" th:href="@{/static/assets/bootstrap/js/bootstrap.min.js}" > </script> 
-	<script src="/static/assets/bootstrap-table-master/dist/bootstrap-table.min.js" th:href="@{/static/assets/bootstrap-table-master/dist/bootstrap-table.min.js}" > </script> 
-	<script src="/static/assets/bootstrap-table-master/dist/locale/bootstrap-table-ru-RU.min.js" th:href="@{/static/assets/bootstrap-table-master/dist/locale/bootstrap-table-ru-RU.min.js}" ></script>
-	<script src="/static/assets/bootstrap-table-master/dist/extensions/export/bootstrap-table-export.min.js" th:href="@{/static/assets/bootstrap-table-master/dist/extensions/export/bootstrap-table-export.min.js}"></script>
-	<script src="/static/assets/bootstrap-table-master/dist/extensions/filter/bootstrap-table-filter.min.js" th:href="@{/static/assets/bootstrap-table-master/dist/extensions/filter/bootstrap-table-filter.min.js}"></script>
+	<script src="/static/assets/metisMenu/metisMenu.min.js" th:src="@{/static/assets/metisMenu/metisMenu.min.js}" > </script>
+	<!-- <script src="/static/assets/select2/3.4.8/js/select2.min.js" th:href="@{/static/assets/select2/3.4.8/js/select2.min.js}" > </script>  -->
 	
-	<script src="/static/assets/tableExport.jquery.plugin-master/jquery.base64.js" th:href="@{/static/assets/tableExport.jquery.plugin-master/jquery.base64.js}" > </script>
-	<script src="/static/assets/tableExport.jquery.plugin-master/tableExport.js" th:href="@{/static/assets/tableExport.jquery.plugin-master/tableExport.js}" > </script>
-	<script src="/static/assets/bootstrap-table-filter-master/src/bootstrap-table-filter.js" th:href="@{/static/assets/bootstrap-table-filter-master/src/bootstrap-table-filter.js}" ></script>
-	<script src="/static/assets/my/my.js" th:href="@{/static/assets/my/my.js}" > </script>
-	<script src="/static/assets/startbootstrap/bower_components/metisMenu/dist/metisMenu.min.js" th:href="@{/static/assets/startbootstrap/bower_components/metisMenu/dist/metisMenu.min.js}" > </script>
-	<script src="/static/assets/startbootstrap/bower_components/raphael/raphael-min.js" th:href="@{/static/assets/startbootstrap/bower_components/raphael/raphael-min.js}" > </script>
-	<script src="/static/assets/startbootstrap/dist/js/sb-admin-2.js" th:href="@{/static/assets/startbootstrap/dist/js/sb-admin-2.js}" > </script>
-	<script src="/static/assets/moment-with-locales.js" th:href="@{/static/assets/moment-with-locales.js}" > </script>
+	<script src="/static/assets/select2/js/select2.min.js" th:src="@{/static/assets/select2/js/select2.min.js}" > </script>
+	<script th:src="@{/static/assets/select2/js/i18n/__${#locale.language}__.js}" > </script>
+	<script src="/static/assets/bootstrap/js/bootstrap.min.js" th:src="@{/static/assets/bootstrap/js/bootstrap.min.js}" > </script> 
+	<script src="/static/assets/bootstrap-table-master/dist/bootstrap-table.min.js" th:src="@{/static/assets/bootstrap-table-master/dist/bootstrap-table.min.js}" > </script> 
+	<script src="/static/assets/bootstrap-table-master/dist/locale/bootstrap-table-ru-RU.min.js" th:src="@{/static/assets/bootstrap-table-master/dist/locale/bootstrap-table-ru-RU.min.js}" ></script>
+	<script src="/static/assets/bootstrap-table-master/dist/extensions/export/bootstrap-table-export.min.js" th:src="@{/static/assets/bootstrap-table-master/dist/extensions/export/bootstrap-table-export.min.js}"></script>
+	<script src="/static/assets/bootstrap-table-master/dist/extensions/filter/bootstrap-table-filter.min.js" th:src="@{/static/assets/bootstrap-table-master/dist/extensions/filter/bootstrap-table-filter.min.js}"></script>
+	
+	<script src="/static/assets/tableExport.jquery.plugin-master/jquery.base64.js" th:src="@{/static/assets/tableExport.jquery.plugin-master/jquery.base64.js}" > </script>
+	<script src="/static/assets/tableExport.jquery.plugin-master/tableExport.js" th:src="@{/static/assets/tableExport.jquery.plugin-master/tableExport.js}" > </script>
+	<script src="/static/assets/bootstrap-table-filter-master/src/bootstrap-table-filter.js" th:src="@{/static/assets/bootstrap-table-filter-master/src/bootstrap-table-filter.js}" ></script>
+	<script src="/static/assets/my/my.js" th:src="@{/static/assets/my/my.js}" > </script>
+	<script src="/static/assets/startbootstrap/bower_components/metisMenu/dist/metisMenu.min.js" th:src="@{/static/assets/startbootstrap/bower_components/metisMenu/dist/metisMenu.min.js}" > </script>
+	<script src="/static/assets/startbootstrap/bower_components/raphael/raphael-min.js" th:src="@{/static/assets/startbootstrap/bower_components/raphael/raphael-min.js}" > </script>
+	<script src="/static/assets/startbootstrap/dist/js/sb-admin-2.js" th:src="@{/static/assets/startbootstrap/dist/js/sb-admin-2.js}" > </script>
+	<script src="/static/assets/moment-with-locales.js" th:src="@{/static/assets/moment-with-locales.js}" > </script>
 	
 	
 </div>	
 
 <div th:fragment="scriptsError">	
-	<script src="/static/assets/metisMenu/metisMenu.min.js" th:href="@{/static/assets/metisMenu/metisMenu.min.js}" > </script>
-	<script src="/static/assets/bootstrap/js/bootstrap.min.js" th:href="@{/static/assets/bootstrap/js/bootstrap.min.js}" > </script> 
-	<script src="/static/assets/startbootstrap/bower_components/metisMenu/dist/metisMenu.min.js" th:href="@{/static/assets/startbootstrap/bower_components/metisMenu/dist/metisMenu.min.js}" > </script>
-	<script src="/static/assets/startbootstrap/bower_components/raphael/raphael-min.js" th:href="@{/static/assets/startbootstrap/bower_components/raphael/raphael-min.js}" > </script>
-	<script src="/static/assets/startbootstrap/dist/js/sb-admin-2.js" th:href="@{/static/assets/startbootstrap/dist/js/sb-admin-2.js}" > </script>
-	<script src="/static/assets/moment-with-locales.js" th:href="@{/static/assets/moment-with-locales.js}" > </script>
+	<script src="/static/assets/metisMenu/metisMenu.min.js" th:src="@{/static/assets/metisMenu/metisMenu.min.js}" > </script>
+	<script src="/static/assets/bootstrap/js/bootstrap.min.js" th:src="@{/static/assets/bootstrap/js/bootstrap.min.js}" > </script> 
+	<script src="/static/assets/startbootstrap/bower_components/metisMenu/dist/metisMenu.min.js" th:src="@{/static/assets/startbootstrap/bower_components/metisMenu/dist/metisMenu.min.js}" > </script>
+	<script src="/static/assets/startbootstrap/bower_components/raphael/raphael-min.js" th:src="@{/static/assets/startbootstrap/bower_components/raphael/raphael-min.js}" > </script>
+	<script src="/static/assets/startbootstrap/dist/js/sb-admin-2.js" th:src="@{/static/assets/startbootstrap/dist/js/sb-admin-2.js}" > </script>
+	<script src="/static/assets/moment-with-locales.js" th:src="@{/static/assets/moment-with-locales.js}" > </script>
 </div>	
 	
 </body>

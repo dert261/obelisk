@@ -64,7 +64,7 @@ public class DatatablesResponse<T> {
 		this.recordsFiltered = new Long(0);
 		this.draw = 0;
 	}
-
+	
 	public List<T> getData() {
 		return data;
 	}

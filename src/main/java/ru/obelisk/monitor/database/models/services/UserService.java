@@ -4,6 +4,7 @@ import java.util.List;
 
 import ru.obelisk.monitor.database.models.entity.User;
 import ru.obelisk.monitor.datatables.DatatablesCriterias;
+import ru.obelisk.monitor.select2.Select2Result;
 
 public interface UserService {
 
@@ -13,6 +14,7 @@ public interface UserService {
     User getUserById(int id);
     User editUser(User user);
     List<User> getAllUsers();
+    List<Select2Result> findUserByTerm(String term);
     
     /**
 	* <p>

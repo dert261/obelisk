@@ -9,6 +9,7 @@ import ru.obelisk.monitor.database.models.service.utils.UserServiceUtils;
 import ru.obelisk.monitor.database.models.services.UserService;
 import ru.obelisk.monitor.datatables.ColumnDef;
 import ru.obelisk.monitor.datatables.DatatablesCriterias;
+import ru.obelisk.monitor.select2.Select2Result;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -83,6 +84,18 @@ public class UserServiceImpl implements UserService {
 		return userRepository.findOne(id);
 	}
 	
+	public List<Select2Result> findUserByTerm(String term) {
+		
+		List<Select2Result> reultList = entityManager.createQuery(
+                "SELECT NEW ru.obelisk.monitor.select2.Select2Result(u.id, CONCAT(u.name,' (',u.login,')')) FROM User u" 
+                		+ " WHERE "
+                        + " u.name LIKE :term"
+                        + " OR u.login LIKE :term", Select2Result.class)
+        .setParameter("term", "%" + term.toLowerCase() + "%")
+        .getResultList();
+        return reultList;
+	}
+	
 	/**
 	* <p>
 	* Query used to populate the DataTables that display the list of persons.
@@ -99,6 +112,8 @@ public class UserServiceImpl implements UserService {
 		* Step 1: global and individual column filtering
 		*/
 		queryBuilder.append(UserServiceUtils.getFilterQuery(criterias));
+		
+		System.out.print(queryBuilder);
 		
 		/**
 		* Step 2: sorting
@@ -134,7 +149,16 @@ public class UserServiceImpl implements UserService {
 		query.setFirstResult(criterias.getStart());
 		if(criterias.getLength()>0)
 			query.setMaxResults(criterias.getLength());
-		return query.getResultList();
+				
+		return idGenerate(query.getResultList(),criterias.getStart());
+	}
+	
+	private List<User> idGenerate(List<User> users, int start){
+		
+		for(int i=0;i<users.size();i++){
+			users.get(i).setNumberLocalized(start+i+1);
+		}
+		return users;
 	}
 	/**
 	* <p>

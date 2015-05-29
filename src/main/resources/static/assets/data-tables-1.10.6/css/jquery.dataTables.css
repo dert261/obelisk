@@ -305,6 +305,7 @@ table.dataTable td {
  * Control feature layout
  */
 .dataTables_wrapper {
+  padding-top: 20px;
   position: relative;
   clear: both;
   *zoom: 1;

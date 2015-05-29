@@ -19,11 +19,11 @@
 				maxlength="50" 
 				placeholder="field" 
 				th:attr="placeholder=#{${i18nName}+'.'+${fieldName}}"/>
-		<div th:if="${#fields.hasErrors(fieldName)}" class="help-block error">
+		 <div th:if="${#fields.hasErrors(fieldName)}" class="help-block error">
 			<ul>
 				<li th:each="err : ${#fields.errors(fieldName)}" th:text="#{${err}}" />
 			</ul>
-		</div>
+		</div> 
 	</div>
 </div>
 

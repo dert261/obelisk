@@ -33,9 +33,13 @@ package ru.obelisk.monitor.datatables;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -71,6 +75,7 @@ public class DatatablesCriterias implements Serializable {
 	private final List<ColumnDef> columnDefs;
 	private final List<ColumnDef> sortingColumnDefs;
 	private final Integer draw;
+	
 
 	private DatatablesCriterias(String search, Integer displayStart, Integer displaySize, List<ColumnDef> columnDefs,
 			List<ColumnDef> sortingColumnDefs, Integer draw) {
@@ -105,7 +110,7 @@ public class DatatablesCriterias implements Serializable {
 	public List<ColumnDef> getSortingColumnDefs() {
 		return sortingColumnDefs;
 	}
-
+	
 	/**
 	 * @return true if a column is filterable, false otherwise.
 	 */
@@ -132,6 +137,19 @@ public class DatatablesCriterias implements Serializable {
 	}
 
 	/**
+	 * @return true if a column is being filtered, false otherwise.
+	 */
+	public Boolean hasOneExtraFilteredColumn() {
+		for (ColumnDef columnDef : this.columnDefs) {
+			if (columnDef.isExtraFiltered() && !columnDef.getExtraSearch().isEmpty()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	
+	/**
 	 * @return true if a column is being sorted, false otherwise.
 	 */
 	public Boolean hasOneSortedColumn() {
@@ -147,13 +165,36 @@ public class DatatablesCriterias implements Serializable {
 	 *            The request sent by Datatables containing all parameters.
 	 * @return a wrapper POJO.
 	 */
+	
+	private static Map<String, List<String>> getExtraSearchAssocArray(HttpServletRequest request){
+		Map<String, List<String>> assocArray = new LinkedHashMap<String, List<String>>();
+		
+		for (Entry<String, String[]> entry : request.getParameterMap().entrySet()) {
+		    String name = entry.getKey();
+
+		    if (name.startsWith("extra_search[")) {
+		        String key = name.substring(name.indexOf('[') + 1, name.indexOf(']'));
+		        
+		        List<String> values = Arrays.asList(entry.getValue());
+		        //LOG.info("Key: {}, Values: {}, valuesSize {}",key, values, values.size());
+		        
+		        if(!values.contains("null")){
+		        	
+		        	assocArray.put(key, values);
+		        	//LOG.info("Entry param: {}",entry.getValue());
+		        }	
+		    }
+		}
+		return assocArray;
+	}
+	
 	public static DatatablesCriterias getFromRequest(HttpServletRequest request) {
 
 		Validate.notNull(request, "The HTTP request cannot be null");
-
 		int columnNumber = getColumnNumber(request);
-		LOG.trace("Number of columns: {}", columnNumber);
-
+				
+		Map<String, List<String>> extraSearchArray = getExtraSearchAssocArray(request);
+				
 		String paramSearch = request.getParameter(DTConstants.DT_S_SEARCH);
 		String paramDraw = request.getParameter(DTConstants.DT_I_DRAW);
 		String paramStart = request.getParameter(DTConstants.DT_I_START);
@@ -162,15 +203,22 @@ public class DatatablesCriterias implements Serializable {
 		Integer draw = StringUtils.isNotBlank(paramDraw) ? Integer.parseInt(paramDraw) : -1;
 		Integer start = StringUtils.isNotBlank(paramStart) ? Integer.parseInt(paramStart) : -1;
 		Integer length = StringUtils.isNotBlank(paramLength) ? Integer.parseInt(paramLength) : -1;
-
+		
 		// Column definitions
 		List<ColumnDef> columnDefs = new ArrayList<ColumnDef>();
-
+		
 		for (int i = 0; i < columnNumber; i++) {
 
 			ColumnDef columnDef = new ColumnDef();
 
 			columnDef.setName(request.getParameter("columns[" + i + "][data]"));
+			
+			if(extraSearchArray.containsKey(columnDef.getName()) && !extraSearchArray.get(columnDef.getName()).isEmpty()){
+				LOG.info("Finded extra parameters: {}",extraSearchArray.get(columnDef.getName()));
+				columnDef.setExtraSearch(extraSearchArray.get(columnDef.getName()));
+				columnDef.setExtraFiltered(true);
+			}
+			
 			columnDef.setFilterable(Boolean.parseBoolean(request.getParameter("columns[" + i + "][searchable]")));
 			columnDef.setSortable(Boolean.parseBoolean(request.getParameter("columns[" + i + "][orderable]")));
 			columnDef.setRegex(request.getParameter("columns[" + i + "][search][regex]"));
@@ -219,7 +267,7 @@ public class DatatablesCriterias implements Serializable {
 				sortingColumnDefs.add(sortedColumnDef);
 			}
 		}
-
+		LOG.info("Column Defs: {}", columnDefs);
 		return new DatatablesCriterias(paramSearch, start, length, columnDefs, sortingColumnDefs, draw);
 	}
 

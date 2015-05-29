@@ -30,6 +30,9 @@ public class User {
     @Column(name = "id", length = 11, nullable = false)
     private Integer id;
      
+    @Transient
+    private int numberLocalized;
+    
     @Column(name = "login", length = 50, nullable = false)
     @NotNull
     @NotEmpty
@@ -120,6 +123,14 @@ public class User {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	
+	public int getNumberLocalized() {
+		return numberLocalized;
+	}
+
+	public void setNumberLocalized(int numberLocalized) {
+		this.numberLocalized = numberLocalized;
 	}
 
 	public String getLogin() {

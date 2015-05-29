@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.validation.Valid;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.asteriskjava.manager.AuthenticationFailedException;
@@ -22,9 +23,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.security.access.annotation.Secured;
+
 import ru.obelisk.monitor.annotations.DatatableCriterias;
 import ru.obelisk.monitor.database.models.entity.User;
 import ru.obelisk.monitor.database.models.entity.enums.UserRole;
@@ -34,6 +37,7 @@ import ru.obelisk.monitor.database.models.services.UserService;
 import ru.obelisk.monitor.datatables.DataSet;
 import ru.obelisk.monitor.datatables.DatatablesCriterias;
 import ru.obelisk.monitor.datatables.DatatablesResponse;
+import ru.obelisk.monitor.select2.Select2Result;
 
 @Controller
 @RequestMapping("/users")
@@ -62,10 +66,26 @@ public class UsersController {
 	    return Arrays.asList(UserRole.values());
 	}
 	
+	@ModelAttribute("userAll")
+	public List<User> userAll() {
+		List<User> users = new ArrayList<User>();
+		users.addAll(userService.getAllUsers());		
+		return users;
+	}
+	
+	@RequestMapping(value = {"/search/users"}, method = RequestMethod.GET)
+	@Secured("ROLE_ADMIN")
+	public @ResponseBody List<Select2Result> searchUser(@RequestParam String searchString) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
+		logger.info("Requesting search users with term: {}",searchString);
+		return userService.findUserByTerm(searchString);
+	}
+	
 	@RequestMapping(value = {"/", "/index.html"}, method = RequestMethod.GET)
 	@Secured("ROLE_ADMIN")
 	public String indexPage(Model model) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting users page");
+		User user = new User();
+		model.addAttribute("user", user);
         return "/users/index";
 	}
 	
@@ -91,7 +111,6 @@ public class UsersController {
 		List<User> users = i18nData(userService.getAllUsers(), locale);
 		return DatatablesResponse.clientSideBuild(users);
 	}
-	
 	
 	private List<User> i18nData(List<User> users, Locale locale){
 		List<User> result = new ArrayList<User>();
@@ -125,7 +144,8 @@ public class UsersController {
 		user.setSigninDate(new Date());
 		userService.addUser(user);
 		model.clear();
-        return "redirect:/users/update/"+user.getId();
+        //return "redirect:/users/update/"+user.getId();
+		return "redirect:/users/index.html";
 	}
 	
 	@RequestMapping(value = {"/update/{id}"}, method = RequestMethod.GET)
@@ -150,7 +170,8 @@ public class UsersController {
 		}
 		userService.editUser(formUser);
 		status.setComplete();
-		return "redirect:/users/update/"+formUser.getId();
+		//return "redirect:/users/update/"+formUser.getId();
+		return "redirect:/users/index.html";
 	}
 	
 	@RequestMapping(value = {"/delete"}, method = RequestMethod.DELETE)

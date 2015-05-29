@@ -31,6 +31,7 @@ package ru.obelisk.monitor.datatables;
  */
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -53,6 +54,8 @@ public class ColumnDef implements Serializable {
 	private String searchFrom;
 	private String searchTo;
 	private SortDirection sortDirection;
+	private List<String> extraSearch;
+	private boolean extraFiltered;
 
 	public enum SortDirection {
 		ASC, DESC;
@@ -138,10 +141,34 @@ public class ColumnDef implements Serializable {
 		this.filtered = filtered;
 	}
 
+	public List<String> getExtraSearch() {
+		return extraSearch;
+	}
+
+	public void setExtraSearch(List<String> extraSearch) {
+		this.extraSearch = extraSearch;
+	}
+
+	public boolean isExtraFiltered() {
+		return extraFiltered;
+	}
+
+	public void setExtraFiltered(boolean extraFiltered) {
+		this.extraFiltered = extraFiltered;
+	}
+
 	@Override
 	public String toString() {
-		return "ColumnDef [name=" + name + ", sortable=" + sortable + ", sorted=" + sorted + ", filterable="
-				+ filterable + ", filtered=" + filtered + ", regex=" + regex + ", search=" + search + ", searchFrom="
-				+ searchFrom + ", searchTo=" + searchTo + ", sortDirection=" + sortDirection + "]";
+		return "ColumnDef [name=" + name + ", sortable=" + sortable
+				+ ", sorted=" + sorted + ", filterable=" + filterable
+				+ ", filtered=" + filtered + ", regex=" + regex + ", search="
+				+ search + ", searchFrom=" + searchFrom + ", searchTo="
+				+ searchTo + ", sortDirection=" + sortDirection
+				+ ", extraSearch=" + extraSearch + ", extraFiltered="
+				+ extraFiltered + "]";
 	}
+
+	
+
+	
 }

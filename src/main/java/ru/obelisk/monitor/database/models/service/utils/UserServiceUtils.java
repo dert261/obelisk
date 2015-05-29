@@ -23,6 +23,7 @@ public class UserServiceUtils {
 		*/
 		if (StringUtils.isNotBlank(criterias.getSearch()) && criterias.hasOneFilterableColumn()) {
 			queryBuilder.append(" WHERE ");
+			queryBuilder.append(" ( ");
 			for (ColumnDef columnDef : criterias.getColumnDefs()) {
 				if (!columnDef.getName().endsWith("Localized") && columnDef.isFilterable() && StringUtils.isBlank(columnDef.getSearch())) {
 					paramList.add(" LOWER(u." + columnDef.getName()
@@ -36,6 +37,7 @@ public class UserServiceUtils {
 					queryBuilder.append(" OR ");
 				}
 			}
+			queryBuilder.append(" ) ");
 		}
 		
 		/**
@@ -70,6 +72,48 @@ public class UserServiceUtils {
 					if(StringUtils.isNotBlank(columnDef.getSearch())) {
 						paramList.add(" LOWER(u." + columnDef.getName()
 								+ ") LIKE '%?%'".replace("?", columnDef.getSearch().toLowerCase()));
+					}
+				}
+			}
+			Iterator<String> itr = paramList.iterator();
+			while (itr.hasNext()) {
+				queryBuilder.append(itr.next());
+				if (itr.hasNext()) {
+					queryBuilder.append(" AND ");
+				}
+			}
+		}
+		
+		
+		/**
+		* Step 1.3: Extra search individual column filtering
+		*/
+		if (criterias.hasOneFilterableColumn() && criterias.hasOneExtraFilteredColumn()) {
+			paramList = new ArrayList<String>();
+			if(!queryBuilder.toString().contains("WHERE")){
+				queryBuilder.append(" WHERE ");
+			}
+			else{
+				queryBuilder.append(" AND ");
+			}
+			for (ColumnDef columnDef : criterias.getColumnDefs()) {
+				if (columnDef.isExtraFiltered()){
+					
+					if (!columnDef.getExtraSearch().isEmpty()) {
+						
+						if (columnDef.getName().equalsIgnoreCase("id")) {
+							StringBuilder params = new StringBuilder();
+							params.append("u." + columnDef.getName() + " in (");
+														
+							Iterator<String> extraIterator =  columnDef.getExtraSearch().iterator();
+							while(extraIterator.hasNext()){
+								params.append("'"+extraIterator.next()+"'");
+								if(extraIterator.hasNext())
+									params.append(",");
+							}
+							params.append(")");
+							paramList.add(params.toString());
+						}
 					}
 				}
 			}
