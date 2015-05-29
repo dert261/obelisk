@@ -1,4 +1,4 @@
-package ru.obelisk.monitor.datatables;
+package ru.obelisk.monitor.web.ui.datatables;
 
 /*
  * [The "BSD licence"]

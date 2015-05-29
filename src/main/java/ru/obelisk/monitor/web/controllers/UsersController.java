@@ -34,10 +34,10 @@ import ru.obelisk.monitor.database.models.entity.enums.UserRole;
 import ru.obelisk.monitor.database.models.entity.enums.UserStatus;
 import ru.obelisk.monitor.database.models.entity.enums.UserType;
 import ru.obelisk.monitor.database.models.services.UserService;
-import ru.obelisk.monitor.datatables.DataSet;
-import ru.obelisk.monitor.datatables.DatatablesCriterias;
-import ru.obelisk.monitor.datatables.DatatablesResponse;
-import ru.obelisk.monitor.select2.Select2Result;
+import ru.obelisk.monitor.web.ui.datatables.DataSet;
+import ru.obelisk.monitor.web.ui.datatables.DatatablesCriterias;
+import ru.obelisk.monitor.web.ui.datatables.DatatablesResponse;
+import ru.obelisk.monitor.web.ui.select2.Select2Result;
 
 @Controller
 @RequestMapping("/users")

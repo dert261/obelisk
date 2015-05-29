@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import ru.obelisk.monitor.datatables.ColumnDef;
-import ru.obelisk.monitor.datatables.DatatablesCriterias;
-import ru.obelisk.monitor.datatables.utils.StringUtils;
+import ru.obelisk.monitor.web.ui.datatables.ColumnDef;
+import ru.obelisk.monitor.web.ui.datatables.DatatablesCriterias;
+import ru.obelisk.monitor.web.ui.datatables.utils.StringUtils;
 
 public class UserServiceUtils {
 	/**

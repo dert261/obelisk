@@ -7,9 +7,9 @@ import ru.obelisk.monitor.database.models.entity.User;
 import ru.obelisk.monitor.database.models.repository.UserRepository;
 import ru.obelisk.monitor.database.models.service.utils.UserServiceUtils;
 import ru.obelisk.monitor.database.models.services.UserService;
-import ru.obelisk.monitor.datatables.ColumnDef;
-import ru.obelisk.monitor.datatables.DatatablesCriterias;
-import ru.obelisk.monitor.select2.Select2Result;
+import ru.obelisk.monitor.web.ui.datatables.ColumnDef;
+import ru.obelisk.monitor.web.ui.datatables.DatatablesCriterias;
+import ru.obelisk.monitor.web.ui.select2.Select2Result;
 
 import java.util.ArrayList;
 import java.util.Iterator;

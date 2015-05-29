@@ -10,7 +10,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import ru.obelisk.monitor.annotations.DatatableCriterias;
-import ru.obelisk.monitor.datatables.DatatablesCriterias;
+import ru.obelisk.monitor.web.ui.datatables.DatatablesCriterias;
 
 @Component
 public class DatatableCriteriasHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {

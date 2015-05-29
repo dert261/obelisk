@@ -1,4 +1,4 @@
-package ru.obelisk.monitor.datatables;
+package ru.obelisk.monitor.web.ui.datatables;
 
 
 /*
@@ -48,9 +48,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ru.obelisk.monitor.datatables.ColumnDef.SortDirection;
-import ru.obelisk.monitor.datatables.utils.StringUtils;
-import ru.obelisk.monitor.datatables.utils.Validate;
+import ru.obelisk.monitor.web.ui.datatables.ColumnDef.SortDirection;
+import ru.obelisk.monitor.web.ui.datatables.utils.StringUtils;
+import ru.obelisk.monitor.web.ui.datatables.utils.Validate;
 
 /**
  * <p>

@@ -3,8 +3,8 @@ package ru.obelisk.monitor.database.models.services;
 import java.util.List;
 
 import ru.obelisk.monitor.database.models.entity.User;
-import ru.obelisk.monitor.datatables.DatatablesCriterias;
-import ru.obelisk.monitor.select2.Select2Result;
+import ru.obelisk.monitor.web.ui.datatables.DatatablesCriterias;
+import ru.obelisk.monitor.web.ui.select2.Select2Result;
 
 public interface UserService {
 

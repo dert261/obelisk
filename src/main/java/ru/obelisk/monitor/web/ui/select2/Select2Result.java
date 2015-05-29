@@ -1,4 +1,4 @@
-package ru.obelisk.monitor.select2;
+package ru.obelisk.monitor.web.ui.select2;
 
 public class Select2Result {
 	private int id;

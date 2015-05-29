@@ -1,4 +1,4 @@
-package ru.obelisk.monitor.datatables.utils;
+package ru.obelisk.monitor.web.ui.datatables.utils;
 /*
  * [The "BSD licence"]
  * Copyright (c) 2013-2015 Dandelion
