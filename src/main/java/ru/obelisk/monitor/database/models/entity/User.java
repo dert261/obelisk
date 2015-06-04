@@ -38,7 +38,7 @@ public class User {
     @NotEmpty
     private String login=null;
     
-    @Column(name = "pass", length = 50)
+    @Column(name = "pass", length = 60)
     @NotEmpty
     private String pass=null;
     

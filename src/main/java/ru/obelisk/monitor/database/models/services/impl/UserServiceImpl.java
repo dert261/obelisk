@@ -7,6 +7,7 @@ import ru.obelisk.monitor.database.models.entity.User;
 import ru.obelisk.monitor.database.models.repository.UserRepository;
 import ru.obelisk.monitor.database.models.service.utils.UserServiceUtils;
 import ru.obelisk.monitor.database.models.services.UserService;
+import ru.obelisk.monitor.web.security.PasswordCrypto;
 import ru.obelisk.monitor.web.ui.datatables.ColumnDef;
 import ru.obelisk.monitor.web.ui.datatables.DatatablesCriterias;
 import ru.obelisk.monitor.web.ui.select2.Select2Result;
@@ -32,6 +33,7 @@ public class UserServiceImpl implements UserService {
  
     @Override
     public User addUser(User user) {
+    	user.setPass(PasswordCrypto.getInstance().encrypt(user.getPass()));
         User savedUser = userRepository.saveAndFlush(user);
         return savedUser;
     }
@@ -62,9 +64,13 @@ public class UserServiceImpl implements UserService {
 		user.setIpAddress(formUser.getIpAddress());
 		user.setLocalUserFlag(formUser.getLocalUserFlag());
 		user.setLogin(formUser.getLogin());
-		
 		user.setMobile(formUser.getMobile());
-		user.setPass(formUser.getPass());
+				
+		String oldPass = user.getPass();
+		String newPass = formUser.getPass(); 
+		if(!oldPass.equals(newPass))
+			user.setPass(PasswordCrypto.getInstance().encrypt(formUser.getPass()));
+		
 		user.setRole(formUser.getRole());
 		user.setStatus(formUser.getStatus());
 		user.setStreetAddress(formUser.getStreetAddress());
