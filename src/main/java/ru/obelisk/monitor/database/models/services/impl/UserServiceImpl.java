@@ -1,6 +1,7 @@
 package ru.obelisk.monitor.database.models.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import ru.obelisk.monitor.database.models.entity.User;
@@ -29,6 +30,9 @@ public class UserServiceImpl implements UserService {
     
     @PersistenceContext
     private EntityManager entityManager;
+    
+    @Autowired
+	private PasswordEncoder passwordEncoder;
     
  
     @Override
@@ -69,7 +73,9 @@ public class UserServiceImpl implements UserService {
 		String oldPass = user.getPass();
 		String newPass = formUser.getPass(); 
 		if(!oldPass.equals(newPass))
-			user.setPass(PasswordCrypto.getInstance().encrypt(formUser.getPass()));
+			
+			user.setPass(passwordEncoder.encode(formUser.getPass()));
+			//user.setPass(PasswordCrypto.getInstance().encrypt(formUser.getPass()));
 		
 		user.setRole(formUser.getRole());
 		user.setStatus(formUser.getStatus());

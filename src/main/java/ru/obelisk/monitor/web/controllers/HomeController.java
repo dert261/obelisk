@@ -28,14 +28,14 @@ public class HomeController {
 	private static Logger logger = LogManager.getLogger(HomeController.class);
 	
 	@RequestMapping(value = {"/", "/home.html", "/index.html"}, method = RequestMethod.GET)
-	//@Secured("ROLE_ADMIN")
+	@Secured("ROLE_ADMIN")
 	public String homePage(Model model) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting channels page");
 		return "home";
 	}
 	
 	@RequestMapping(value = {"/channels.html"}, method = RequestMethod.GET)
-	//@Secured("ROLE_ADMIN")
+	@Secured("ROLE_ADMIN")
 	public String channelsPage(Model model) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting channels page");
 		return "channels";

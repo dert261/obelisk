@@ -12,6 +12,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -48,6 +50,14 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	      // equivalent to <mvc:argument-resolvers>
 	  }
 
+	  @Bean //(name="passwordEncoder")
+	  public PasswordEncoder passwordEncoder () {
+		  //if(encoder == null) {
+		  //}
+		  PasswordEncoder encoder = new BCryptPasswordEncoder();
+	      return encoder;
+	  }
+	  
 	 	  	 
 	  /*@Bean
 	  public EmbeddedServletContainerCustomizer containerCustomizer(){
