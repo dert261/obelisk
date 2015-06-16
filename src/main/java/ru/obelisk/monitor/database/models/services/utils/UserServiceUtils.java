@@ -1,4 +1,4 @@
-package ru.obelisk.monitor.database.models.service.utils;
+package ru.obelisk.monitor.database.models.services.utils;
 
 import java.util.ArrayList;
 import java.util.Iterator;

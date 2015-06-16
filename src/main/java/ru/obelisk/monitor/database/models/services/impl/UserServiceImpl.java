@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 import ru.obelisk.monitor.database.models.entity.User;
 import ru.obelisk.monitor.database.models.repository.UserRepository;
-import ru.obelisk.monitor.database.models.service.utils.UserServiceUtils;
 import ru.obelisk.monitor.database.models.services.UserService;
+import ru.obelisk.monitor.database.models.services.utils.UserServiceUtils;
 import ru.obelisk.monitor.web.security.PasswordCrypto;
 import ru.obelisk.monitor.web.ui.datatables.ColumnDef;
 import ru.obelisk.monitor.web.ui.datatables.DatatablesCriterias;

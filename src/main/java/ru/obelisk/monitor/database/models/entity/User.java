@@ -1,13 +1,16 @@
 package ru.obelisk.monitor.database.models.entity;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -25,8 +28,9 @@ import ru.obelisk.monitor.web.validators.NotEmpty;
 public class User {
  
     @Id
-    @GeneratedValue(generator = "increment")
-    @GenericGenerator(name= "increment", strategy= "increment")
+    //@GeneratedValue(generator = "increment")
+    //@GenericGenerator(name= "increment", strategy= "increment")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", length = 11, nullable = false)
     private Integer id;
      
@@ -47,6 +51,9 @@ public class User {
     private UserStatus status=UserStatus.NONACTIVE;
     @Transient
     private String statusLocalized=null;
+    
+    @OneToMany(mappedBy = "user")
+    private Set<ru.obelisk.monitor.database.models.entity.UserRole> roles;
     
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
@@ -328,6 +335,33 @@ public class User {
 	public void setLocalUserFlagLocalized(String localUserFlagLocalized) {
 		this.localUserFlagLocalized = localUserFlagLocalized;
 	}
-    
+
+	public Set<ru.obelisk.monitor.database.models.entity.UserRole> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(
+			Set<ru.obelisk.monitor.database.models.entity.UserRole> roles) {
+		this.roles = roles;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", numberLocalized=" + numberLocalized
+				+ ", login=" + login + ", pass=" + pass + ", status=" + status
+				+ ", statusLocalized=" + statusLocalized + ", roles=" + roles
+				+ ", role=" + role + ", roleLocalized=" + roleLocalized
+				+ ", name=" + name + ", email=" + email + ", lastLogin="
+				+ lastLogin + ", signinDate=" + signinDate + ", ipAddress="
+				+ ipAddress + ", localUserFlag=" + localUserFlag
+				+ ", localUserFlagLocalized=" + localUserFlagLocalized
+				+ ", fname=" + fname + ", mname=" + mname + ", lname=" + lname
+				+ ", adGuid=" + adGuid + ", mobile=" + mobile + ", company="
+				+ company + ", department=" + department + ", title=" + title
+				+ ", adLocation=" + adLocation + ", streetAddress="
+				+ streetAddress + ", blockDate=" + blockDate + "]";
+	}
+
+	    
 }    
  
