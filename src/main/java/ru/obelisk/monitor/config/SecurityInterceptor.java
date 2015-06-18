@@ -9,6 +9,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +20,8 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 public class SecurityInterceptor extends HandlerInterceptorAdapter
 {
+	@Autowired private LocalPrincipal locPrincipal;
+		
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception
 	{
@@ -40,6 +43,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter
 				WebSecurityExpressionRoot sec = new WebSecurityExpressionRoot(authentication, filterInvocation);
 				sec.setTrustResolver(new AuthenticationTrustResolverImpl());
 				modelAndView.getModel().put("sec", sec);
+				modelAndView.getModel().put("myuser", locPrincipal.getUser(sec.getAuthentication(), request.getSession()));
 			}
 		}
 	}

@@ -39,7 +39,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private User buildUserForAuthentication(ru.obelisk.monitor.database.models.entity.User user,
                                             List<GrantedAuthority> authorities) {
-        return new User(user.getLogin(), user.getPass(), authorities);
+    	User authUser = new User(user.getLogin(), user.getPass(), authorities);
+    	return authUser; 
     }
 
     private List<GrantedAuthority> buildUserAuthority(Set<UserRole> userRoles) {

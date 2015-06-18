@@ -1,9 +1,11 @@
 package ru.obelisk.monitor.web.controllers;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,18 +21,26 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.security.access.annotation.Secured;
 
 import ru.obelisk.message.data.HostInfoListImpl;
+import ru.obelisk.monitor.database.models.entity.User;
+import ru.obelisk.monitor.database.models.services.UserService;
 
 
 @Controller
 public class HomeController {
 	@Autowired private HostInfoListImpl hostInfo;
 	
-	private static Logger logger = LogManager.getLogger(HomeController.class);
+	@Autowired private UserService userService;
 	
+	private static Logger logger = LogManager.getLogger(HomeController.class);
+		
 	@RequestMapping(value = {"/", "/home.html", "/index.html"}, method = RequestMethod.GET)
 	@Secured("ROLE_ADMIN")
-	public String homePage(Model model) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
+	public String homePage(Model model, Principal principal, HttpSession session) 
+			throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting channels page");
+		/*User user = userService.getUserByUsername(principal.getName()); 
+		session.setAttribute("principal_name", user.getFname()+" "+user.getLname());
+		logger.info("Set session principal_name attribute in: {}",user);*/
 		return "home";
 	}
 	

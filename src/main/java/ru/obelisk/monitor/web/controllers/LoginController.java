@@ -6,7 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class LoginController {
 
-	@Autowired
-    HttpServletRequest request;
+	//@Autowired private HttpServletRequest request;
 	
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(ModelMap model) {
         return "login";
     }
@@ -30,7 +29,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public void logout(HttpServletResponse response) throws ServletException, IOException {
+    public void logout(HttpServletResponse response, HttpServletRequest request) throws ServletException, IOException {
         request.getSession().invalidate();
         response.sendRedirect(request.getContextPath());
     }

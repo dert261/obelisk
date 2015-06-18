@@ -195,5 +195,10 @@ public class UserServiceImpl implements UserService {
 		Query query = entityManager.createQuery("SELECT COUNT(u) FROM User u");
 		return (Long) query.getSingleResult();
 	}
+
+	@Override
+	public User getUserByUsername(String username) {
+		return userRepository.findByUsername(username);
+	}
 	
 }

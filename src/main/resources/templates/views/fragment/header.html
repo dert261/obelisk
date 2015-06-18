@@ -38,22 +38,19 @@
 	<script src="/static/assets/jquery-1.11.2.min.js" th:href="@{/static/assets/jquery-1.11.2.min.js}" > </script>  
 </head>
 
-
-
-
 <body>
 <!-- Alternate Navbar -->
 
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation" th:fragment="navbar_alt">
-            <div class="navbar-header">
+        	<div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/index.html">Обелиск</a>
+                <a class="navbar-brand" href="/index.html" th:text="#{header.top.title}">Obelisk</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -253,16 +250,15 @@
                 <!-- </li>  -->
                 <!-- /.dropdown -->
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    <a 	class="dropdown-toggle" 
+                    	data-toggle="dropdown" 
+                    	href="#"
+                    	th:utext="'&lt;i class=\'fa fa-user fa-fw\'&gt;&lt;/i&gt; '+(${myuser} ? ${myuser.fname}+' '+${myuser.lname})+' &lt;i class=\'fa fa-caret-down\'&gt;&lt;/i&gt;'">
+                    		<i class="fa fa-user fa-fw"></i> User <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <!-- <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                        </li>  
-                        <li class="divider"></li> -->
-                        <li><a href="/login.html"><i class="fa fa-sign-out fa-fw"></i> Выход</a>
+                    	<li>
+                        	<a href="/login.html" th:utext="'&lt;i class=\'fa fa-sign-out fa-fw\'&gt;&lt;/i&gt; '+#{header.top.logout}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -277,7 +273,7 @@
                     <ul class="nav" id="side-menu">
                        	
                         <li>
-                            <a href="/index.html"><i class="fa fa-dashboard fa-fw"></i> Общая информация</a>
+                            <a href="/index.html" th:utext="'&lt;i class=\'fa fa-dashboard fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.dashboard}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <!-- <li>
                             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
@@ -292,28 +288,80 @@
                             <!-- /.nav-second-level -->
                         <!-- </li>  -->
                         <li>
-                            <a href="#"><i class="fa fa-table fa-fw"></i>Состояние<span class="fa arrow"></span></a>
+                            <a href="#" th:utext="'&lt;i class=\'fa fa-table fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.state}+' &lt;span class=\'fa arrow\'&gt;&lt;/span&gt;'"><i class="fa fa-table fa-fw"></i>State<span class="fa arrow"></span></a>
 	                            <ul class="nav nav-second-level">
 	                            	<li>
-	                                    <a href="/server/all">Сервера</a>
+	                                    <a href="/server/all" th:utext="'&lt;i class=\'fa fa-cloud  fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.state.servers}">Servers</a>
 	                                </li>
 	                                <li>
-	                                    <a href="/channels.html">Активные каналы</a>
+	                                    <a href="/channels.html" th:utext="'&lt;i class=\'fa fa-exchange  fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.state.activechannels}">Active channels</a>
 	                                </li>
 	                                <li>
-	                                    <a href="/peers.html">Устройства</a>
+	                                    <a href="/peers.html" th:utext="'&lt;i class=\'fa fa-phone  fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.state.devices}">Devices</a>
 	                                </li>
 	                            </ul>
                         </li>
                         
                         <li>
-                            <a href="#"><i class="fa fa-table fa-fw"></i>Параметры<span class="fa arrow"></span></a>
+                            <a href="#" th:utext="'&lt;i class=\'fa fa-cog fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.settings}+' &lt;span class=\'fa arrow\'&gt;&lt;/span&gt;'"><i class="fa fa-table fa-fw"></i>Settings<span class="fa arrow"></span></a>
 	                        <ul class="nav nav-second-level">
 	                        	<li>
-	                        		<a href="/users/index.html">Пользователи</a>
+	                        		<a href="/users/index.html" th:utext="'&lt;i class=\'fa fa-users fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.settings.users}">Users</a>
+	                            </li>
+	                            <li>
+	                        		<a href="#" th:utext="'&lt;i class=\'fa fa-hdd-o  fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.settings.ldap}+' &lt;span class=\'fa arrow\'&gt;&lt;/span&gt;'"><i class="fa fa-table fa-fw"></i>LDAP<span class="fa arrow"></span></a> 
+	                        		<ul class="nav nav-third-level">
+	                        			<li>
+	                        				<a href="/ldap/authentication.html" th:utext="'&lt;i class=\'fa fa-key fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.settings.ldap.authentication}">LDAP Authentication</a>
+	                        			</li>
+	                        		</ul>	
 	                            </li>
 	                        </ul>
                         </li>
+                        
+                        
+                        
+                       <!--  <li>
+                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="#">Second Level Item</a>
+                                </li>
+                                <li>
+                                    <a href="#">Second Level Item</a>
+                                </li>
+                                <li>
+                                    <a href="#">Third Level <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="#">Third Level Item</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Third Level Item</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Third Level Item</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Third Level Item</a>
+                                        </li>
+                                    </ul>
+                                     -->
+                                    <!-- /.nav-third-level -->
+                                <!-- </li>
+                            </ul> -->
+                            <!-- /.nav-second-level -->
+                        <!-- </li> -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
                         <!-- <li>
                             <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Forms</a>
                         </li>
