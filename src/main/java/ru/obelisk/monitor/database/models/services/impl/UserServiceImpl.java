@@ -8,7 +8,6 @@ import ru.obelisk.monitor.database.models.entity.User;
 import ru.obelisk.monitor.database.models.repository.UserRepository;
 import ru.obelisk.monitor.database.models.services.UserService;
 import ru.obelisk.monitor.database.models.services.utils.UserServiceUtils;
-import ru.obelisk.monitor.web.security.PasswordCrypto;
 import ru.obelisk.monitor.web.ui.datatables.ColumnDef;
 import ru.obelisk.monitor.web.ui.datatables.DatatablesCriterias;
 import ru.obelisk.monitor.web.ui.select2.Select2Result;
@@ -21,6 +20,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
  
 @Service
 public class UserServiceImpl implements UserService {
@@ -36,13 +36,16 @@ public class UserServiceImpl implements UserService {
     
  
     @Override
+    @Transactional
     public User addUser(User user) {
-    	user.setPass(PasswordCrypto.getInstance().encrypt(user.getPass()));
+    	user.setPass(passwordEncoder.encode(user.getPass()));
+    	user.setRoles(user.getRoles());
         User savedUser = userRepository.saveAndFlush(user);
         return savedUser;
     }
  
     @Override
+    @Transactional
     public void deleteUser(int id) {
         userRepository.delete(id);
     }
@@ -53,6 +56,7 @@ public class UserServiceImpl implements UserService {
     }
  
     @Override
+    @Transactional
     public User editUser(User formUser) {
     	User user = getUserById(formUser.getId());
 		user.setAdGuid(formUser.getAdGuid());
@@ -71,18 +75,15 @@ public class UserServiceImpl implements UserService {
 		user.setMobile(formUser.getMobile());
 				
 		String oldPass = user.getPass();
-		String newPass = formUser.getPass(); 
+		String newPass = formUser.getPass();
 		if(!oldPass.equals(newPass))
-			
 			user.setPass(passwordEncoder.encode(formUser.getPass()));
-			//user.setPass(PasswordCrypto.getInstance().encrypt(formUser.getPass()));
-		
-		user.setRole(formUser.getRole());
+				
+		user.setRoles(formUser.getRoles());
 		user.setStatus(formUser.getStatus());
 		user.setStreetAddress(formUser.getStreetAddress());
 		user.setTitle(formUser.getTitle());
-		
-		
+				
 		return userRepository.saveAndFlush(user);
     }
  

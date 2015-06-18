@@ -28,7 +28,7 @@
 </div>
 
 <!-- DROPDOWN ENUM (SELECT) FIELD TEMPLATE -->
-<div th:fragment="selectEnumFormField(fieldName, requiredFlag, dataSet, i18nName, activeValue)" th:remove="all">
+<div th:fragment="selectEnumFormField(fieldName, requiredFlag, dataSet, i18nName, activeValue, multipleFlag)" th:remove="all">
 	<div	class="form-group" 
 			th:classappend="${#fields.hasErrors(fieldName)}? 'has-error'">
 		<label 	class="control-label"
@@ -38,9 +38,23 @@
 				th:inline="text">[[#{${i18nName}+'.'+${fieldName}}]] <span th:if="${requiredFlag}" class="required" style="color:red">*</span>
 		</label>
 		
-		<select th:field="*{__${fieldName}__}" 
+		
+		<select th:if="${multipleFlag}"
+				th:field="*{__${fieldName}__}" 
+				class="select2-chosen"
+				multiple="multiple" 
+				placeholder="select value"
+				th:attr="placeholder=#{${i18nName}+'.'+${fieldName}}">
+				<option th:each="data : ${__${dataSet}__}" 
+        				th:value="${data}" 
+          				th:text="#{${data}}">
+          		</option>
+		</select>
+		
+		<select th:unless="${multipleFlag}"
+				th:field="*{__${fieldName}__}" 
 				class="select2-chosen" 
-				placeholder="select field" 
+				placeholder="select value"
 				th:attr="placeholder=#{${i18nName}+'.'+${fieldName}}">
 				<option th:each="data : ${__${dataSet}__}" 
         				th:value="${data}" 
@@ -57,11 +71,108 @@
 	/*<![CDATA[*/
 		jQuery(function($) {
     		jQuery([['#'+${fieldName}]]).select2({'allowClear':true,'width':'100%'}).select2('val', [[${activeValue}]]);
+    	});  
+	/*]]>*/
+	</script>
+</div>
+
+
+<!-- DROPDOWN ENUM (SELECT) FIELD TEMPLATE -->
+<div th:fragment="selectEnumFormField2(fieldName, requiredFlag, dataSet, i18nName, activeValue, optval, opttext, selectedList)" th:remove="all">
+	<div	class="form-group" 
+			th:classappend="${#fields.hasErrors(fieldName)}? 'has-error'">
+		<label 	class="control-label"
+				th:classappend="${requiredFlag} ? 'required'"
+				th:class="${#fields.hasErrors(fieldName)}? 'control-label error' : 'control-label'" 
+				for="fieldName" 
+				th:inline="text">[[#{${i18nName}+'.'+${fieldName}}]] <span th:if="${requiredFlag}" class="required" style="color:red">*</span>
+		</label>
+		
+		<select th:field="*{__${fieldName}__}" 
+				class="select2-chosen" 
+				placeholder="select field" 
+				th:attr="placeholder=#{${i18nName}+'.'+${fieldName}}">
+				<option th:each="data : ${__${dataSet}__}" 
+        				th:value="${data.optval}" 
+          				th:text="#{${data.opttext}}">
+          		</option>
+		</select>
+		<div th:if="${#fields.hasErrors(fieldName)}" class="help-block error">
+			<ul>
+				<li th:each="err : ${#fields.errors(fieldName)}" th:text="#{${err}}" />
+			</ul>
+		</div>
+	</div>
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+		jQuery(function($) {
+			
+			var userRoles=[[${user.roles}]];
+			for(role in userRoles){
+				alert(userRoles[role].roleName);	
+			}           
+			//${__${#arrays.toArray(user.roles)})__}
+			
+			//var sds=[[${#strings.toString(user.roles)}]];
+			//var selectedListd = [[${__${selectedList}__}]];
+			
+			/*for (i = 0; i < theList.length; i++) {
+		        doSomething(theList[i]);
+		    }*/
+		    
+		    //alert(sds);
+    		jQuery([['#'+${fieldName}]]).select2({'allowClear':true,'width':'100%'}).select2('val', [[${activeValue}]]);
     		
     	});  
 	/*]]>*/
 	</script>
 </div>
+
+<!-- DROPDOWN ENUM (SELECT) FIELD TEMPLATE -->
+<div th:fragment="selectEnumFormField3(fieldName, requiredFlag, dataSet, i18nName, activeValue, selectedList)" th:remove="all">
+	<div	class="form-group" 
+			th:classappend="${#fields.hasErrors(fieldName)}? 'has-error'">
+		<label 	class="control-label"
+				th:classappend="${requiredFlag} ? 'required'"
+				th:class="${#fields.hasErrors(fieldName)}? 'control-label error' : 'control-label'" 
+				for="fieldName" 
+				th:inline="text">[[#{${i18nName}+'.'+${fieldName}}]] <span th:if="${requiredFlag}" class="required" style="color:red">*</span>
+		</label>
+		
+		<select th:field="*{__${fieldName}__}" 
+				class="select2-chosen" 
+				multiple="multiple"
+				placeholder="select field" 
+				th:attr="placeholder=#{${i18nName}+'.'+${fieldName}}">
+				<option th:each="data : ${__${dataSet}__}" 
+        				th:value="${data}" 
+          				th:text="#{${data}}">
+          		</option>
+		</select>
+		<div th:if="${#fields.hasErrors(fieldName)}" class="help-block error">
+			<ul>
+				<li th:each="err : ${#fields.errors(fieldName)}" th:text="#{${err}}" />
+			</ul>
+		</div>
+	</div>
+	
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+	    jQuery(function($) {
+			var selectedList = [[${selectedList}]];
+			
+			/*for (i = 0; i < theList.length; i++) {
+		        doSomething(theList[i]);
+		    }*/
+		    
+		    alert(selectedList);
+    		jQuery([['#'+${fieldName}]]).select2({'allowClear':true,'width':'100%'}).select2('val', selectedList);
+    		
+    	});  
+	/*]]>*/
+	</script>
+</div>
+
 </html>
 
 

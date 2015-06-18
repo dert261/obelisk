@@ -1,35 +1,41 @@
 package ru.obelisk.monitor.database.models.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.GenericGenerator;
-
-import ru.obelisk.monitor.database.models.entity.enums.UserRole;
 import ru.obelisk.monitor.database.models.entity.enums.UserStatus;
 import ru.obelisk.monitor.database.models.entity.enums.UserType;
 import ru.obelisk.monitor.web.validators.Email;
 import ru.obelisk.monitor.web.validators.NotEmpty;
+import ru.obelisk.monitor.web.validators.NotNullField;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
  
-    @Id
-    //@GeneratedValue(generator = "increment")
-    //@GenericGenerator(name= "increment", strategy= "increment")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2731242147275363481L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", length = 11, nullable = false)
     private Integer id;
@@ -38,7 +44,7 @@ public class User {
     private int numberLocalized;
     
     @Column(name = "login", length = 50, nullable = false)
-    @NotNull
+    @NotNull 
     @NotEmpty
     private String login=null;
     
@@ -52,15 +58,15 @@ public class User {
     @Transient
     private String statusLocalized=null;
     
-    @OneToMany(mappedBy = "user")
-    private Set<ru.obelisk.monitor.database.models.entity.UserRole> roles;
-    
-    @Column(name = "role")
-    @Enumerated(EnumType.STRING)
-    private UserRole role=UserRole.USER;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+    @JoinTable(name="users2user_roles",
+    joinColumns=@JoinColumn(name="user_id"),
+    inverseJoinColumns=@JoinColumn(name="role_id"))
+    @NotNullField 
+    private Set<UserRole> roles;
     @Transient
     private String roleLocalized=null;
-        
+    
     @Column(name = "name", length = 150)
     private String name=null;
     
@@ -162,14 +168,6 @@ public class User {
 
 	public void setStatus(UserStatus status) {
 		this.status = status;
-	}
-
-	public UserRole getRole() {
-		return role;
-	}
-
-	public void setRole(UserRole role) {
-		this.role = role;
 	}
 
 	public String getName() {
@@ -336,12 +334,11 @@ public class User {
 		this.localUserFlagLocalized = localUserFlagLocalized;
 	}
 
-	public Set<ru.obelisk.monitor.database.models.entity.UserRole> getRoles() {
+	public Set<UserRole> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(
-			Set<ru.obelisk.monitor.database.models.entity.UserRole> roles) {
+	public void setRoles(Set<UserRole> roles) {
 		this.roles = roles;
 	}
 
@@ -350,10 +347,10 @@ public class User {
 		return "User [id=" + id + ", numberLocalized=" + numberLocalized
 				+ ", login=" + login + ", pass=" + pass + ", status=" + status
 				+ ", statusLocalized=" + statusLocalized + ", roles=" + roles
-				+ ", role=" + role + ", roleLocalized=" + roleLocalized
-				+ ", name=" + name + ", email=" + email + ", lastLogin="
-				+ lastLogin + ", signinDate=" + signinDate + ", ipAddress="
-				+ ipAddress + ", localUserFlag=" + localUserFlag
+				+ ", roleLocalized=" + roleLocalized + ", name=" + name
+				+ ", email=" + email + ", lastLogin=" + lastLogin
+				+ ", signinDate=" + signinDate + ", ipAddress=" + ipAddress
+				+ ", localUserFlag=" + localUserFlag
 				+ ", localUserFlagLocalized=" + localUserFlagLocalized
 				+ ", fname=" + fname + ", mname=" + mname + ", lname=" + lname
 				+ ", adGuid=" + adGuid + ", mobile=" + mobile + ", company="
@@ -361,7 +358,5 @@ public class User {
 				+ ", adLocation=" + adLocation + ", streetAddress="
 				+ streetAddress + ", blockDate=" + blockDate + "]";
 	}
-
-	    
 }    
  

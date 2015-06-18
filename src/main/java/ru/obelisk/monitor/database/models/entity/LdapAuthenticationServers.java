@@ -8,9 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.GenericGenerator;
-
 import ru.obelisk.monitor.web.validators.NotEmpty;
 
 @Entity

@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
 import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
@@ -30,9 +29,10 @@ import org.springframework.security.access.annotation.Secured;
 
 import ru.obelisk.monitor.annotations.DatatableCriterias;
 import ru.obelisk.monitor.database.models.entity.User;
-import ru.obelisk.monitor.database.models.entity.enums.UserRole;
+import ru.obelisk.monitor.database.models.entity.UserRole;
 import ru.obelisk.monitor.database.models.entity.enums.UserStatus;
 import ru.obelisk.monitor.database.models.entity.enums.UserType;
+import ru.obelisk.monitor.database.models.services.UserRoleService;
 import ru.obelisk.monitor.database.models.services.UserService;
 import ru.obelisk.monitor.web.ui.datatables.DataSet;
 import ru.obelisk.monitor.web.ui.datatables.DatatablesCriterias;
@@ -49,6 +49,9 @@ public class UsersController {
 	@Autowired
     private UserService userService;
 	
+	@Autowired
+    private UserRoleService userRoleService;
+	
 	private static Logger logger = LogManager.getLogger(UsersController.class);
 	
 	@ModelAttribute("userStatus")
@@ -62,8 +65,9 @@ public class UsersController {
 	}
 	
 	@ModelAttribute("userRole")
-	public List<UserRole> userRole() {
-	    return Arrays.asList(UserRole.values());
+	public List<UserRole> userRoleEnum() {
+		//return Arrays.asList(UserRoleEnum.values());//userRoleService.getAllUserRoles();
+		return userRoleService.getAllUserRoles();
 	}
 	
 	@ModelAttribute("userAll")
@@ -117,7 +121,14 @@ public class UsersController {
 		for(User user : users){
 			user.setStatusLocalized(messageSource.getMessage(user.getStatus().toString(),null, locale));
 			user.setLocalUserFlagLocalized(messageSource.getMessage(user.getLocalUserFlag().toString(),null, locale));
-			user.setRoleLocalized(messageSource.getMessage(user.getRole().toString(),null, locale));
+			
+			StringBuilder roleString = new StringBuilder();
+			List<UserRole> roles = new ArrayList<UserRole>(user.getRoles());
+			for(UserRole role : roles){
+				roleString.append(messageSource.getMessage(role.getRoleName(),null, locale));
+				roleString.append(";<br>");
+			}
+			user.setRoleLocalized(roleString.toString());
 			result.add(user);
 		}
 		return result;
@@ -154,6 +165,15 @@ public class UsersController {
 		logger.info("Requesting update user page");
 		User user = userService.getUserById(id);
 		model.addAttribute("user", user);
+		/*logger.info("Users: {}",user);
+		List<UserRole>roles=user.getRoles();
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String json = mapper.writeValueAsString(roles);
+		
+		model.addAttribute("selRoles", roles);
+		model.addAttribute("json", json);
+		logger.info("UserRoles: {}",roles);*/
         return "/users/update";
 	}
 	

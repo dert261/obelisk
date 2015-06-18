@@ -11,11 +11,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ru.obelisk.monitor.database.models.entity.enums.UserRole;
+import ru.obelisk.monitor.database.models.entity.UserRole;
 import ru.obelisk.monitor.database.models.repository.UserRepository;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,14 +33,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         ru.obelisk.monitor.database.models.entity.User user = userRepository.findByUsername(username);
         
-        List<GrantedAuthority> authorities = buildUserAuthority(new HashSet<UserRole>(Arrays.asList(UserRole.values())));
-        //Set<UserRole> role = new HashSet<UserRole>();
-        //role.add(UserRole.ADMIN);
-        //role.add(UserRole.USER);
-        //List<GrantedAuthority> authorities = buildUserAuthority(role);
-
+        List<GrantedAuthority> authorities = buildUserAuthority(new HashSet<UserRole>(user.getRoles()));
         return buildUserForAuthentication(user, authorities);
-
     }
 
     private User buildUserForAuthentication(ru.obelisk.monitor.database.models.entity.User user,
@@ -55,8 +48,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         // Build user's authorities
         for (UserRole userRole : userRoles) {
-            setAuths.add(new SimpleGrantedAuthority("ROLE_"+userRole.toString()));
-            System.out.println("RETURN ROLE: ROLE_"+userRole.toString());
+            setAuths.add(new SimpleGrantedAuthority("ROLE_"+userRole.getRoleName()));
+            System.out.println("RETURN ROLE: ROLE_"+userRole.getRoleName());
         }
 
         return new ArrayList<GrantedAuthority>(setAuths);

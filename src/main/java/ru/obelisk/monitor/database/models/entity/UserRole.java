@@ -1,19 +1,27 @@
 package ru.obelisk.monitor.database.models.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
 import javax.validation.constraints.NotNull;
+
+//import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import ru.obelisk.monitor.web.validators.NotEmpty;
 
 @Entity
 @Table(name = "user_roles")
-public class UserRole {
+public class UserRole implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7717786064579079292L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", length = 11, nullable = false)
@@ -24,18 +32,16 @@ public class UserRole {
     @NotEmpty
     private String roleName=null;
     
-    @Column(name = "description", length = 200)
-    private String description=null;
-
-    @ManyToOne
-    private User user;
-    
+    //@JsonIgnore
+    //@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    //private User user;
+        
     public UserRole() {
     }
 
     public UserRole(String roleName, User user) {
         this.roleName = roleName;
-        this.user = user;
+        //this.user = user;
     }
 
 	public Integer getId() {
@@ -54,26 +60,17 @@ public class UserRole {
 		this.roleName = roleName;
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public User getUser() {
+	/*public User getUser() {
 		return user;
 	}
 
 	public void setUser(User user) {
 		this.user = user;
-	}
+	}*/
 
 	@Override
 	public String toString() {
-		return "UserRole [id=" + id + ", roleName=" + roleName
-				+ ", description=" + description + ", user=" + user + "]";
+		return "UserRole [id=" + id + ", roleName=" + roleName + "]";
 	}
             
 }
