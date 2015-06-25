@@ -23,19 +23,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired 
 	private PasswordEncoder passwordEncoder;
 
-	/*@Override
+	@Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(customUserDetailsService)
                 .passwordEncoder(passwordEncoder);
-    }*/
+    }
 	
-	@Override
+	/*@Override
 	@Autowired
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
             .inMemoryAuthentication()
                 .withUser("user1").password("user1").roles("ADMIN");
-    }
+    }*/
 
     
 	

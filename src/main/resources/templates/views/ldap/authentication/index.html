@@ -2,31 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head th:include="fragment/header :: headerFragment" />
-<script src="/static/assets/views/ldap/authentication/js/form.js" th:href="@{/static/assets/views/ldap/authentication/js/form.js}"> </script>
-<script type="text/javascript">
-
-//$('#addserver').click(function() {
-	
-	//alert("AddServer");
-function addServer(){	
-	$.ajax({
-		type: 'GET',
-		url: "/ldap/authentication/ajax/addserver?"+$('#ldapAuthParams').serialize(),
-		data: ({
-			
-			//id: jQuery(this).attr('data-delete'),
-			//_method: 'DELETE'
-		}),
-		}).done(function(result) {
-			$("#ldapAuthServersContent").html("");
-			$('#ldapAuthServersContent').html(result);
-	});
-		
-	return false;
-}
-//});
-</script>
-
 <body>
 <div id="wrapper">
 	<!-- Header -->
@@ -48,39 +23,42 @@ function addServer(){
 </div>
 
 <div th:replace="fragment/header :: scripts" > </div>
-<!-- <script src="/static/assets/views/ldap/authentication/js/form.js" th:href="@{/static/assets/views/ldap/authentication/js/form.js}"> </script> -->
+<script src="/static/assets/views/ldap/authentication/js/form.js" th:href="@{/static/assets/views/ldap/authentication/js/form.js}"> </script>
 <script type="text/javascript" th:inline="javascript">
 	var operationStatus=[[${#vars['operationResult']}]];
 	if(operationStatus!=null)
 		alert(operationStatus);
-	
-	
-	
-	$('.remove-server').click(function() { 
-		var deleteIndex=$(this).val();
-		alert(deleteIndex);
-	});
-	
-	/*myTable.on('click','a.delete',function() {
-		if(!confirm([[#{ui.messages.table.delete.confirmation}]])) return false;
+
+	$('.ldapAuthServerPart').on('click', '.add-server', function (){
 		
-		var deletedRow = myTable.row( $(this).parents('tr') );
+		if($('.remove-server').size() > 1){
+			alert([[#{ldapAuthenticationServers.form.addserver.exception}]]);
+			return false;
+		}	
 		
 		$.ajax({
-			type: 'POST',
-			url: jQuery(this).attr('href'),
-			data: ({
-				id: jQuery(this).attr('data-delete'),
-				_method: 'DELETE'
-			}),
-			}).done(function() {
-				deletedRow
-			        .remove()
-			        .draw(false);
+			type: 'GET',
+			url: "/ldap/authentication/ajax/addserver?"+$('#ldapAuthParams').serialize(),
+		}).done(function(result) {
+			$('#ldapAuthServersContent').html(result);
 		});
-			
+				
 		return false;
-    })*/
+	});
+	
+	$('.ldapAuthServerPart').on('click', '.remove-server', function (){
+		$.ajax({
+			type: 'GET',
+			url: "/ldap/authentication/ajax/delserver?"+$('#ldapAuthParams').serialize(),
+			data: ({
+				index: $(this).val(),
+			}),
+		}).done(function(result) {
+			$('#ldapAuthServersContent').html(result);
+		});
+				
+		return false;
+	});
 </script>
 
 </body>

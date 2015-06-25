@@ -47,7 +47,7 @@
 										<tr th:each="row,rowStat : *{ldapServers}">
 		      								<!--  <td th:text="${rowStat.count}">1</td>-->
 		      								<td>
-		        								<button class="btn btn-default remove-server" type="button" name="removeServer" th:value="${rowStat.index}" th:text="#{ldapAuthenticationServers.form.button.delserver}" >Remove row</button>
+		        								<button th:if="${rowStat.index}!=0" class="btn btn-default remove-server" type="button" name="removeServer" th:value="${rowStat.index}" th:text="#{ldapAuthenticationServers.form.button.delserver}" >Remove row</button>
 		      								</td>
 		      								<td>
 		        								<div th:include="fragment/fielddefinition :: textFormFieldWithoutLabel('ldapServers[__${rowStat.index}__].host', 'host', text, 'ldapAuthenticationServers.field')">Host</div>
