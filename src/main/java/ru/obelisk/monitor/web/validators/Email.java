@@ -5,7 +5,6 @@ import javax.validation.Payload;
 
 import java.lang.annotation.*;
 
-
 @Documented
 @Constraint(validatedBy = EmailConstraintValidator.class)
 @Target( { ElementType.METHOD, ElementType.FIELD })

@@ -7,31 +7,35 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+
 import ru.obelisk.monitor.web.validators.NotEmpty;
 
 @Entity
 @Table(name = "ldap_authentication_servers")
 public class LdapAuthenticationServers {
+	
+	public interface LdapAuthServersValid{}
+	
 	@Id
-    //@GeneratedValue(generator = "increment")
-    //@GenericGenerator(name= "increment", strategy= "increment")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", length = 11, nullable = false)
     private Integer id;
      
     @Column(name = "host", length = 200, nullable = false)
     @NotNull
     @NotEmpty
-    private String host=null;
+    private String host = null;
     
     @Column(name = "port", length = 5, nullable = false)
-    @NotNull
-    @NotEmpty
-    private int port;
+    @Min(value = 0, message = "field.validation.error.min")
+    @Max(value = 65535, message = "field.validation.error.max")
+    private String port;
     
     @Column(name = "use_ssl")
-    private boolean useSSL=false;
+    private boolean useSSL = false;
     
     @ManyToOne
     private LdapAuthenticationParameters ldapAuthParams;
@@ -39,6 +43,12 @@ public class LdapAuthenticationServers {
     public LdapAuthenticationServers (){
     	
     }
+    
+    /*public LdapAuthenticationServers (String host, int port, boolean useSSL){
+    	this.host = host;
+    	this.port = port;
+    	this.useSSL = useSSL;
+    }*/
 
 	public Integer getId() {
 		return id;
@@ -56,11 +66,11 @@ public class LdapAuthenticationServers {
 		this.host = host;
 	}
 
-	public int getPort() {
+	public String getPort() {
 		return port;
 	}
 
-	public void setPort(int port) {
+	public void setPort(String port) {
 		this.port = port;
 	}
 
@@ -72,18 +82,9 @@ public class LdapAuthenticationServers {
 		this.useSSL = useSSL;
 	}
 
-	public LdapAuthenticationParameters getLdapAuthParams() {
-		return ldapAuthParams;
-	}
-
-	public void setLdapAuthParams(LdapAuthenticationParameters ldapAuthParams) {
-		this.ldapAuthParams = ldapAuthParams;
-	}
-
 	@Override
 	public String toString() {
 		return "LdapAuthenticationServers [id=" + id + ", host=" + host
-				+ ", port=" + port + ", useSSL=" + useSSL + ", ldapAuthParams="
-				+ ldapAuthParams + "]";
+				+ ", port=" + port + ", useSSL=" + useSSL + "]";
 	}
 }

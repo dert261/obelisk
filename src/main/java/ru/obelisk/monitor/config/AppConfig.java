@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -58,8 +59,12 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	      return encoder;
 	  }
 	  
-	 	  	 
-	  /*@Bean
+	  @Bean
+	  public javax.validation.Validator localValidatorFactoryBean() {
+	     return new LocalValidatorFactoryBean();
+	  }
+	  
+	 /*@Bean
 	  public EmbeddedServletContainerCustomizer containerCustomizer(){
 	      return new MyCustomizer();
 	  }*/

@@ -8,7 +8,7 @@
 		<label 	class="control-label"
 				th:classappend="${requiredFlag} ? 'required'"
 				th:class="${#fields.hasErrors(fieldName)}? 'control-label error' : 'control-label'" 
-				for="fieldName" 
+				th:for="${fieldName}" 
 				th:inline="text">[[#{${i18nName}+'.'+${fieldName}}]] <span th:if="${requiredFlag}" class="required" style="color:red">*</span>
 		</label>
 		<input 	class="form-control" 
@@ -24,6 +24,52 @@
 				<li th:each="err : ${#fields.errors(fieldName)}" th:text="#{${err}}" />
 			</ul>
 		</div> 
+	</div>
+</div>
+
+<!-- TEXT FIELD WITHOUT LABEL TEMPLATE -->
+<div th:fragment="textFormFieldWithoutLabel(fieldName,placeholder,inputType,i18nName)" th:remove="all">
+	<div	class="form-group" 
+			th:classappend="${#fields.hasErrors(fieldName)}? 'has-error'">
+		<input 	class="form-control" 
+				th:classappend="${#fields.hasErrors(fieldName)}? 'error'"
+				th:field="*{__${fieldName}__}"
+				type="text"
+				th:type="${inputType}" 
+				maxlength="50" 
+				placeholder="field" 
+				th:attr="placeholder=#{${i18nName}+'.'+${placeholder}}"/>
+		 <div th:if="${#fields.hasErrors(fieldName)}" class="help-block error">
+			<ul>
+				<li th:each="err : ${#fields.errors(fieldName)}" th:text="#{${err}}" />
+			</ul>
+		</div> 
+	</div>
+</div>
+
+<!-- CHECKBOX ELEMENT -->
+<div th:fragment="checkboxFormField(fieldName,i18nName)" th:remove="all">
+	<div class="form-group">
+			<div class="checkbox">
+				<label>
+					<input 	th:field="*{__${fieldName}__}"
+							type="checkbox" th:utext="' '+#{${i18nName}+'.'+${fieldName}}">Label value
+					</input>
+				</label>
+			</div>	
+	</div>
+</div>
+
+<!-- CHECKBOX ELEMENT INLINE-->
+<div th:fragment="checkboxFormFieldInline(fieldName, placeholder,i18nName)" th:remove="all">
+	<div class="form-group">
+			<div class="checkbox">
+				<label>
+					<input 	th:field="*{__${fieldName}__}"
+							type="checkbox" th:utext="' '+#{${i18nName}+'.'+${placeholder}}">Label value
+					</input>
+				</label>
+			</div>	
 	</div>
 </div>
 

@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
 	public List<Select2Result> findUserByTerm(String term) {
 		
 		List<Select2Result> reultList = entityManager.createQuery(
-                "SELECT NEW ru.obelisk.monitor.select2.Select2Result(u.id, CONCAT(u.name,' (',u.login,')')) FROM User u" 
+                "SELECT NEW ru.obelisk.monitor.web.ui.select2.Select2Result(u.id, CONCAT(u.name,' (',u.login,')')) FROM User u" 
                 		+ " WHERE "
                         + " u.name LIKE :term"
                         + " OR u.login LIKE :term", Select2Result.class)

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="fragment/header :: headerFragment" />
+<script src="/static/assets/views/ldap/authentication/js/form.js" th:href="@{/static/assets/views/ldap/authentication/js/form.js}"> </script>
+<script type="text/javascript">
+
+//$('#addserver').click(function() {
+	
+	//alert("AddServer");
+function addServer(){	
+	$.ajax({
+		type: 'GET',
+		url: "/ldap/authentication/ajax/addserver?"+$('#ldapAuthParams').serialize(),
+		data: ({
+			
+			//id: jQuery(this).attr('data-delete'),
+			//_method: 'DELETE'
+		}),
+		}).done(function(result) {
+			$("#ldapAuthServersContent").html("");
+			$('#ldapAuthServersContent').html(result);
+	});
+		
+	return false;
+}
+//});
+</script>
+
+<body>
+<div id="wrapper">
+	<!-- Header -->
+	<div th:replace="fragment/header :: navbar_alt" > </div>
+		
+	<br/>
+	<div id="page-wrapper">
+		<div class="row">
+			<ol class="breadcrumb">
+				<li class="active" th:text="#{breadcrumbs.ldap.authentication}">LDAP authentication</li>
+			</ol>
+		</div>
+		<div class="row">
+			<form action="#" th:action="@{/ldap/authentication/index.html}" th:object="${ldapAuthParams}" id="ldapAuthParams" th:method="PUT" method="PUT" class="well form">
+				<div th:replace="ldap/authentication/form :: ldapAuthParamsFormContent" />
+			</form>
+		</div>
+	</div>
+</div>
+
+<div th:replace="fragment/header :: scripts" > </div>
+<!-- <script src="/static/assets/views/ldap/authentication/js/form.js" th:href="@{/static/assets/views/ldap/authentication/js/form.js}"> </script> -->
+<script type="text/javascript" th:inline="javascript">
+	var operationStatus=[[${#vars['operationResult']}]];
+	if(operationStatus!=null)
+		alert(operationStatus);
+	
+	
+	
+	$('.remove-server').click(function() { 
+		var deleteIndex=$(this).val();
+		alert(deleteIndex);
+	});
+	
+	/*myTable.on('click','a.delete',function() {
+		if(!confirm([[#{ui.messages.table.delete.confirmation}]])) return false;
+		
+		var deletedRow = myTable.row( $(this).parents('tr') );
+		
+		$.ajax({
+			type: 'POST',
+			url: jQuery(this).attr('href'),
+			data: ({
+				id: jQuery(this).attr('data-delete'),
+				_method: 'DELETE'
+			}),
+			}).done(function() {
+				deletedRow
+			        .remove()
+			        .draw(false);
+		});
+			
+		return false;
+    })*/
+</script>
+
+</body>
+</html>

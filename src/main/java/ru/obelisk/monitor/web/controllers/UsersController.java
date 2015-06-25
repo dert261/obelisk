@@ -146,7 +146,10 @@ public class UsersController {
 		
 	@RequestMapping(value = {"/create"}, method = RequestMethod.POST)
 	@Secured("ROLE_ADMIN")
-	public String saveCreatePage(final ModelMap model, @Valid final User user, final BindingResult bindingResult ) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
+	public String saveCreatePage(	final ModelMap model, 
+									@Valid @ModelAttribute("user") final User user, 
+									final BindingResult bindingResult ) 
+					throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting add user method");
 		if(bindingResult.hasErrors()){
 			return "/users/create";
@@ -180,7 +183,7 @@ public class UsersController {
 	@RequestMapping(value = {"/update"}, method = RequestMethod.PUT)
 	@Secured("ROLE_ADMIN")
 	public String saveUpdatePage(final ModelMap model, 
-									@Valid final User formUser, 
+									@Valid @ModelAttribute("user") final User formUser, 
 									final BindingResult bindingResult,
 									SessionStatus status) 
 			throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{

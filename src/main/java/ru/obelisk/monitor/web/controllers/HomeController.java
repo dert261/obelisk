@@ -21,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.security.access.annotation.Secured;
 
 import ru.obelisk.message.data.HostInfoListImpl;
-import ru.obelisk.monitor.database.models.entity.User;
 import ru.obelisk.monitor.database.models.services.UserService;
 
 
