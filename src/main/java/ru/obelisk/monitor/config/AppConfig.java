@@ -21,6 +21,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import ru.obelisk.monitor.config.security.DbLdapAuthenticationProvider;
 import ru.obelisk.monitor.web.databinding.DatatableCriteriasHandlerMethodArgumentResolver;
 
 @Configuration 
@@ -51,10 +52,8 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	      // equivalent to <mvc:argument-resolvers>
 	  }
 
-	  @Bean //(name="passwordEncoder")
+	  @Bean
 	  public PasswordEncoder passwordEncoder () {
-		  //if(encoder == null) {
-		  //}
 		  PasswordEncoder encoder = new BCryptPasswordEncoder();
 	      return encoder;
 	  }

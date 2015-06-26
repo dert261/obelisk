@@ -16,7 +16,6 @@
 				th:field="*{__${fieldName}__}"
 				type="text"
 				th:type="${inputType}" 
-				maxlength="50" 
 				placeholder="field" 
 				th:attr="placeholder=#{${i18nName}+'.'+${fieldName}}"/>
 		 <div th:if="${#fields.hasErrors(fieldName)}" class="help-block error">
@@ -36,7 +35,6 @@
 				th:field="*{__${fieldName}__}"
 				type="text"
 				th:type="${inputType}" 
-				maxlength="50" 
 				placeholder="field" 
 				th:attr="placeholder=#{${i18nName}+'.'+${placeholder}}"/>
 		 <div th:if="${#fields.hasErrors(fieldName)}" class="help-block error">

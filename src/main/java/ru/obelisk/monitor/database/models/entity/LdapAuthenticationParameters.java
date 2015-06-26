@@ -37,7 +37,7 @@ public class LdapAuthenticationParameters {
 	    @Column(name = "id", length = 11, nullable = false)
 	    private Integer id;
 	     
-	    @Column(name = "distinguished_name", length = 50, nullable = false)
+	    @Column(name = "distinguished_name", nullable = false)
 	    @NotNullField(groups=LdapAuthenticationParameters.LdapAuthParamsStepOne.class)
 	    @NotEmpty(groups=LdapAuthenticationParameters.LdapAuthParamsStepOne.class)
 	    private String distinguishedName=null;
@@ -55,7 +55,7 @@ public class LdapAuthenticationParameters {
 	    @Column(name = "active")
 	    private boolean active=false;
 	        
-	    @Column(name = "search_base", length = 1000)
+	    @Column(name = "search_base")
 	    @NotEmpty(groups=LdapAuthenticationParameters.LdapAuthParamsStepOne.class)
 	    @NotNullField(groups=LdapAuthenticationParameters.LdapAuthParamsStepOne.class)
 	    private String searchBase=null;

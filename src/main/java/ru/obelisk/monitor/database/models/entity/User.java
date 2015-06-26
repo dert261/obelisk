@@ -341,6 +341,14 @@ public class User implements Serializable {
 	public void setRoles(Set<UserRole> roles) {
 		this.roles = roles;
 	}
+	
+	public boolean isLdapUser(){
+		return localUserFlag==UserType.LDAP;
+	}
+	
+	public boolean isBlocked(){
+		return status==UserStatus.NONACTIVE;
+	}
 
 	@Override
 	public String toString() {
