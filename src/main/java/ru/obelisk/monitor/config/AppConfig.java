@@ -20,8 +20,6 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-
-import ru.obelisk.monitor.config.security.DbLdapAuthenticationProvider;
 import ru.obelisk.monitor.web.databinding.DatatableCriteriasHandlerMethodArgumentResolver;
 
 @Configuration 
