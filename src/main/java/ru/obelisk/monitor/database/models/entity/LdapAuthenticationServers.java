@@ -10,11 +10,11 @@ import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-
 import ru.obelisk.monitor.web.validators.NotEmpty;
 
 @Entity
 @Table(name = "ldap_authentication_servers")
+
 public class LdapAuthenticationServers {
 	
 	public interface LdapAuthServersValid{}
@@ -24,7 +24,11 @@ public class LdapAuthenticationServers {
     @Column(name = "id", length = 11, nullable = false)
     private Integer id;
      
-    @Column(name = "host", length = 200, nullable = false)
+    public LdapAuthenticationParameters getLdapAuthParams() {
+		return ldapAuthParams;
+	}
+
+	@Column(name = "host", length = 200, nullable = false)
     @NotNull
     @NotEmpty
     private String host = null;
