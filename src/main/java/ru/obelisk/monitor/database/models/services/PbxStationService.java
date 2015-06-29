@@ -13,6 +13,10 @@ public interface PbxStationService {
     PbxStation getPbxStationByName(String name);
     PbxStation getPbxStationById(int id);
     PbxStation editPbxStation(PbxStation pbxStation);
+    
+    void updateConfig(int id);
+    void reinitBase(int id);
+    
     List<PbxStation> getAllPbxStations();
     List<Select2Result> findPbxStationByTerm(String term);
     

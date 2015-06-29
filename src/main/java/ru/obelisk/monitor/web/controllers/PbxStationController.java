@@ -144,4 +144,24 @@ public class PbxStationController {
 		status.setComplete();
 		return "redirect:/pbxstations/index.html";
 	}
+	
+	@RequestMapping(value = {"/updateconfig"}, method = RequestMethod.POST)
+	@Secured("ROLE_ADMIN")
+	public String updateConfigPbxStation(int id, SessionStatus status) 
+			throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
+		logger.info("Requesting update config pbx station");
+		pbxStationService.updateConfig(id);
+		status.setComplete();
+		return "redirect:/pbxstations/index.html";
+	}
+	
+	@RequestMapping(value = {"/reinitbase"}, method = RequestMethod.POST)
+	@Secured("ROLE_ADMIN")
+	public String reinitBasePbxStation(int id, SessionStatus status) 
+			throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
+		logger.info("Requesting reinit db for pbx station");
+		pbxStationService.reinitBase(id);
+		status.setComplete();
+		return "redirect:/pbxstations/index.html";
+	}
 }

@@ -42,7 +42,17 @@ public class PbxStationServiceImpl implements PbxStationService {
     public void deletePbxStation(int id) {
     	pbxStationRepository.delete(id);
     }
- 
+    
+    @Override
+	public void updateConfig(int id) {
+		pbxStationRepository.setUpdateConfig(id);
+	}
+    
+    @Override
+	public void reinitBase(int id) {
+		pbxStationRepository.setReinitBase(id);
+	}
+	
     @Override
     public PbxStation getPbxStationByName(String name) {
         return pbxStationRepository.findByName(name);

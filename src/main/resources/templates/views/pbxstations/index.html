@@ -114,8 +114,12 @@
 		            	var updateField = '<a class="update" href="/pbxstations/update/'+data+'" data-toggle="tooltip" title="'+[[#{ui.messages.table.edit}]]+'" data-original-title="'+[[#{ui.messages.table.edit}]]+'"> \
 		     	 								<i class="glyphicon glyphicon-pencil"></i></a>';
 		     	 		var deleteField = '<a class="delete" href="/pbxstations/delete" data-delete="'+data+'" data-toggle="tooltip" title="'+[[#{ui.messages.table.delete}]]+'" data-original-title="'+[[#{ui.messages.table.delete}]]+'"> \
-		         								<i class="glyphicon glyphicon-trash"></i> </a>'; 	 
-			            return "<center>"+updateField+"&nbsp;&nbsp;&nbsp;"+deleteField+"</center>";
+		         								<i class="glyphicon glyphicon-trash"></i> </a>';
+		         		var updateConfigField = '<a class="update-config" href="/pbxstations/updateconfig" data-update="'+data+'" data-toggle="tooltip" title="'+[[#{ui.messages.table.actions.pbxstations.updateconfig}]]+'" data-original-title="'+[[#{ui.messages.table.delete}]]+'"> \
+		         								<i class="glyphicon glyphicon-repeat"></i> </a>';
+		         		var reinitBaseField = '<a class="reinit-base" href="/pbxstations/reinitbase" data-reinit="'+data+'" data-toggle="tooltip" title="'+[[#{ui.messages.table.actions.pbxstations.reinitbase}]]+'" data-original-title="'+[[#{ui.messages.table.delete}]]+'"> \
+		         								<i class="glyphicon glyphicon-refresh"></i> </a>';						
+			            return "<center>"+updateConfigField+"&nbsp;&nbsp;&nbsp;"+reinitBaseField+"&nbsp;&nbsp;&nbsp;"+updateField+"&nbsp;&nbsp;&nbsp;"+deleteField+"</center>";
 	           		}
 	           	},
 	           	{
@@ -139,7 +143,7 @@
 	           	
 			]
 	    });
-		
+		//Handle for delete button
 	    myTable.on('click','a.delete',function() {
 			if(!confirm([[#{ui.messages.table.delete.pbxstation.confirmation}]])) return false;
 			
@@ -156,6 +160,43 @@
 					deletedRow
 				        .remove()
 				        .draw(false);
+			});
+				
+			return false;
+	    })
+	    
+	    //Handle for update config button 
+	    myTable.on('click','a.update-config',function() {
+			if(!confirm([[#{ui.messages.table.pbxstation.updateconfig.confirmation}]])) return false;
+			//var updatedRow = myTable.row( $(this).parents('tr') );
+			
+			$.ajax({
+				type: 'POST',
+				url: jQuery(this).attr('href'),
+				data: ({
+					id: jQuery(this).attr('data-update'),
+					_method: 'POST'
+				}),
+				}).done(function() {
+					myTable.draw();
+			});
+				
+			return false;
+	    })
+	    
+	    //Handle for reinit db button 
+	    myTable.on('click','a.reinit-base',function() {
+			if(!confirm([[#{ui.messages.table.pbxstation.reinitbase.confirmation}]])) return false;
+					
+			$.ajax({
+				type: 'POST',
+				url: jQuery(this).attr('href'),
+				data: ({
+					id: jQuery(this).attr('data-reinit'),
+					_method: 'POST'
+				}),
+				}).done(function() {
+					myTable.draw();
 			});
 				
 			return false;
