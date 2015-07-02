@@ -31,6 +31,10 @@ package ru.obelisk.monitor.web.ui.datatables;
 
 import java.util.List;
 
+import ru.obelisk.monitor.database.models.views.View;
+
+import com.fasterxml.jackson.annotation.JsonView;
+
 /**
  * <p>
  * Wrapper object the response that must be sent back to Datatables to update
@@ -46,9 +50,16 @@ import java.util.List;
  */
 public class DatatablesResponse<T> {
 
+	@JsonView(View.Datatable.class)
 	private final List<T> data;
+	
+	@JsonView(View.Datatable.class)
 	private final Long recordsTotal;
+	
+	@JsonView(View.Datatable.class)
 	private final Long recordsFiltered;
+	
+	@JsonView(View.Datatable.class)
 	private final Integer draw;
 
 	private DatatablesResponse(DataSet<T> dataSet, DatatablesCriterias criterias) {

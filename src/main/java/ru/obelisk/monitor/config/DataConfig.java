@@ -1,29 +1,49 @@
 package ru.obelisk.monitor.config;
 
+import org.hibernate.SessionFactory;
+import org.hibernate.internal.SessionFactoryImpl;
+import org.hibernate.jpa.HibernateEntityManagerFactory;
 import org.hibernate.jpa.HibernatePersistenceProvider;
+import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.hibernate4.support.OpenSessionInViewInterceptor;
+import org.springframework.orm.jpa.AbstractEntityManagerFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor;
+import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
  
 
+
+
+import org.springframework.transaction.annotation.TransactionManagementConfigurer;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
 import javax.annotation.Resource;
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import java.util.Properties;
  
-@Configuration
+/*@Configuration
 @EnableTransactionManagement
 @PropertySource("classpath:application.properties")
-@EnableJpaRepositories("ru.obelisk.monitor.database.models.repository")
-public class DataConfig {
+@EnableJpaRepositories("ru.obelisk.monitor.database.models.repository")*/
+public class DataConfig{
  
-    private static final String PROP_DATABASE_DRIVER = "db.driver";
+/*    private static final String PROP_DATABASE_DRIVER = "db.driver";
     private static final String PROP_DATABASE_PASSWORD = "db.password";
     private static final String PROP_DATABASE_URL = "db.url";
     private static final String PROP_DATABASE_USERNAME = "db.username";
@@ -46,9 +66,39 @@ public class DataConfig {
  
         return dataSource;
     }
- 
-    @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+	 
+    /*public EntityManagerFactory entityManagerFactory throws Exception {
+    	return entityManagerFactory().getObject();
+    }*/
+    
+    
+	  
+    /*@Override
+	  public void addInterceptors(InterceptorRegistry registry) {
+		  OpenEntityManagerInViewInterceptor interceptor = new OpenEntityManagerInViewInterceptor();
+		  try {
+			interceptor.setEntityManagerFactory(sessionFactory());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		  registry.addWebRequestInterceptor(interceptor);
+	  }*/
+    
+    /*@Bean
+    @Primary
+    @ConditionalOnMissingBean
+	public OpenEntityManagerInViewInterceptor openEntityManagerInViewInterceptor() {
+    	OpenEntityManagerInViewInterceptor interceptor = new OpenEntityManagerInViewInterceptor();
+		interceptor.setEntityManagerFactory(entityManagerFactory().getObject());
+		return interceptor; 
+	}
+    */
+    
+ //   @Bean
+    /*@Primary
+    @ConditionalOnMissingBean*/
+ /*   public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource());
         entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
@@ -58,11 +108,12 @@ public class DataConfig {
  
         return entityManagerFactoryBean;
     }
-     
+    
     @Bean
     public JpaTransactionManager transactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
+       // transactionManager.
  
         return transactionManager;
     }
@@ -75,5 +126,5 @@ public class DataConfig {
  
         return properties;
     }
- 
+ */
 }

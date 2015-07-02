@@ -1,16 +1,20 @@
 package ru.obelisk.monitor.database.models.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonView;
 
+import ru.obelisk.monitor.database.models.views.View;
 import ru.obelisk.monitor.web.validators.NotEmpty;
 
 @Entity
@@ -21,31 +25,40 @@ public class PbxStation implements Serializable {
 	 */
 	private static final long serialVersionUID = 7656616659864458028L;
 	
+	@JsonView(View.Location.class)
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", length = 11, nullable = false)
     private Integer id;
 	
+	@JsonView(View.Location.class)
 	@Column(name = "name", length = 50, nullable = false)
 	@NotNull 
 	@NotEmpty
 	private String name;
 	
+	@JsonView(View.Location.class)
 	@Column(name = "host", length = 100, nullable = false)
 	@NotNull 
 	@NotEmpty
 	private String host;
 
+	@JsonView(View.Location.class)
 	@Column(name = "update_flag")
 	private boolean updateFlag=false;
 	
+	@JsonView(View.Location.class)
 	@Column(name = "rabbit_queue", length = 200, nullable = false)
 	@NotNull 
 	@NotEmpty
 	private String rabbitQueue;
 	
+	@JsonView(View.Location.class)
 	@Column(name = "reinit_flag")
 	private boolean reinitFlag=false;
+	
+	@OneToMany(mappedBy="pbxStation")
+	private List<Location> locations;
 	
 	@Transient
     private int numberLocalized;
@@ -114,6 +127,9 @@ public class PbxStation implements Serializable {
 	public String toString() {
 		return "PbxStation [id=" + id + ", name=" + name + ", host=" + host
 				+ ", updateFlag=" + updateFlag + ", rabbitQueue=" + rabbitQueue
-				+ ", reinitFlag=" + reinitFlag + "]";
+				+ ", reinitFlag=" + reinitFlag + ", numberLocalized="
+				+ numberLocalized + "]";
 	}
+
+	
 }

@@ -11,7 +11,7 @@ import ru.obelisk.monitor.database.models.entity.PbxStation;
 
 public interface PbxStationRepository extends JpaRepository<PbxStation, Integer> {
 
-	@Query("select b from PbxStation b where b.name = :name")
+	@Query("SELECT b FROM PbxStation b WHERE b.name = :name")
 	PbxStation findByName(@Param("name") String name);
 	
 	@Transactional

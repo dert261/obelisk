@@ -32,18 +32,7 @@ public class SpringConfig {
 	    return convertor;
 	}
 	
-	@Bean
-	public SecurityInterceptor securityInterceptor(){
-		return new SecurityInterceptor();
-	}
 	
-	@Bean
-	public RequestMappingHandlerMapping requestMappingHandlerMapping(){
-		Object[] interceptors = {securityInterceptor()};
-		RequestMappingHandlerMapping mapping = new RequestMappingHandlerMapping();
-		mapping.setInterceptors(interceptors);
-		return mapping;
-	}
 	
 /*	@Bean
 	public StringHttpMessageConverter httpMessageConverter(){

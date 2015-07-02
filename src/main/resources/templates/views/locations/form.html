@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+				<div th:fragment="locationFormContent" id="locationFormContent" class="row">
+			    	<div class="col-lg-12">
+			    		<fieldset>
+							<legend>
+								<h1><th:block th:text="${location.isNew()} ? #{locations.title.create} : #{locations.title.update}" /></h1>
+								<p class="note"><th:block th:text="#{field.required.start}" />	<span class="required" style="color:red">*</span>	<th:block th:text="#{field.required.end}" /></p>
+								
+								<!-- Errors alerts field -->					
+								<div class="alert alert-block alert-danger" th:if="${#fields.hasErrors('*')}"><p th:text="#{field.validation.error.global.message}" >Please fix the following input errors:</p>
+									<ul>
+		    							<li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
+			        						<span th:text="${e.global}? '*' : #{field}+' \''+#{location.field+'.'+${e.fieldName}} +'\''">The field name</span> 
+			        						<span th:text="#{${e.message}}">The error message</span>
+		    							</li>
+									</ul>
+								</div>
+							</legend>
+							
+							<input type="hidden" th:field="*{id}" />
+							
+							<div th:include="fragment/fielddefinition :: textFormField('name',true, text, 'location.field')">Name</div>
+							
+							<!-- PBXSTATION FIELD -->
+							<div	class="form-group" 
+									th:classappend="${#fields.hasErrors('pbxStation')}? 'has-error'">
+								<label 	class="control-label"
+										th:classappend="${true} ? 'required'"
+										th:class="${#fields.hasErrors('pbxStation')}? 'control-label error' : 'control-label'" 
+										for="pbxStation" 
+										th:inline="text">[[#{location.field.pbxStation}]] <span th:if="${true}" class="required" style="color:red">*</span>
+								</label>
+									
+								<select th:field="*{pbxStation}" 
+										class="select2-chosen" 
+										placeholder="select field" 
+										th:attr="placeholder=#{location.field.pbxStation}">
+										<option th:each="data : ${pbxStationAll}" 
+											th:value="${data.id}" 
+											th:text="${data.name}">
+									</option>
+								</select>
+									
+								<div th:if="${#fields.hasErrors('pbxStation')}" class="help-block error">
+									<ul>
+										<li th:each="err : ${#fields.errors('pbxStation')}" th:text="#{${err}}" />
+									</ul>
+								</div> 
+									
+								<script th:inline="javascript">
+								/*<![CDATA[*/
+									jQuery(function($) {
+										jQuery('#pbxStation').select2({'allowClear':true,'width':'100%'}).select2('val', [[${location.isNew()} ? '':*{pbxStation.id}]]);
+									});  
+								/*]]>*/
+								</script> 
+							</div>
+							<!-- PBXSTATION FIELD END-->
+							
+							<!-- PBXSTATION FIELD -->
+							<div	class="form-group" 
+									th:classappend="${#fields.hasErrors('devicePool')}? 'has-error'">
+								<label 	class="control-label"
+										th:classappend="${true} ? 'required'"
+										th:class="${#fields.hasErrors('devicePool')}? 'control-label error' : 'control-label'" 
+										for="devicePool" 
+										th:inline="text">[[#{location.field.devicePool}]] <span th:if="${true}" class="required" style="color:red">*</span>
+								</label>
+									
+								<select th:field="*{devicePool}" 
+										class="select2-chosen" 
+										placeholder="select field" 
+										th:attr="placeholder=#{location.field.devicePool}">
+										<option th:each="data : ${devicePoolAll}" 
+											th:value="${data.id}" 
+											th:text="${data.name}">
+									</option>
+								</select>
+									
+								<div th:if="${#fields.hasErrors('devicePool')}" class="help-block error">
+									<ul>
+										<li th:each="err : ${#fields.errors('devicePool')}" th:text="#{${err}}" />
+									</ul>
+								</div> 
+									
+								<script th:inline="javascript">
+								/*<![CDATA[*/
+									jQuery(function($) {
+										jQuery('#devicePool').select2({'allowClear':true,'width':'100%'}).select2('val', [[${location.isNew()} ? '': *{devicePool.id}]]);
+									});  
+								/*]]>*/
+								</script> 
+							</div>
+							<!-- PBXSTATION FIELD END-->
+							
+							<div th:include="fragment/fielddefinition :: textFormField('prefix',false, text, 'location.field')">Prefix</div>
+							<div th:include="fragment/fielddefinition :: textFormField('recordDirName',true, text, 'location.field')">Record Dir Name</div>
+						</fieldset>
+						<div class="form-actions">
+            				<button class="btn btn-primary" type="submit" th:text="${location.isNew()} ? #{location.form.button.create.submit} : #{location.form.button.update.submit}">Submit</button>
+            				<button class="btn btn-default" type="reset" th:text="#{location.form.button.reset}">Reset</button>
+            			</div>	
+					</div>
+				</div>	
+</html>	

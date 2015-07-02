@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.2.3.RELEASE</version>
+		<version>1.2.4.RELEASE</version>
 		<relativePath/> 
 	</parent>
 
@@ -32,6 +32,7 @@
 	    <jackson-databind.version>2.5.0</jackson-databind.version>
 	    <jackson-core-asl.version>1.9.13</jackson-core-asl.version>
 	    <jackson-mapper-asl.version>1.9.13</jackson-mapper-asl.version>
+	    <!-- <jackson-datatype-hibernate.version>2.0.0-RC2</jackson-datatype-hibernate.version> -->
 	    
 	    <thymeleaf.version>2.1.4.RELEASE</thymeleaf.version>
 	    <joda-time.version>2.6</joda-time.version>
@@ -44,11 +45,18 @@
 	    <obelisk-message.version>0.0.1-SNAPSHOT</obelisk-message.version>
 	    
 	    <apache-commons-beanutils.version>1.9.2</apache-commons-beanutils.version>
+	    
 	    <spring-ldap-core.version>2.0.3.RELEASE</spring-ldap-core.version>
 	</properties>
 
 	<dependencies>
 	
+		<!-- <dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-hibernate</artifactId>
+			<version>${jackson-datatype-hibernate.version}</version>
+		</dependency> -->
+			
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
@@ -340,6 +348,11 @@
 	    	<groupId>bsf</groupId>
 	    	<artifactId>bsf</artifactId>
 	    	<version>2.4.0</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.apache.ant</groupId>
+	    	<artifactId>ant-junit</artifactId>
+	    	<version>1.9.3</version>
 	    </dependency>
 	</dependencies>
 
