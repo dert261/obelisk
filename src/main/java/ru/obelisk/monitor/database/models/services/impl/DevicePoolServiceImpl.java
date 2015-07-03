@@ -2,7 +2,6 @@ package ru.obelisk.monitor.database.models.services.impl;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import ru.obelisk.monitor.database.models.entity.DevicePool;
