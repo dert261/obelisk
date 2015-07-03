@@ -16,6 +16,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.Valid;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import ru.obelisk.monitor.web.validators.FieldMatch;
 import ru.obelisk.monitor.web.validators.NotEmpty;
 import ru.obelisk.monitor.web.validators.NotNullField;
@@ -27,6 +30,8 @@ import ru.obelisk.monitor.web.validators.NotNullField;
     @FieldMatch(first = "password", second = "passwordConfirm", message = "field.validation.error.diffpassword")
     //@FieldMatch(first = "email", second = "confirmEmail", message = "The email fields must match")
 })*/
+
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class LdapAuthenticationParameters {
  
 		public interface LdapAuthParamsStepOne{}
@@ -60,9 +65,10 @@ public class LdapAuthenticationParameters {
 	    @NotNullField(groups=LdapAuthenticationParameters.LdapAuthParamsStepOne.class)
 	    private String searchBase=null;
 	    
-	    @OneToMany(fetch=FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	    @OneToMany(fetch=FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	    @JoinColumn(name="ldapAuthParams_id")
 	    @Valid
+	    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	    private List<LdapAuthenticationServers> ldapServers=new ArrayList<LdapAuthenticationServers>(0);
 	    	       
 	    public LdapAuthenticationParameters(){
@@ -110,8 +116,8 @@ public class LdapAuthenticationParameters {
 		}
 
 		public List<LdapAuthenticationServers> getLdapServers() {
-			if(ldapServers.isEmpty())
-				ldapServers.add(new LdapAuthenticationServers());
+			/*if(ldapServers.isEmpty())
+				ldapServers.add(new LdapAuthenticationServers());*/
 			return ldapServers;
 		}
 

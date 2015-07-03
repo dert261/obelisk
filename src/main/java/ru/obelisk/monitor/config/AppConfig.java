@@ -8,7 +8,6 @@ import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 import org.hibernate.jpa.HibernatePersistenceProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
@@ -37,7 +36,6 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -174,51 +172,33 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	    private static final String PROP_HIBERNATE_SHOW_SQL = "hibernate.show_sql";
 	    private static final String PROP_ENTITYMANAGER_PACKAGES_TO_SCAN = "entitymanager.packages.to.scan";
 	    private static final String PROP_HIBERNATE_HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
-	 
+	    
+	    private static final String PROP_HIBERNATE_CACHE_REGION_FACTORYCLASS = "hibernate.cache.region.factory_class";
+	    private static final String PROP_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE = "hibernate.cache.use_second_level_cache";
+	    private static final String PROP_HIBERNATE_CACHE_USE_QUERY_CACHE = "hibernate.cache.use_query_cache";
+	    
+	   	    		
 	    @Resource
 	    private Environment env;
 	 
 	    @Bean
 	    public DataSource dataSource() {
 	        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-	 
 	        dataSource.setDriverClassName(env.getRequiredProperty(PROP_DATABASE_DRIVER));
 	        dataSource.setUrl(env.getRequiredProperty(PROP_DATABASE_URL));
 	        dataSource.setUsername(env.getRequiredProperty(PROP_DATABASE_USERNAME));
 	        dataSource.setPassword(env.getRequiredProperty(PROP_DATABASE_PASSWORD));
-	 
 	        return dataSource;
 	    }
-		 
-	    /*public EntityManagerFactory entityManagerFactory throws Exception {
-	    	return entityManagerFactory().getObject();
-	    }*/
-	    
-	    
-		  
-	    /*@Override
-		  public void addInterceptors(InterceptorRegistry registry) {
-			  OpenEntityManagerInViewInterceptor interceptor = new OpenEntityManagerInViewInterceptor();
-			  try {
-				interceptor.setEntityManagerFactory(sessionFactory());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			  registry.addWebRequestInterceptor(interceptor);
-		  }*/
-	    
+			    
 	    @Bean
 		public OpenEntityManagerInViewInterceptor openEntityManagerInViewInterceptor() {
 	    	OpenEntityManagerInViewInterceptor interceptor = new OpenEntityManagerInViewInterceptor();
 			interceptor.setEntityManagerFactory(entityManagerFactory().getObject());
 			return interceptor; 
 		}
-	    
-	    
+	    	    
 	    @Bean
-	    /*@Primary
-	    @ConditionalOnMissingBean*/
 	    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 	        LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
 	        entityManagerFactoryBean.setDataSource(dataSource());
@@ -234,8 +214,6 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	    public JpaTransactionManager transactionManager() {
 	        JpaTransactionManager transactionManager = new JpaTransactionManager();
 	        transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
-	       // transactionManager.
-	 
 	        return transactionManager;
 	    }
 	 
@@ -244,7 +222,10 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	        properties.put(PROP_HIBERNATE_DIALECT, env.getRequiredProperty(PROP_HIBERNATE_DIALECT));
 	        properties.put(PROP_HIBERNATE_SHOW_SQL, env.getRequiredProperty(PROP_HIBERNATE_SHOW_SQL));
 	        properties.put(PROP_HIBERNATE_HBM2DDL_AUTO, env.getRequiredProperty(PROP_HIBERNATE_HBM2DDL_AUTO));
-	 
+	       
+	        properties.put(PROP_HIBERNATE_CACHE_REGION_FACTORYCLASS, env.getRequiredProperty(PROP_HIBERNATE_CACHE_REGION_FACTORYCLASS));
+	        properties.put(PROP_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE, env.getRequiredProperty(PROP_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE));
+	        properties.put(PROP_HIBERNATE_CACHE_USE_QUERY_CACHE, env.getRequiredProperty(PROP_HIBERNATE_CACHE_USE_QUERY_CACHE));
 	        return properties;
 	    }
 	 

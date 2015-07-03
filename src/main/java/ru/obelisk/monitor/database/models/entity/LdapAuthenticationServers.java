@@ -2,6 +2,7 @@ package ru.obelisk.monitor.database.models.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,6 +11,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+
 import ru.obelisk.monitor.web.validators.NotEmpty;
 
 @Entity
@@ -41,7 +43,7 @@ public class LdapAuthenticationServers {
     @Column(name = "use_ssl")
     private boolean useSSL = false;
     
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     private LdapAuthenticationParameters ldapAuthParams;
     
     public LdapAuthenticationServers (){

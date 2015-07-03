@@ -20,6 +20,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import ru.obelisk.monitor.database.models.entity.enums.UserStatus;
 import ru.obelisk.monitor.database.models.entity.enums.UserType;
 import ru.obelisk.monitor.web.validators.Email;
@@ -28,6 +31,7 @@ import ru.obelisk.monitor.web.validators.NotNullField;
 
 @Entity
 @Table(name = "users")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class User implements Serializable {
  
     /**
@@ -58,11 +62,13 @@ public class User implements Serializable {
     @Transient
     private String statusLocalized=null;
     
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinTable(name="users2user_roles",
-    joinColumns=@JoinColumn(name="user_id"),
-    inverseJoinColumns=@JoinColumn(name="role_id"))
+    	joinColumns=@JoinColumn(name="user_id"),
+    	inverseJoinColumns=@JoinColumn(name="role_id")
+    )
     @NotNullField 
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<UserRole> roles;
     @Transient
     private String roleLocalized=null;

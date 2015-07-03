@@ -17,6 +17,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import com.fasterxml.jackson.annotation.JsonView;
 
 import ru.obelisk.monitor.database.models.views.View;
@@ -24,6 +27,7 @@ import ru.obelisk.monitor.web.validators.NotEmpty;
 
 @Entity
 @Table(name = "device_pool")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class DevicePool implements Serializable {
 	/**
 	 * 
@@ -45,11 +49,16 @@ public class DevicePool implements Serializable {
 	@NotEmpty
 	private String name;
 		
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
+	/*@JoinColumns( {
+        @JoinColumn(name="tzone_name", referencedColumnName = "name"),
+        @JoinColumn(name="tzone_description", referencedColumnName = "description")
+        } )*/
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Timezone timezone; 
 	
 	@OneToMany(mappedBy="devicePool", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-	//@JoinColumn(name="devicePool_id")	
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<Location> locations = new ArrayList<Location>();
 
 	@Column(name = "description", length = 500, nullable = true)

@@ -2,6 +2,7 @@ package ru.obelisk.monitor.database.models.services.impl;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import ru.obelisk.monitor.database.models.entity.DevicePool;
@@ -74,6 +75,7 @@ public class DevicePoolServiceImpl implements DevicePoolService {
                 		+ " WHERE "
                         + " devPool.name LIKE :term", Select2Result.class)
         .setParameter("term", "%" + term.toLowerCase() + "%")
+        .setHint("org.hibernate.cacheable", true)
         .getResultList();
         return resultList;
 	}
@@ -129,7 +131,7 @@ public class DevicePoolServiceImpl implements DevicePoolService {
 		query.setFirstResult(criterias.getStart());
 		if(criterias.getLength()>0)
 			query.setMaxResults(criterias.getLength());
-				
+		query.setHint("org.hibernate.cacheable", true);
 		return idGenerate(query.getResultList(),criterias.getStart());
 	}
 	
@@ -153,6 +155,7 @@ public class DevicePoolServiceImpl implements DevicePoolService {
 		StringBuilder queryBuilder = new StringBuilder("SELECT devPool FROM DevicePool devPool");
 		queryBuilder.append(DevicePoolServiceUtils.getFilterQuery(criterias));
 		Query query = entityManager.createQuery(queryBuilder.toString());
+		query.setHint("org.hibernate.cacheable", true);
 		return Long.parseLong(String.valueOf(query.getResultList().size()));
 	}
 	/**
@@ -160,6 +163,7 @@ public class DevicePoolServiceImpl implements DevicePoolService {
 	*/
 	public Long getTotalCount() {
 		Query query = entityManager.createQuery("SELECT COUNT(devPool) FROM DevicePool devPool");
+		query.setHint("org.hibernate.cacheable", true);
 		return (Long) query.getSingleResult();
 	}
 }

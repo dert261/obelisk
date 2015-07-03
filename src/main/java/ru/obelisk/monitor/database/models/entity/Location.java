@@ -2,7 +2,6 @@ package ru.obelisk.monitor.database.models.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,9 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import ru.obelisk.monitor.database.models.views.View;
@@ -24,7 +24,7 @@ import ru.obelisk.monitor.web.validators.NullOrDigit;
 
 @Entity
 @Table(name = "location")
-@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Location implements Serializable {
 	/**
 	 * 
@@ -56,18 +56,20 @@ public class Location implements Serializable {
 	@JsonView(View.Location.class)
 	@ManyToOne(fetch=FetchType.LAZY)
 	@NotNullField
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private PbxStation pbxStation;
 		
 	@JsonView(View.Location.class)
 	@ManyToOne(fetch=FetchType.LAZY)
 	@NotNullField
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private DevicePool devicePool;
 	
 	@JsonView(View.Location.class)
-	@Column(name = "prefix", length = 10, nullable = true)
+	@Column(name = "prefix", length = 1, nullable = true)
 	@NullOrDigit(message="field.validation.error.nullordigit")
 	private String prefix = null;
-
+	
 	public int getNumberLocalized() {
 		return numberLocalized;
 	}

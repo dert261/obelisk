@@ -46,7 +46,7 @@ public class LocationServiceImpl implements LocationService {
     
     @Override
     public Location getLocationByName(String name) {
-        return locationRepository.findByName(name);
+    	return locationRepository.findByName(name);
     }
  
     @Override
@@ -59,7 +59,7 @@ public class LocationServiceImpl implements LocationService {
  
     @Override
     public List<Location> getAllLocations() {
-        return locationRepository.findAll();
+    	return locationRepository.findAll();
     }
 
 	@Override
@@ -74,6 +74,7 @@ public class LocationServiceImpl implements LocationService {
                 		+ " WHERE "
                         + " loc.name LIKE :term", Select2Result.class)
         .setParameter("term", "%" + term.toLowerCase() + "%")
+        .setHint("org.hibernate.cacheable", true)
         .getResultList();
         return resultList;
 	}
@@ -87,7 +88,7 @@ public class LocationServiceImpl implements LocationService {
 	* (maxResult, filtering, paging, ...)
 	* @return a filtered list of persons.
 	*/
-	@Transactional
+	@Override
 	public List<Location> findLocationWithDatatablesCriterias(DatatablesCriterias criterias) {
 		StringBuilder queryBuilder = new StringBuilder("SELECT loc FROM Location loc LEFT JOIN FETCH loc.pbxStation LEFT JOIN FETCH loc.devicePool");
 		
@@ -130,7 +131,7 @@ public class LocationServiceImpl implements LocationService {
 		query.setFirstResult(criterias.getStart());
 		if(criterias.getLength()>0)
 			query.setMaxResults(criterias.getLength());
-				
+		query.setHint("org.hibernate.cacheable", true);
 		return idGenerate(query.getResultList(),criterias.getStart());
 	}
 	
@@ -154,6 +155,7 @@ public class LocationServiceImpl implements LocationService {
 		StringBuilder queryBuilder = new StringBuilder("SELECT loc FROM Location loc");
 		queryBuilder.append(LocationServiceUtils.getFilterQuery(criterias));
 		Query query = entityManager.createQuery(queryBuilder.toString());
+		query.setHint("org.hibernate.cacheable", true);
 		return Long.parseLong(String.valueOf(query.getResultList().size()));
 	}
 	/**
@@ -161,6 +163,7 @@ public class LocationServiceImpl implements LocationService {
 	*/
 	public Long getTotalCount() {
 		Query query = entityManager.createQuery("SELECT COUNT(loc) FROM Location loc");
+		query.setHint("org.hibernate.cacheable", true);
 		return (Long) query.getSingleResult();
 	}
 }

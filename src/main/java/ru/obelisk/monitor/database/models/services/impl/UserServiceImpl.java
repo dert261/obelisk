@@ -105,6 +105,7 @@ public class UserServiceImpl implements UserService {
                         + " u.name LIKE :term"
                         + " OR u.login LIKE :term", Select2Result.class)
         .setParameter("term", "%" + term.toLowerCase() + "%")
+        .setHint("org.hibernate.cacheable", true)
         .getResultList();
         return reultList;
 	}
@@ -125,9 +126,7 @@ public class UserServiceImpl implements UserService {
 		* Step 1: global and individual column filtering
 		*/
 		queryBuilder.append(UserServiceUtils.getFilterQuery(criterias));
-		
-		System.out.print(queryBuilder);
-		
+				
 		/**
 		* Step 2: sorting
 		*/
@@ -162,7 +161,7 @@ public class UserServiceImpl implements UserService {
 		query.setFirstResult(criterias.getStart());
 		if(criterias.getLength()>0)
 			query.setMaxResults(criterias.getLength());
-				
+		query.setHint("org.hibernate.cacheable", true);
 		return idGenerate(query.getResultList(),criterias.getStart());
 	}
 	
@@ -186,6 +185,7 @@ public class UserServiceImpl implements UserService {
 		StringBuilder queryBuilder = new StringBuilder("SELECT u FROM User u");
 		queryBuilder.append(UserServiceUtils.getFilterQuery(criterias));
 		Query query = entityManager.createQuery(queryBuilder.toString());
+		query.setHint("org.hibernate.cacheable", true);
 		return Long.parseLong(String.valueOf(query.getResultList().size()));
 	}
 	/**
@@ -193,6 +193,7 @@ public class UserServiceImpl implements UserService {
 	*/
 	public Long getTotalCount() {
 		Query query = entityManager.createQuery("SELECT COUNT(u) FROM User u");
+		query.setHint("org.hibernate.cacheable", true);
 		return (Long) query.getSingleResult();
 	}
 

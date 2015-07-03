@@ -60,14 +60,7 @@
 	
 	$(document).ready(function() {
 		
-		jQuery(function($) {
-			$('[data-toggle="tooltip"]').tooltip();
-		});
 		
-		function flagFormatter(data){
-			if(data==true) return [[#{ui.messages.table.field.boolean.true}]];
-			else return	[[#{ui.messages.table.field.boolean.false}]];
-		}
 		
 		var myTable = $('#locationstable').DataTable({
 	    	"stateSave": true,
@@ -161,11 +154,20 @@
 			return false;
 	    })
 	    
-	    myTable.on( 'order.dt search.dt', function () {
+	    /*myTable.on( 'order.dt search.dt', function () {
 	    	myTable.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
 	            cell.innerHTML = i+1;
 	        } );
-	    } ).draw();
+	    } ).draw();*/
+		
+	    jQuery(function($) {
+			$('[data-toggle="tooltip"]').tooltip();
+		});
+		
+		function flagFormatter(data){
+			if(data==true) return [[#{ui.messages.table.field.boolean.true}]];
+			else return	[[#{ui.messages.table.field.boolean.false}]];
+		}
 	    
 	    $('#locations-search-form').submit(function(){
 	      	myTable.draw();

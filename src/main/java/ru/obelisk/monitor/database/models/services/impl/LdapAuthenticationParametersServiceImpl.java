@@ -25,7 +25,8 @@ public class LdapAuthenticationParametersServiceImpl implements LdapAuthenticati
 	public LdapAuthenticationParameters getParameters() {
 		
 		// TODO Auto-generated method stub
-		Query query = entityManager.createQuery("SELECT params FROM LdapAuthenticationParameters params");
+		Query query = entityManager.createQuery("SELECT params FROM LdapAuthenticationParameters params LEFT JOIN FETCH params.ldapServers");
+		query.setHint("org.hibernate.cacheable", true);
 		LdapAuthenticationParameters params = null;
 		
 		try{
@@ -52,7 +53,6 @@ public class LdapAuthenticationParametersServiceImpl implements LdapAuthenticati
 		params.setPassword(formParameters.getPassword());
 		params.setSearchBase(formParameters.getSearchBase());
 		params.setLdapServers(formParameters.getLdapServers());
-		System.out.println(params.getLdapServers());
 		return ldapAuthParamRepository.saveAndFlush(params);
 	}
 

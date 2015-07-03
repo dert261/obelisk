@@ -1,7 +1,6 @@
 package ru.obelisk.monitor.web.controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 
@@ -39,13 +38,6 @@ public class PbxStationController {
 	@Autowired
     private PbxStationService pbxStationService;
 	
-	@ModelAttribute("pbxStationAll")
-	public List<PbxStation> pbxStationAll() {
-		List<PbxStation> pbxStation = new ArrayList<PbxStation>();
-		pbxStation.addAll(pbxStationService.getAllPbxStations());		
-		return pbxStation;
-	}
-	
 	@RequestMapping(value = {"/search/pbxstations"}, method = RequestMethod.GET)
 	@Secured("ROLE_ADMIN")
 	public @ResponseBody List<Select2Result> searchPbxStation(@RequestParam String searchString) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
@@ -59,7 +51,8 @@ public class PbxStationController {
 		logger.info("Requesting PbxStations page");
 		PbxStation pbxStation = new PbxStation();
 		model.addAttribute("pbxStation", pbxStation);
-        return "/pbxstations/index";
+		model.addAttribute("pbxStationAll", pbxStationService.getAllPbxStations());
+		return "/pbxstations/index";
 	}
 	
 	@RequestMapping(value = {"/ajax/serverside/pbxstationdata.json"}, method = RequestMethod.GET)

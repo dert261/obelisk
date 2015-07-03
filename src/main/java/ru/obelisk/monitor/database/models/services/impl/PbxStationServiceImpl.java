@@ -88,6 +88,7 @@ public class PbxStationServiceImpl implements PbxStationService {
                         + " s.name LIKE :term"
                         + " OR s.host LIKE :term", Select2Result.class)
         .setParameter("term", "%" + term.toLowerCase() + "%")
+        .setHint("org.hibernate.cacheable", true)
         .getResultList();
         return reultList;
 	}
@@ -108,8 +109,6 @@ public class PbxStationServiceImpl implements PbxStationService {
 		* Step 1: global and individual column filtering
 		*/
 		queryBuilder.append(PbxStationServiceUtils.getFilterQuery(criterias));
-		
-		System.out.print(queryBuilder);
 		
 		/**
 		* Step 2: sorting
@@ -145,7 +144,7 @@ public class PbxStationServiceImpl implements PbxStationService {
 		query.setFirstResult(criterias.getStart());
 		if(criterias.getLength()>0)
 			query.setMaxResults(criterias.getLength());
-				
+		query.setHint("org.hibernate.cacheable", true);		
 		return idGenerate(query.getResultList(),criterias.getStart());
 	}
 	
@@ -169,6 +168,7 @@ public class PbxStationServiceImpl implements PbxStationService {
 		StringBuilder queryBuilder = new StringBuilder("SELECT s FROM PbxStation s");
 		queryBuilder.append(PbxStationServiceUtils.getFilterQuery(criterias));
 		Query query = entityManager.createQuery(queryBuilder.toString());
+		query.setHint("org.hibernate.cacheable", true);
 		return Long.parseLong(String.valueOf(query.getResultList().size()));
 	}
 	/**
@@ -176,6 +176,7 @@ public class PbxStationServiceImpl implements PbxStationService {
 	*/
 	public Long getTotalCount() {
 		Query query = entityManager.createQuery("SELECT COUNT(s) FROM PbxStation s");
+		query.setHint("org.hibernate.cacheable", true);
 		return (Long) query.getSingleResult();
 	}
 }

@@ -12,10 +12,15 @@ import javax.validation.constraints.NotNull;
 
 //import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import ru.obelisk.monitor.web.validators.NotEmpty;
 
 @Entity
 @Table(name = "user_roles")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class UserRole implements Serializable{
 	/**
 	 * 

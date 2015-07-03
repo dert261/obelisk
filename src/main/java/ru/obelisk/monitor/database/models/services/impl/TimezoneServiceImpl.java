@@ -74,6 +74,7 @@ public class TimezoneServiceImpl implements TimezoneService {
                 		+ " WHERE "
                         + " tzone.name LIKE :term", Select2Result.class)
         .setParameter("term", "%" + term.toLowerCase() + "%")
+        .setHint("org.hibernate.cacheable", true)
         .getResultList();
         return resultList;
 	}
@@ -129,7 +130,7 @@ public class TimezoneServiceImpl implements TimezoneService {
 		query.setFirstResult(criterias.getStart());
 		if(criterias.getLength()>0)
 			query.setMaxResults(criterias.getLength());
-				
+		query.setHint("org.hibernate.cacheable", true);		
 		return idGenerate(query.getResultList(),criterias.getStart());
 	}
 	
@@ -153,6 +154,7 @@ public class TimezoneServiceImpl implements TimezoneService {
 		StringBuilder queryBuilder = new StringBuilder("SELECT tzone FROM Timezone tzone");
 		queryBuilder.append(TimezoneServiceUtils.getFilterQuery(criterias));
 		Query query = entityManager.createQuery(queryBuilder.toString());
+		query.setHint("org.hibernate.cacheable", true);
 		return Long.parseLong(String.valueOf(query.getResultList().size()));
 	}
 	/**
@@ -160,6 +162,7 @@ public class TimezoneServiceImpl implements TimezoneService {
 	*/
 	public Long getTotalCount() {
 		Query query = entityManager.createQuery("SELECT COUNT(tzone) FROM Timezone tzone");
+		query.setHint("org.hibernate.cacheable", true);
 		return (Long) query.getSingleResult();
 	}
 }

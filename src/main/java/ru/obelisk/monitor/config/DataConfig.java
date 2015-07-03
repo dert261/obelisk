@@ -1,6 +1,6 @@
 package ru.obelisk.monitor.config;
 
-import org.hibernate.SessionFactory;
+/*import org.hibernate.SessionFactory;
 import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.jpa.HibernateEntityManagerFactory;
 import org.hibernate.jpa.HibernatePersistenceProvider;

@@ -65,7 +65,7 @@ public class LocationController {
 		Location location = new Location();
 		model.addAttribute("location", location);
 		model.addAttribute("locationAll", locationService.getAllLocations());
-        return "/locations/index";
+		return "/locations/index";
 	}
 	
 	@JsonView(View.Location.class)
@@ -76,11 +76,10 @@ public class LocationController {
 			Model model) 
 					throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting locations data for table on index page");
-			
 		List<Location> locations = locationService.findLocationWithDatatablesCriterias(criterias);
 		Long count = locationService.getTotalCount();
 		Long countFiltered = locationService.getFilteredCount(criterias);
-	    return DatatablesResponse.build(new DataSet<Location>(locations,count,countFiltered), criterias);
+		return DatatablesResponse.build(new DataSet<Location>(locations,count,countFiltered), criterias);
 	}
 	@JsonView(View.Location.class)	
 	@RequestMapping(value = {"/ajax/clientside/locationdata.json"}, method = RequestMethod.GET)
