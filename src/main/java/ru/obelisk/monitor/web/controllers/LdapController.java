@@ -52,7 +52,7 @@ public class LdapController {
 		logger.info("Requesting update ldap authentication page");
 		LdapAuthenticationParameters ldapAuthParams =ldapAuthParamsService.getParameters();
 		model.addAttribute("ldapAuthParams", ldapAuthParams);
-		return "/ldap/authentication/index";
+		return "ldap/authentication/index";
 	}
 	
 	@RequestMapping(value = {"/authentication/ajax/addserver"}, method = RequestMethod.GET)
@@ -63,7 +63,7 @@ public class LdapController {
 				) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting to add redundant ldap server (ajax)");
 		formParameters.getLdapServers().add(new LdapAuthenticationServers());
-		return "/ldap/authentication/form::ldapAuthServersContent";
+		return "ldap/authentication/form::ldapAuthServersContent";
 	}
 	
 	@RequestMapping(value = {"/authentication/ajax/delserver"}, method = RequestMethod.GET)
@@ -74,7 +74,7 @@ public class LdapController {
 				) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting to delete redundant ldap server (ajax)");
 		formParameters.getLdapServers().remove(index);
-		return "/ldap/authentication/form::ldapAuthServersContent";
+		return "ldap/authentication/form::ldapAuthServersContent";
 	}
 	
 	
@@ -91,7 +91,7 @@ public class LdapController {
 		if (isNotValid(formParameters, bindingResult, 
 					LdapAuthenticationParameters.LdapAuthParamsStepOne.class, 
 					LdapAuthenticationParameters.LdapAuthParamsStepTwo.class)) {
-			return "/ldap/authentication/index";
+			return "ldap/authentication/index";
 		}
 						
 		ldapAuthParamsService.editParameters(formParameters);

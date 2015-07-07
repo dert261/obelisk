@@ -90,7 +90,7 @@ public class UsersController {
 		logger.info("Requesting users page");
 		User user = new User();
 		model.addAttribute("user", user);
-        return "/users/index";
+        return "users/index";
 	}
 	
 	@RequestMapping(value = {"/ajax/serverside/userdata.json"}, method = RequestMethod.GET)
@@ -141,7 +141,7 @@ public class UsersController {
 		logger.info("Requesting create user page");
 		User user = new User();
 		model.addAttribute("user", user);
-        return "/users/create";
+        return "users/create";
 	}
 		
 	@RequestMapping(value = {"/create"}, method = RequestMethod.POST)
@@ -152,14 +152,13 @@ public class UsersController {
 					throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting add user method");
 		if(bindingResult.hasErrors()){
-			return "/users/create";
+			return "users/create";
 		}
 		user.setName(user.getLname()+" "+user.getFname()+" "+user.getMname());
 		user.setSigninDate(new Date());
 		userService.addUser(user);
 		model.clear();
-        //return "redirect:/users/update/"+user.getId();
-		return "redirect:/users/index.html";
+        return "redirect:/users/index.html";
 	}
 	
 	@RequestMapping(value = {"/update/{id}"}, method = RequestMethod.GET)
@@ -168,16 +167,7 @@ public class UsersController {
 		logger.info("Requesting update user page");
 		User user = userService.getUserById(id);
 		model.addAttribute("user", user);
-		/*logger.info("Users: {}",user);
-		List<UserRole>roles=user.getRoles();
-		
-		ObjectMapper mapper = new ObjectMapper();
-		String json = mapper.writeValueAsString(roles);
-		
-		model.addAttribute("selRoles", roles);
-		model.addAttribute("json", json);
-		logger.info("UserRoles: {}",roles);*/
-        return "/users/update";
+		return "users/update";
 	}
 	
 	@RequestMapping(value = {"/update"}, method = RequestMethod.PUT)
@@ -189,11 +179,10 @@ public class UsersController {
 			throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting save update user method");
 		if(bindingResult.hasErrors()){
-			return "/users/update";
+			return "users/update";
 		}
 		userService.editUser(formUser);
 		status.setComplete();
-		//return "redirect:/users/update/"+formUser.getId();
 		return "redirect:/users/index.html";
 	}
 	

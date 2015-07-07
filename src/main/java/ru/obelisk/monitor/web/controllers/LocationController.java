@@ -65,7 +65,7 @@ public class LocationController {
 		Location location = new Location();
 		model.addAttribute("location", location);
 		model.addAttribute("locationAll", locationService.getAllLocations());
-		return "/locations/index";
+		return "locations/index";
 	}
 	
 	@JsonView(View.Location.class)
@@ -98,7 +98,7 @@ public class LocationController {
 		model.addAttribute("location", location);
 		model.addAttribute("devicePoolAll", devicePoolService.getAllDevicePools());
 		model.addAttribute("pbxStationAll", pbxStationService.getAllPbxStations());
-		return "/locations/create";
+		return "locations/create";
 	}
 		
 	@RequestMapping(value = {"/create"}, method = RequestMethod.POST)
@@ -111,7 +111,7 @@ public class LocationController {
 		if(bindingResult.hasErrors()){
 			model.addAttribute("devicePoolAll", devicePoolService.getAllDevicePools());
 			model.addAttribute("pbxStationAll", pbxStationService.getAllPbxStations());
-			return "/locations/create";
+			return "locations/create";
 		}
 		locationService.addLocation(location);
 		model.clear();
@@ -128,7 +128,7 @@ public class LocationController {
 		model.addAttribute("location", location);
 		model.addAttribute("devicePoolAll", devicePoolService.getAllDevicePools());
 		model.addAttribute("pbxStationAll", pbxStationService.getAllPbxStations());
-		return "/locations/update";
+		return "locations/update";
 	}
 	
 	@RequestMapping(value = {"/update"}, method = RequestMethod.PUT)
@@ -142,7 +142,7 @@ public class LocationController {
 		if(bindingResult.hasErrors()){
 			model.addAttribute("devicePoolAll", devicePoolService.getAllDevicePools());
 			model.addAttribute("pbxStationAll", pbxStationService.getAllPbxStations());
-			return "/locations/update";
+			return "locations/update";
 		}
 		locationService.editLocation(formLocation);
 		status.setComplete();

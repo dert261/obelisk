@@ -52,7 +52,7 @@ public class PbxStationController {
 		PbxStation pbxStation = new PbxStation();
 		model.addAttribute("pbxStation", pbxStation);
 		model.addAttribute("pbxStationAll", pbxStationService.getAllPbxStations());
-		return "/pbxstations/index";
+		return "pbxstations/index";
 	}
 	
 	@RequestMapping(value = {"/ajax/serverside/pbxstationdata.json"}, method = RequestMethod.GET)
@@ -83,7 +83,7 @@ public class PbxStationController {
 		logger.info("Requesting create pbx station page");
 		PbxStation pbxStation = new PbxStation();
 		model.addAttribute("pbxStation", pbxStation);
-        return "/pbxstations/create";
+        return "pbxstations/create";
 	}
 		
 	@RequestMapping(value = {"/create"}, method = RequestMethod.POST)
@@ -94,7 +94,7 @@ public class PbxStationController {
 					throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting add pbx station method");
 		if(bindingResult.hasErrors()){
-			return "/pbxstations/create";
+			return "pbxstations/create";
 		}
 		pbxStationService.addPbxStation(pbxStation);
 		model.clear();
@@ -109,7 +109,7 @@ public class PbxStationController {
 		logger.info("Requesting update pbx station page");
 		PbxStation pbxStation = pbxStationService.getPbxStationById(id);
 		model.addAttribute("pbxStation", pbxStation);
-		return "/pbxstations/update";
+		return "pbxstations/update";
 	}
 	
 	@RequestMapping(value = {"/update"}, method = RequestMethod.PUT)
@@ -121,7 +121,7 @@ public class PbxStationController {
 			throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting save update pbx station method");
 		if(bindingResult.hasErrors()){
-			return "/pbxstations/update";
+			return "pbxstations/update";
 		}
 		pbxStationService.editPbxStation(formPbxStation);
 		status.setComplete();
