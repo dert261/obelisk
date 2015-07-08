@@ -80,13 +80,13 @@ public class Timezone implements Serializable {
 		this.name = name;
 	}
 
-	/*public List<DevicePool> getDevicePools() {
+	public List<DevicePool> getDevicePools() {
 		return devicePools;
 	}
 
 	public void setDevicePools(List<DevicePool> devicePools) {
 		this.devicePools = devicePools;
-	}*/
+	}
 
 	public String getDescription() {
 		return description;
@@ -94,6 +94,10 @@ public class Timezone implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public boolean isNew(){
+		return (this.id==null);
 	}
 
 	@Override

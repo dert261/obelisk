@@ -217,6 +217,34 @@
 	</script>
 </div>
 
+
+<!-- TEXT AREA FIELD TEMPLATE -->
+<div th:fragment="textAreaFormField(fieldName,requiredFlag,rowSize,i18nName)" th:remove="all">
+	<div	class="form-group" 
+			th:classappend="${#fields.hasErrors(fieldName)}? 'has-error'">
+		<label 	class="control-label"
+				th:classappend="${requiredFlag} ? 'required'"
+				th:class="${#fields.hasErrors(fieldName)}? 'control-label error' : 'control-label'" 
+				th:for="${fieldName}" 
+				th:inline="text">[[#{${i18nName}+'.'+${fieldName}}]] <span th:if="${requiredFlag}" class="required" style="color:red">*</span>
+		</label>
+		
+		<textarea	class="form-control"
+					th:classappend="${#fields.hasErrors(fieldName)}? 'error'"
+					th:field="*{__${fieldName}__}"
+					rows="3"
+					th:rows="${rowSize}"
+					placeholder="field" 
+					th:attr="placeholder=#{${i18nName}+'.'+${fieldName}}">
+		</textarea>
+		<div th:if="${#fields.hasErrors(fieldName)}" class="help-block error">
+			<ul>
+				<li th:each="err : ${#fields.errors(fieldName)}" th:text="#{${err}}" />
+			</ul>
+		</div> 
+	</div>
+</div>
+
 </html>
 
 

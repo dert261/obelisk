@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="fragment/header :: headerFragment" />
+<!-- <div ddl:bundle-includes="select2,users-form" />  -->
+
+<body>
+<div id="wrapper">
+	<!-- Header -->
+	<div th:replace="fragment/header :: navbar_alt" > </div>
+		
+	<br/>
+	<div id="page-wrapper">
+		<div class="row">
+			<ol class="breadcrumb">
+				<li><a href="/timezones/index.html"><th:block th:text="#{breadcrumbs.timezones}" /></a></li>
+				<li class="active"><th:block th:text="#{breadcrumbs.timezones.update}" /></li>
+			</ol>
+		</div> 
+		<div class="row">
+			
+			<form action="#" th:action="@{/timezones/update}" th:object="${timezone}" th:method="PUT" method="PUT" class="well form">
+				<head th:replace="timezones/form :: timezoneFormContent" />
+			</form>
+		</div>
+	</div>
+</div>
+
+<div th:replace="fragment/header :: scripts" > </div>
+<script src="/static/assets/views/timezones/js/form.js" th:href="@{/static/assets/views/timezones/js/form.js}" > </script>
+
+</body>
+</html>

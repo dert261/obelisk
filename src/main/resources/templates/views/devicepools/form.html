@@ -59,8 +59,7 @@
 								</script> 
 							</div>
 							<!-- PBXSTATION FIELD END-->
-							
-							<div th:include="fragment/fielddefinition :: textFormField('description', false, text, 'devicePool.field')">Description</div>
+							<div th:include="fragment/fielddefinition :: textAreaFormField('description', false, 3, 'devicePool.field')">Description</div>
 						</fieldset>
 						<div class="form-actions">
             				<button class="btn btn-primary" type="submit" th:text="${devicePool.isNew()} ? #{devicePool.form.button.create.submit} : #{devicePool.form.button.update.submit}">Submit</button>

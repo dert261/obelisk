@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+				<div th:fragment="timezoneFormContent" id="timezoneFormContent" class="row">
+			    	<div class="col-lg-12">
+			    		<fieldset>
+							<legend>
+								<h1><th:block th:text="${timezone.isNew()} ? #{timezones.title.create} : #{timezones.title.update}" /></h1>
+								<p class="note"><th:block th:text="#{field.required.start}" />	<span class="required" style="color:red">*</span>	<th:block th:text="#{field.required.end}" /></p>
+								
+								<!-- Errors alerts field -->					
+								<div class="alert alert-block alert-danger" th:if="${#fields.hasErrors('*')}"><p th:text="#{field.validation.error.global.message}" >Please fix the following input errors:</p>
+									<ul>
+		    							<li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
+			        						<span th:text="${e.global}? '*' : #{field}+' \''+#{timezone.field+'.'+${e.fieldName}} +'\''">The field name</span> 
+			        						<span th:text="#{${e.message}}">The error message</span>
+		    							</li>
+									</ul>
+								</div>
+							</legend>
+							
+							<input type="hidden" th:field="*{id}" />
+							<div th:include="fragment/fielddefinition :: textFormField('name',true, text, 'timezone.field')">Name</div>
+							<div th:include="fragment/fielddefinition :: textAreaFormField('description', false, 3, 'timezone.field')">Description</div>
+							
+						</fieldset>
+						<div class="form-actions">
+            				<button class="btn btn-primary" type="submit" th:text="${timezone.isNew()} ? #{timezone.form.button.create.submit} : #{timezone.form.button.update.submit}">Submit</button>
+            				<button class="btn btn-default" type="reset" th:text="#{timezone.form.button.reset}">Reset</button>
+            			</div>	
+					</div>
+				</div>	
+</html>	
