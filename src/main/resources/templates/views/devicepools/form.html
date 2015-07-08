@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+				<div th:fragment="devicePoolFormContent" id="devicePoolFormContent" class="row">
+			    	<div class="col-lg-12">
+			    		<fieldset>
+							<legend>
+								<h1><th:block th:text="${devicePool.isNew()} ? #{devicePools.title.create} : #{devicePools.title.update}" /></h1>
+								<p class="note"><th:block th:text="#{field.required.start}" />	<span class="required" style="color:red">*</span>	<th:block th:text="#{field.required.end}" /></p>
+								
+								<!-- Errors alerts field -->					
+								<div class="alert alert-block alert-danger" th:if="${#fields.hasErrors('*')}"><p th:text="#{field.validation.error.global.message}" >Please fix the following input errors:</p>
+									<ul>
+		    							<li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
+			        						<span th:text="${e.global}? '*' : #{field}+' \''+#{devicePool.field+'.'+${e.fieldName}} +'\''">The field name</span> 
+			        						<span th:text="#{${e.message}}">The error message</span>
+		    							</li>
+									</ul>
+								</div>
+							</legend>
+							
+							<input type="hidden" th:field="*{id}" />
+							
+							<div th:include="fragment/fielddefinition :: textFormField('name',true, text, 'devicePool.field')">Name</div>
+							
+														
+							<!-- PBXSTATION FIELD -->
+							<div	class="form-group" 
+									th:classappend="${#fields.hasErrors('timezone')}? 'has-error'">
+								<label 	class="control-label"
+										th:classappend="${true} ? 'required'"
+										th:class="${#fields.hasErrors('timezone')}? 'control-label error' : 'control-label'" 
+										for="timezone" 
+										th:inline="text">[[#{devicePool.field.timezone}]] <span th:if="${true}" class="required" style="color:red">*</span>
+								</label>
+									
+								<select th:field="*{timezone}" 
+										class="select2-chosen" 
+										placeholder="select field" 
+										th:attr="placeholder=#{devicePool.field.timezone}">
+										<option th:each="data : ${timezoneAll}" 
+											th:value="${data.id}" 
+											th:text="${data.name}+' ('+${data.description}+')'">
+									</option>
+								</select>
+									
+								<div th:if="${#fields.hasErrors('timezone')}" class="help-block error">
+									<ul>
+										<li th:each="err : ${#fields.errors('timezone')}" th:text="#{${err}}" />
+									</ul>
+								</div> 
+									
+								<script th:inline="javascript">
+								/*<![CDATA[*/
+									jQuery(function($) {
+										jQuery('#timezone').select2({'allowClear':true,'width':'100%'}).select2('val', [[${devicePool.isNew()} ? '': *{timezone.id}]]);
+									});  
+								/*]]>*/
+								</script> 
+							</div>
+							<!-- PBXSTATION FIELD END-->
+							
+							<div th:include="fragment/fielddefinition :: textFormField('description', false, text, 'devicePool.field')">Description</div>
+						</fieldset>
+						<div class="form-actions">
+            				<button class="btn btn-primary" type="submit" th:text="${devicePool.isNew()} ? #{devicePool.form.button.create.submit} : #{devicePool.form.button.update.submit}">Submit</button>
+            				<button class="btn btn-default" type="reset" th:text="#{devicePool.form.button.reset}">Reset</button>
+            			</div>	
+					</div>
+				</div>	
+</html>	

@@ -21,7 +21,7 @@ public interface TimezoneRepository extends JpaRepository<Timezone, Integer> {
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value ="true") })
 	Timezone findOne(@Param("id") int id);
 	
-	@Query("SELECT tzone FROM Timezone tzone LEFT JOIN FETCH tzone.devicePools")
+	@Query("SELECT tzone FROM Timezone tzone")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value ="true") })
 	List<Timezone> findAll();
 	

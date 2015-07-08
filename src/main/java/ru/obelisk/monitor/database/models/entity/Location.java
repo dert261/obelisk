@@ -35,37 +35,37 @@ public class Location implements Serializable {
 	@Transient
     private int numberLocalized;
 		
-	@JsonView(View.Location.class)
+	@JsonView(value={View.Location.class, View.DevicePool.class})
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", length = 11, nullable = false)
     private Integer id;
 	
-	@JsonView(View.Location.class)
+	@JsonView(value={View.Location.class, View.DevicePool.class})
 	@Column(name = "name", length = 50, nullable = false)
 	@NotNull 
 	@NotEmpty
 	private String name;
 		
-	@JsonView(View.Location.class)
+	@JsonView(value={View.Location.class, View.DevicePool.class})
 	@Column(name = "record_dir_name", length = 100, nullable = false)
 	@NotNull 
 	@NotEmpty
 	private String recordDirName;
 	
-	@JsonView(View.Location.class)
+	@JsonView(value={View.Location.class, View.DevicePool.class})
 	@ManyToOne(fetch=FetchType.LAZY)
 	@NotNullField
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private PbxStation pbxStation;
 		
-	@JsonView(View.Location.class)
+	@JsonView(value={View.Location.class})
 	@ManyToOne(fetch=FetchType.LAZY)
 	@NotNullField
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private DevicePool devicePool;
 	
-	@JsonView(View.Location.class)
+	@JsonView(value={View.Location.class, View.DevicePool.class})
 	@Column(name = "prefix", length = 1, nullable = true)
 	@NullOrDigit(message="field.validation.error.nullordigit")
 	private String prefix = null;

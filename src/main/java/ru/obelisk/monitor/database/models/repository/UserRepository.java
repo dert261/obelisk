@@ -25,7 +25,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value ="true") })
     User findOne(@Param("id") int id);
 	
-	@Query("SELECT b FROM User b LEFT JOIN FETCH b.roles")
+	@Query("SELECT b FROM User b")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value ="true") })
     List<User> findAll();
 	

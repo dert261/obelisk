@@ -21,7 +21,7 @@ public interface LocationRepository extends JpaRepository<Location, Integer> {
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value ="true") })
 	Location findOne(@Param("id") int id);
 	
-	@Query("SELECT loc FROM Location loc LEFT JOIN FETCH loc.pbxStation LEFT JOIN FETCH loc.devicePool LEFT JOIN FETCH loc.devicePool.timezone")
+	@Query("SELECT loc FROM Location loc")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value ="true") })
 	List<Location> findAll();
 }

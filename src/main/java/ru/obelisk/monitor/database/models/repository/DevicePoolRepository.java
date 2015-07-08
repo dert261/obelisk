@@ -21,7 +21,7 @@ public interface DevicePoolRepository extends JpaRepository<DevicePool, Integer>
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value ="true") })
 	DevicePool findOne(@Param("id") int id);
 	
-	@Query("SELECT devPool FROM DevicePool devPool LEFT JOIN FETCH devPool.timezone LEFT JOIN FETCH devPool.locations")
+	@Query("SELECT devPool FROM DevicePool devPool")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value ="true") })
 	List<DevicePool> findAll();
 	

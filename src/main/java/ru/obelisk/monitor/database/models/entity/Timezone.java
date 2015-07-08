@@ -17,6 +17,9 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import ru.obelisk.monitor.database.models.views.View;
 import ru.obelisk.monitor.web.validators.NotEmpty;
 
 @Entity
@@ -29,22 +32,27 @@ public class Timezone implements Serializable {
 	private static final long serialVersionUID = -50275105118785822L;
 
 	@Transient
+	@JsonView(value={View.Timezone.class})
     private int numberLocalized;
 	
+	@JsonView(value={View.Timezone.class, View.DevicePool.class})
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", length = 11, nullable = false)
     private Integer id;
 	
+	@JsonView(value={View.Timezone.class, View.DevicePool.class})
 	@Column(name = "name", length = 50, nullable = false)
 	@NotNull 
 	@NotEmpty
 	private String name;
 	
+	@JsonView(value={View.Timezone.class})
 	@OneToMany(mappedBy="timezone", fetch=FetchType.LAZY)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<DevicePool> devicePools;
 	
+	@JsonView(value={View.Timezone.class, View.DevicePool.class})
 	@Column(name = "description", length = 500, nullable = true)
 	private String description;
 

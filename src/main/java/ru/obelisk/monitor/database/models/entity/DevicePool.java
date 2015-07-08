@@ -35,32 +35,33 @@ public class DevicePool implements Serializable {
 	private static final long serialVersionUID = -1981251271982227994L;
 
 	@Transient
+	@JsonView(value={View.DevicePool.class})
     private int numberLocalized;
-	
-	@JsonView(View.Location.class)
+		
+	@JsonView(value={View.Location.class, View.DevicePool.class})
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", length = 11, nullable = false)
+	//@JsonView(View.DevicePool.class)
     private Integer id;
 	
-	@JsonView(View.Location.class)
+	@JsonView(value={View.Location.class, View.DevicePool.class})
 	@Column(name = "name", length = 50, nullable = false)
 	@NotNull 
 	@NotEmpty
 	private String name;
 		
+	@JsonView(value={View.DevicePool.class})
 	@ManyToOne(fetch=FetchType.LAZY)
-	/*@JoinColumns( {
-        @JoinColumn(name="tzone_name", referencedColumnName = "name"),
-        @JoinColumn(name="tzone_description", referencedColumnName = "description")
-        } )*/
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Timezone timezone; 
 	
+	@JsonView(value={View.DevicePool.class})
 	@OneToMany(mappedBy="devicePool", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<Location> locations = new ArrayList<Location>();
 
+	@JsonView(value={View.DevicePool.class})
 	@Column(name = "description", length = 500, nullable = true)
 	private String description;
 	
@@ -110,6 +111,10 @@ public class DevicePool implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public boolean isNew(){
+		return (this.id==null);
 	}
 
 	@Override

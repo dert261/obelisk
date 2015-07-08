@@ -23,7 +23,7 @@ public interface PbxStationRepository extends JpaRepository<PbxStation, Integer>
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value ="true") })
 	PbxStation findOne(@Param("id") int id);
 	
-	@Query("SELECT b FROM PbxStation b LEFT JOIN FETCH b.locations")
+	@Query("SELECT b FROM PbxStation b")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value ="true") })
 	List<PbxStation> findAll();
 	
