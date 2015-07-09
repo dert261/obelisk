@@ -30,7 +30,7 @@
 			                <th th:text="#{timezone.field.sequence}">№ п/п</th>
 			                <th th:text="#{timezone.field.name}">Timezone name</th>
 			                <th th:text="#{timezone.field.description}">Description</th>
-			                <th th:text="#{timezone.field.actions}">Actions</th>
+			                <th th:utext="'&lt;center&gt;'+#{timezone.field.actions}+'&lt;/center&gt;'">Actions</th>
 			            </tr>
 			        </thead>
 			 
@@ -39,7 +39,7 @@
 			            	<th th:text="#{timezone.field.sequence}">№ п/п</th>
 			                <th th:text="#{timezone.field.name}">Timezone name</th>
 			                <th th:text="#{timezone.field.description}">Description</th>
-			                <th th:text="#{timezone.field.actions}">Actions</th>
+			                <th th:utext="'&lt;center&gt;'+#{timezone.field.actions}+'&lt;/center&gt;'">Actions</th>
 			             </tr>
 			        </tfoot>
 			    </table>
