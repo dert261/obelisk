@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+				<div th:fragment="handsetInFormContent" id="handsetInFormContent" class="col-lg-12">
+					<form action="#" th:object="${node}" th:id="${node.type}+'FormContent'+${node.index}">
+						
+						<center><h4 th:text="#{handsetInNode.elementSettings.title}">HeadsetIn menu context form</h4></center>
+						
+				    		<fieldset>
+								<!-- <input type="hidden" th:field="*{id}" /> -->
+								<div th:include="fragment/fielddefinition :: textFormField('numberPatternA',true, text, 'handsetInNode.field')">Number pattern A</div>
+								<div th:include="fragment/fielddefinition :: textFormField('numberPatternB',true, text, 'handsetInNode.field')">Number pattern A</div>
+							</fieldset>
+						 
+					</form>
+					
+					<script th:inline="javascript">
+					/*<![CDATA[*/
+						$( function() {
+							$( [['#'+${node.type}+'FormContent'+${node.index}]] ).sisyphus({
+								locationBased: false,
+								timeout: 0,
+								autoRelease: false,
+								onSave: function() {            
+							        console.log('AUTOSAVE : Saved');
+							    },
+							    onRestore: function() {
+							        console.log('AUTOSACE : Restored');  
+							    },
+							    onRelease: function() {
+							        console.log("AUTOSAVE : Release cache");
+							    }
+								
+							});
+								
+						});	
+					/*]]>*/
+					</script>
+					
+				</div>	
+				
+</html>	

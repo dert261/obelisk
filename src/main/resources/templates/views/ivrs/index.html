@@ -17,100 +17,109 @@
 					<h1 class="page-header" th:text="#{ivrgraphs.ui.messages.index.title}">IVR</h1>
 				</div>
 			</div>
-			
 			<div class="row">
-				<span style="display: inline-block; vertical-align: top; padding: 3px">
-      				<div id="accordion">
-			        	<h4>Small items</h4>
-			        	<div>
-			          		<div id="myPaletteSmall" style="width: 140px; height: 400px"></div>
-			        	</div>
-			        	<h4>Tall items</h4>
-			        	<div>
-			          		<div id="myPaletteTall" style="width: 140px; height: 400px"></div>
-			        	</div>
-			        	<h4>My SVG</h4>
-			        	<div>
-			          		<div id="myPaletteSVG" style="width: 140px; height: 400px"></div>
-			        	</div>
-			      	</div>
-			    </span>
-			    
-    			<span style="display: inline-block; vertical-align: top; padding: 5px; width:73%">
-      				<div id="myDiagram" style="border: solid 1px black; height: 500px"></div>
-    			</span>
-				<span style="display: inline-block; vertical-align: top; padding: 5px; width:12%">
-      				<div id="myOverview" style="border: solid 1px black; height: 100px"></div>
-    			</span>
+				<div class="col-lg-12" style="display: inline-block; vertical-align: top; padding: 3px;">
+					<button id="loadModel" onclick="load()">Load</button>
+    				<button id="saveModel" onclick="save()">Save</button>
+				</div>
 			</div>
 			<div class="row">
-				<div id="buttons">
-    <button id="loadModel" onclick="load()">Load</button>
-    <button id="saveModel" onclick="save()">Save</button>
-  </div>
+				<div class="col-lg-2" style="display: inline-block; vertical-align: top; padding: 3px;">
+      				<div id="accordion">
+			        	<h4>Стандартные</h4>
+			        	<div>
+			          		<div id="standardPalette" style="height: 300px"></div>
+			        	</div>
+			        	<h4>Расширенные</h4>
+			        	<div>
+			          		<div id="extendedPalette" style="height: 300px"></div>
+			        	</div>
+			        	
+			      	</div>
+			    </div>
+			    <div class="col-lg-8" style="display: inline-block; vertical-align: top; padding: 5px;">
+    				<div id="ivrOverview" ></div>
+      				<div id="ivrDiagram" style="border: solid 1px black; height: 700px"></div>
+	   			</div>
+    			<div class="col-lg-2">
+	 					<div class="panel panel-primary">
+							<!-- Default panel contents -->
+							<div class="panel-heading"><center>Инспектор объектов</center></div>
+									
+							<div class="panel-body" style="padding: 0 0 0 0;">
+								<div id="ivrElementSettings" >Element Settings</div>
+							</div>
+						</div>
+					</div>				
+			</div>
+ 			<div class="row" style="display: none;">
+
   <textarea id="mySavedModel" style="width:100%;height:200px">
 { "class": "go.GraphLinksModel",
   "linkFromPortIdProperty": "fromPort",
   "linkToPortIdProperty": "toPort",
-  "nodeDataArray": [
-{"category":"input", "key":"input1", "loc":"-150 -80" },
-{"category":"or", "key":"or1", "loc":"-70 0" },
-{"category":"not", "key":"not1", "loc":"10 0" },
-{"category":"xor", "key":"xor1", "loc":"100 0" },
-{"category":"or", "key":"or2", "loc":"200 0" },
-{"category":"output", "key":"output1", "loc":"200 -100" }
+  "nodeDataArray": [ 
+{"category":"handsetOut", "geo":"handset-out", "color":"#00B5CB", "fromLink":true, "toLink":true, "key":-7, "loc":"-420 -60"},
+{"category":"numpad", "geo":"numpad", "color":"#00B5CB", "fromLink":true, "toLink":true, "key":-10, "loc":"-400 60"}
  ],
-  "linkDataArray": [
-{"from":"input1", "fromPort":"out", "to":"or1", "toPort":"in1"},
-{"from":"or1", "fromPort":"out", "to":"not1", "toPort":"in"},
-{"from":"not1", "fromPort":"out", "to":"or1", "toPort":"in2"},
-{"from":"not1", "fromPort":"out", "to":"xor1", "toPort":"in1"},
-{"from":"xor1", "fromPort":"out", "to":"or2", "toPort":"in1"},
-{"from":"or2", "fromPort":"out", "to":"xor1", "toPort":"in2"},
-{"from":"xor1", "fromPort":"out", "to":"output1", "toPort":""}
- ]}
+  "linkDataArray": [ {"from":-7, "to":-10, "fromPort":"", "toPort":""} ]}
   </textarea>
 			</div>	
 		</div>
 	</div>
 	<div th:replace="fragment/header :: scripts" > </div>
 	<link rel="stylesheet" th:href="@{/static/assets/jquery-ui/1.11.4/cupertino/jquery-ui.css}" />
+	<style type="text/css">
+  		.ui-accordion .ui-accordion-content {
+    		padding: 1px;
+ 		}
+ 		
+ 		#ivrOverview {
+  			position: absolute;
+  			vertical-align:top;
+			margin-top: 10px;
+			margin-left: 10px;
+			background-color: aliceblue;
+			z-index: 500; /* make sure its in front */
+			border: solid 1px blue;
+			width:300px;
+			height:150px;
+		}
+	</style>
+	
 	<script src="/static/assets/jquery-ui/1.11.4/cupertino/jquery-ui.js" th:href="@{/static/assets/jquery-ui/1.11.4/cupertino/jquery-ui.js}" > </script> 
 	<script src="/static/assets/views/ivrs/icons.js" th:href="@{/static/assets/views/ivrs/icons.js}" > </script>
 	<script src="/static/assets/gojs/1.5.2/go-debug.js" th:href="@{/static/assets/gojs/1.5.2/go-debug.js}" > </script> <!-- use go.js when deploying -->
+	<script src="/static/assets/sisyphus/v1.1.2-11/sisyphus.js" th:href="@{/static/assets/sisyphus/v1.1.2-11/sisyphus.js}" > </script> <!-- use go.js when deploying -->
 	
 	<script th:inline="javascript">
 	/*<![CDATA[*/
 	           
 	$(document).ready(function() {
+		clearLocalStorage();
 		init();
 	});
 	
-    var red = "orangered";
-    var green = "ForestGreen";
-
     function init() {
-      if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+      //if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
       var $ = go.GraphObject.make;  // for conciseness in defining templates
 
-      myDiagram =
-        $(go.Diagram, "myDiagram",  // create a new Diagram in the HTML DIV element "myDiagram"
+      ivrDiagram =
+        $(go.Diagram, "ivrDiagram",  // create a new Diagram in the HTML DIV element "ivrDiagram"
           {
             initialContentAlignment: go.Spot.Center,
-         
-            "toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom,// have mouse wheel events zoom in and out instead of scroll up and down
+         	"toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom,// have mouse wheel events zoom in and out instead of scroll up and down
             allowDrop: true,  // Nodes from the Palette can be dropped into the Diagram
-            
             "draggingTool.isGridSnapEnabled": true,  // dragged nodes will snap to a grid of 10x10 cells
             "undoManager.isEnabled": true
           });
 
       // when the document is modified, add a "*" to the title and enable the "Save" button
-      myDiagram.addDiagramListener("Modified", function(e) {
+      ivrDiagram.addDiagramListener("Modified", function(e) {
         var button = document.getElementById("saveModel");
-        if (button) button.disabled = !myDiagram.isModified;
+        if (button) button.disabled = !ivrDiagram.isModified;
         var idx = document.title.indexOf("*");
-        if (myDiagram.isModified) {
+        if (ivrDiagram.isModified) {
           if (idx < 0) document.title += "*";
         } else {
           if (idx >= 0) document.title = document.title.substr(0, idx); 
@@ -118,7 +127,12 @@
       });
 
     
-      
+   // initialize Overview
+      ivrOverview =
+        $(go.Overview, "ivrOverview",
+          { observed: ivrDiagram, contentAlignment: go.Spot.Center });
+
+   
       
 	// "icons" is defined in icons.js
 	// SVG paths have no flag for being filled or not, but GoJS Geometry paths do.
@@ -139,383 +153,538 @@
     // A data binding conversion function. Given an icon name, return the icon's Path string.
 	function geoFunc(geoname) {
 		if (icons[geoname]) return icons[geoname];
-		else return icons["left-right"]; // default icon
+		else return icons["handset"]; // default icon
 	}
       
+	// define some common property settings
+    function nodeTemplateStyle() {
+      return [new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+              new go.Binding("isShadowed", "isSelected").ofObject(),
+              
+              {
+                selectionAdorned: false,
+                shadowOffset: new go.Point(0, 0),
+                shadowBlur: 15,
+                shadowColor: "blue",
+                toolTip: sharedToolTip
+              }];
+    }
+	
+ 	// node template helpers
+	var sharedToolTip =
+    	$(go.Adornment, "Auto",
+			$(go.Shape, "RoundedRectangle", { fill: "lightyellow", stroke: colors["gray"], strokeWidth: 2  }),
+    		$(go.TextBlock, { margin: 8, stroke: colors["gray"], font: "bold 12px sans-serif" },
+				new go.Binding("text", "hint")));
+ 
+    function shapeStyle() {
+        return {
+          name: "NODESHAPE",
+          fill: "lightcoral",
+          stroke: colors["gray"],
+          portId: "",
+          cursor: "pointer",
+          desiredSize: new go.Size(50, 50),
+          strokeWidth: 4
+        };
+      }
     
-	// Define a simple template consisting of the icon surrounded by a filled circle
-	myDiagram.nodeTemplate =
-		$(go.Node, "Auto",
-			$(go.Shape, "Rectangle",
-				{ fill: "lightcoral", portId: "", cursor: "pointer", strokeWidth: 4, stroke: colors["gray"], width: 40, height: 40 },
+ 	// creates relinkable Links that will avoid crossing Nodes when possible and will jump over other Links in their paths
+    ivrDiagram.linkTemplate =
+      $(go.Link,
+        { routing: go.Link.AvoidsNodes,
+    	  curve: go.Link.JumpGap,
+          corner: 3,
+          relinkableFrom: true, relinkableTo: true,
+          selectionAdorned: false, // Links are not adorned when selected so that their color remains visible.
+          shadowOffset: new go.Point(0, 0), shadowBlur: 5, shadowColor: "blue",
+        },
+        new go.Binding("isShadowed", "isSelected").ofObject(),
+        $(go.Shape,
+          { name: "SHAPE", strokeWidth: 2, stroke: colors["blue"] }),
+        $(go.Shape,   // the arrowhead
+        { toArrow: "OpenTriangle", fill: null, stroke: colors["blue"] })  
+      );
+
+ 	
+
+
+/*    function portStyle(input) {
+      return {
+        desiredSize: new go.Size(6, 6),
+        fill: "black",
+        fromSpot: go.Spot.Right,
+        fromLinkable: !input,
+        toSpot: go.Spot.Left,
+        toLinkable: input,
+        toMaxLinks: 1,
+        cursor: "pointer"
+      };
+    }
+
+  */  
+	//Elements templates
+    var arrowOutTemplate =
+		$(go.Node, "Spot", nodeTemplateStyle(),
+			$(go.Shape, "Rectangle", shapeStyle(),
 				new go.Binding("fill", "color"),
-				new go.Binding("fromLinkable", "from"),
-		        new go.Binding("toLinkable", "to")),
+				new go.Binding("fromLinkable", "fromLink"),
+				new go.Binding("toLinkable", "toLink")
+			),
 			$(go.Panel, "Vertical",
 				{ margin: 3 },
 				$(go.Shape,
-					{ fill: colors["white"], strokeWidth: 0 },
-					new go.Binding("geometryString", "geo", geoFunc))
-			),
-			// Each node has a tooltip that reveals the name of its icon
-			{ toolTip:
-				$(go.Adornment, "Auto",
-					$(go.Shape, { fill: "LightYellow", stroke: colors["gray"], strokeWidth: 2 }),	
-					$(go.TextBlock, { margin: 8, stroke: colors["gray"], font: "bold 16px sans-serif" },
-						new go.Binding("text", "geo")))
-			}
+					{ fill: colors["white"], strokeWidth: 0},
+					new go.Binding("geometryString", "geo", geoFunc)
+				)	
+			)
 		);
     
+    var arrowInTemplate =
+		$(go.Node, "Spot", nodeTemplateStyle(),
+			$(go.Shape, "Rectangle", shapeStyle(),
+				new go.Binding("fill", "color"),
+				new go.Binding("fromLinkable", "fromLink"),
+				new go.Binding("toLinkable", "toLink")
+			),
+			$(go.Panel, "Vertical",
+				{ margin: 3 },
+				$(go.Shape,
+					{ fill: colors["white"], strokeWidth: 0},
+					new go.Binding("geometryString", "geo", geoFunc)
+				)	
+			)
+		);
+	
+    var cleanMapTemplate =
+		$(go.Node, "Spot", nodeTemplateStyle(),
+			$(go.Shape, "Rectangle", shapeStyle(),
+				new go.Binding("fill", "color"),
+				new go.Binding("fromLinkable", "fromLink"),
+				new go.Binding("toLinkable", "toLink")
+			),
+			$(go.Panel, "Vertical",
+				{ margin: 3 },
+				$(go.Shape,
+					{ fill: colors["white"], strokeWidth: 0},
+					new go.Binding("geometryString", "geo", geoFunc)
+				)	
+			)
+		);
     
-      
-      
-      // initialize Overview
-      myOverview =
-        $(go.Overview, "myOverview",
-          { observed: myDiagram, contentAlignment: go.Spot.Center });
+    var treasureMapTemplate =
+		$(go.Node, "Spot", nodeTemplateStyle(),
+			$(go.Shape, "Rectangle", shapeStyle(),
+				new go.Binding("fill", "color"),
+				new go.Binding("fromLinkable", "fromLink"),
+				new go.Binding("toLinkable", "toLink")
+			),
+			$(go.Panel, "Vertical",
+				{ margin: 3 },
+				$(go.Shape,
+					{ fill: colors["white"], strokeWidth: 0},
+					new go.Binding("geometryString", "geo", geoFunc)
+				)	
+			)
+		);
+    
+    var handsetTemplate =
+		$(go.Node, "Spot", nodeTemplateStyle(),
+			$(go.Shape, "Rectangle", shapeStyle(),
+				new go.Binding("fill", "color"),
+				new go.Binding("fromLinkable", "fromLink"),
+				new go.Binding("toLinkable", "toLink")
+			),
+			$(go.Panel, "Vertical",
+				{ margin: 3 },
+				$(go.Shape,
+					{ fill: colors["white"], strokeWidth: 0},
+					new go.Binding("geometryString", "geo", geoFunc)
+				)	
+			)
+		);
+    
+    var handsetInTemplate =
+		$(go.Node, "Spot", nodeTemplateStyle(),
+			$(go.Shape, "Rectangle", shapeStyle(),
+				new go.Binding("fill", "color"),
+				new go.Binding("fromLinkable", "fromLink"),
+				new go.Binding("toLinkable", "toLink")
+			),
+			$(go.Panel, "Vertical",
+				{ margin: 3 },
+				$(go.Shape,
+					{ fill: colors["white"], strokeWidth: 0},
+					new go.Binding("geometryString", "geo", geoFunc)
+				)	
+			)
+		);
+	
+    var handsetOutTemplate =
+		$(go.Node, "Spot", nodeTemplateStyle(),
+			$(go.Shape, "Rectangle", shapeStyle(),
+				new go.Binding("fill", "color"),
+				new go.Binding("fromLinkable", "fromLink"),
+				new go.Binding("toLinkable", "toLink")
+			),
+			$(go.Panel, "Vertical",
+				{ margin: 3 },
+				$(go.Shape,
+					{ fill: colors["white"], strokeWidth: 0},
+					new go.Binding("geometryString", "geo", geoFunc)
+				)	
+			)
+		);
+    
+    var handsetHangupTemplate =
+		$(go.Node, "Spot", nodeTemplateStyle(),
+			$(go.Shape, "Rectangle", shapeStyle(),
+				new go.Binding("fill", "color"),
+				new go.Binding("fromLinkable", "fromLink"),
+				new go.Binding("toLinkable", "toLink")
+			),
+			$(go.Panel, "Vertical",
+				{ margin: 3 },
+				$(go.Shape,
+					{ fill: colors["white"], strokeWidth: 0},
+					new go.Binding("geometryString", "geo", geoFunc)
+				)	
+			)
+		);
+    
+    var handsetHoldTemplate =
+		$(go.Node, "Spot", nodeTemplateStyle(),
+			$(go.Shape, "Rectangle", shapeStyle(),
+				new go.Binding("fill", "color"),
+				new go.Binding("fromLinkable", "fromLink"),
+				new go.Binding("toLinkable", "toLink")
+			),
+			$(go.Panel, "Vertical",
+				{ margin: 3 },
+				$(go.Shape,
+					{ fill: colors["white"], strokeWidth: 0},
+					new go.Binding("geometryString", "geo", geoFunc)
+				)	
+			)
+		);
+    
+    var numpadTemplate =
+		$(go.Node, "Spot", nodeTemplateStyle(),
+			$(go.Shape, "Rectangle", shapeStyle(),
+				new go.Binding("fill", "color"),
+				new go.Binding("fromLinkable", "fromLink"),
+				new go.Binding("toLinkable", "toLink")
+			),
+			$(go.Panel, "Vertical",
+				{ margin: 3 },
+				$(go.Shape,
+					{ fill: colors["white"], strokeWidth: 0},
+					new go.Binding("geometryString", "geo", geoFunc)
+				)	
+			)
+		);
+    
+    var phonePadTemplate =
+		$(go.Node, "Spot", nodeTemplateStyle(),
+			$(go.Shape, "Rectangle", shapeStyle(),
+				new go.Binding("fill", "color"),
+				new go.Binding("fromLinkable", "fromLink"),
+				new go.Binding("toLinkable", "toLink")
+			),
+			$(go.Panel, "Vertical",
+				{ margin: 3 },
+				$(go.Shape,
+					{ fill: colors["white"], strokeWidth: 0},
+					new go.Binding("geometryString", "geo", geoFunc)
+				)	
+			)
+		);
+    
+    var exchangeTemplate =
+		$(go.Node, "Spot", nodeTemplateStyle(),
+			$(go.Shape, "Rectangle", shapeStyle(),
+				new go.Binding("fill", "color"),
+				new go.Binding("fromLinkable", "fromLink"),
+				new go.Binding("toLinkable", "toLink")
+			),
+			$(go.Panel, "Vertical",
+				{ margin: 3 },
+				$(go.Shape,
+					{ fill: colors["white"], strokeWidth: 0},
+					new go.Binding("geometryString", "geo", geoFunc)
+				)	
+			)
+		);
+    
+    var databaseTemplate =
+		$(go.Node, "Spot", nodeTemplateStyle(),
+			$(go.Shape, "Rectangle", shapeStyle(),
+				new go.Binding("fill", "color"),
+				new go.Binding("fromLinkable", "fromLink"),
+				new go.Binding("toLinkable", "toLink")
+			),
+			$(go.Panel, "Vertical",
+				{ margin: 3 },
+				$(go.Shape,
+					{ fill: colors["white"], strokeWidth: 0},
+					new go.Binding("geometryString", "geo", geoFunc)
+				)	
+			)
+		);
+    
+    var recordTemplate =
+		$(go.Node, "Spot", nodeTemplateStyle(),
+			$(go.Shape, "Rectangle", shapeStyle(),
+				new go.Binding("fill", "color"),
+				new go.Binding("fromLinkable", "fromLink"),
+				new go.Binding("toLinkable", "toLink")
+			),
+			$(go.Panel, "Vertical",
+				{ margin: 3 },
+				$(go.Shape,
+					{ fill: colors["white"], strokeWidth: 0},
+					new go.Binding("geometryString", "geo", geoFunc)
+				)	
+			)
+		);
+    
+    var lanWhiteTemplate =
+		$(go.Node, "Spot", nodeTemplateStyle(),
+			$(go.Shape, "Rectangle", shapeStyle(),
+				new go.Binding("fill", "color"),
+				new go.Binding("fromLinkable", "fromLink"),
+				new go.Binding("toLinkable", "toLink")
+			),
+			$(go.Panel, "Vertical",
+				{ margin: 3 },
+				$(go.Shape,
+					{ fill: colors["white"], strokeWidth: 0},
+					new go.Binding("geometryString", "geo", geoFunc)
+				)	
+			)
+		);
 
-      // creates relinkable Links that will avoid crossing Nodes when possible and will jump over other Links in their paths
-      myDiagram.linkTemplate =
-        $(go.Link,
-          { routing: go.Link.AvoidsNodes,
-            curve: go.Link.JumpOver,
-            corner: 3,
-            relinkableFrom: true, relinkableTo: true,
-            selectionAdorned: false, // Links are not adorned when selected so that their color remains visible.
-            shadowOffset: new go.Point(0, 0), shadowBlur: 5, shadowColor: "blue",
-          },
-          new go.Binding("isShadowed", "isSelected").ofObject(),
-          $(go.Shape,
-            { name: "SHAPE", strokeWidth: 2, stroke: red }));
+    var nodeTemplateMap = new go.Map("string", go.Node); 
+    
+    nodeTemplateMap.add("arrowOut", arrowOutTemplate);
+    nodeTemplateMap.add("arrowIn", arrowInTemplate);
+    nodeTemplateMap.add("cleanMap", cleanMapTemplate);
+    nodeTemplateMap.add("treasureMap", treasureMapTemplate);
+    nodeTemplateMap.add("handset", handsetTemplate);
+    nodeTemplateMap.add("handsetIn", handsetInTemplate);
+    nodeTemplateMap.add("handsetOut", handsetOutTemplate);
+    nodeTemplateMap.add("handsetHangup", handsetHangupTemplate);
+    nodeTemplateMap.add("handsetHold", handsetHoldTemplate);
+    nodeTemplateMap.add("numpad", numpadTemplate);
+    nodeTemplateMap.add("phonePad", phonePadTemplate);
+    nodeTemplateMap.add("exchange", exchangeTemplate);
+    nodeTemplateMap.add("database", databaseTemplate);
+    nodeTemplateMap.add("record", recordTemplate);
+    nodeTemplateMap.add("lanWhite", lanWhiteTemplate);
+    
+    ivrDiagram.nodeTemplateMap = nodeTemplateMap;
+            
+	jQuery("#accordion").accordion({
+        activate: function(event, ui) {
+        	standardPalette.requestUpdate();
+			extendedPalette.requestUpdate();
+        }
+    });
 
-      // node template helpers
-      var sharedToolTip =
-        $(go.Adornment, "Auto",
-          $(go.Shape, "RoundedRectangle", { fill: "lightyellow" }),
-          $(go.TextBlock, { margin: 2 },
-            new go.Binding("text",  "" , function(d) { return d.category; })));
+    // initialize the Palette, of standard items
+	standardPalette =
+		$(go.Palette, "standardPalette",
+    		{ // share the templates with the main Diagram
+				nodeTemplateMap: nodeTemplateMap,
+            	//groupTemplate: ivrDiagram.groupTemplate,
+            	layout: $(go.GridLayout,{
+            		cellSize: new go.Size(5, 5),
+                    wrappingColumn: 3
+            	})
+        	});
+   	
+	standardPalette.model.nodeDataArray = [
+		{ category: "handset", 			geo: "handset", 		color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"handset"+"Node.elementSettings.title"}__}]]  },
+		{ category: "handsetIn", 		geo: "handset-in", 		color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"handsetIn"+"Node.elementSettings.title"}__}]]  },
+		{ category: "handsetOut", 		geo: "handset-out", 	color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"handsetOut"+"Node.elementSettings.title"}__}]]  },
+		{ category: "handsetHangup", 	geo: "handset-hangup", 	color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"handsetHangup"+"Node.elementSettings.title"}__}]]  },
+		{ category: "handsetHold", 		geo: "handset-hold", 	color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"handsetHold"+"Node.elementSettings.title"}__}]]  },
+		{ category: "numpad", 			geo: "numpad", 			color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"numpad"+"Node.elementSettings.title"}__}]]  },
+		{ category: "phonePad", 		geo: "phone-pad", 		color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"phonePad"+"Node.elementSettings.title"}__}]]  },
+		{ category: "lanWhite", 		geo: "lan-white", 		color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"lanWhite"+"Node.elementSettings.title"}__}]]  }
+    ];
+	
+	// initialize the Palette, of standard items
+	extendedPalette =
+		$(go.Palette, "extendedPalette",
+    		{ // share the templates with the main Diagram
+				nodeTemplateMap: nodeTemplateMap,
+            	//groupTemplate: ivrDiagram.groupTemplate,
+            	layout: $(go.GridLayout,{
+            		cellSize: new go.Size(5, 5),
+                    wrappingColumn: 3
+            	})
+        	});
+   	
+	extendedPalette.model.nodeDataArray = [
+		{ category: "arrowOut", 		geo: "arrow-out", 		color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"arrowOut"+"Node.elementSettings.title"}__}]] },
+		{ category: "arrowIn", 			geo: "arrow-in", 		color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"arrowIn"+"Node.elementSettings.title"}__}]] },
+		{ category: "cleanMap", 		geo: "clean-map", 		color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"cleanMap"+"Node.elementSettings.title"}__}]] },
+		{ category: "treasureMap", 		geo: "treasure-map", 	color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"treasureMap"+"Node.elementSettings.title"}__}]] },
+		{ category: "exchange", 		geo: "exchange", 		color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"exchange"+"Node.elementSettings.title"}__}]] },
+		{ category: "database", 		geo: "database", 		color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"database"+"Node.elementSettings.title"}__}]] },
+		{ category: "record", 			geo: "record", 			color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"record"+"Node.elementSettings.title"}__}]] },
+		{ category: "lanWhite", 		geo: "lan-white", 		color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"lanWhite"+"Node.elementSettings.title"}__}]] }
+	];
 
-      // define some common property settings
-      function nodeStyle() {
-        return [new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
-                new go.Binding("isShadowed", "isSelected").ofObject(),
-                {
-                  selectionAdorned: false,
-                  shadowOffset: new go.Point(0, 0),
-                  shadowBlur: 15,
-                  shadowColor: "blue",
-                  toolTip: sharedToolTip
-                }];
-      }
+	ivrDiagram.addDiagramListener("ExternalObjectsDropped",
+		function(e) {
+			var part = e.diagram.selection.first();
+		    if (!(part instanceof go.Link)) {
+		    	addNode(part.data.category, part.data.key);
+		    	//showMessage("Clicked on " + part.data.key + " " + part.data.category);
+		    }
+	});
+	
+	
+	ivrDiagram.addDiagramListener("SelectionDeleted",
+		function(e) {
+			if ((e.subject instanceof go.Set) && (e.subject.first() instanceof go.Node)){ 
+				var part = e.subject.first();
+				removeNode(part.data.category, part.data.key);
+				clearElementSettingsView();
+				//showMessage("Clicked on " + part.data.key + " " + part.data.category);
+			}	
+	});
+	
+	
+	ivrDiagram.addDiagramListener("ObjectSingleClicked",
+		function(e) {
+			var part = e.subject.part;
+		    if (!(part instanceof go.Link)) {
+		    	infoNode(part.data.key);
+		    	//showMessage("Clicked on " + part.data.key + " " + part.data.category);
+		    }
+	});
 
-      function shapeStyle() {
-        return {
-          name: "NODESHAPE",
-          fill: "lightgray",
-          stroke: "darkslategray",
-          desiredSize: new go.Size(40, 40),
-          strokeWidth: 2
-        };
-      }
+	ivrDiagram.addDiagramListener("BackgroundSingleClicked",
+		function(e) { 
+			clearElementSettingsView();
+	});
+	
+	
 
-      function portStyle(input) {
-        return {
-          desiredSize: new go.Size(6, 6),
-          fill: "black",
-          fromSpot: go.Spot.Right,
-          fromLinkable: !input,
-          toSpot: go.Spot.Left,
-          toLinkable: input,
-          toMaxLinks: 1,
-          cursor: "pointer"
-        };
-      }
-
-      // define templates for each type of node
-      var inputTemplate =
-        $(go.Node, "Spot", nodeStyle(),
-          $(go.Shape, "Circle", shapeStyle(),
-            { fill: red }),  // override the default fill (from shapeStyle()) to be red
-          $(go.Shape, "Rectangle", portStyle(false),  // the only port
-            { portId: "", alignment: new go.Spot(1, 0.5) }),
-          { // if double-clicked, an input node will change its value, represented by the color.
-            doubleClick: function (e, obj) {
-                e.diagram.startTransaction("Toggle Input");
-                var shp = obj.findObject("NODESHAPE");
-                shp.fill = (shp.fill === green) ? red : green;
-                updateStates();
-                e.diagram.commitTransaction("Toggle Input");
-              }
-          }
-        );
-
-      var outputTemplate =
-        $(go.Node, "Spot", nodeStyle(),
-          $(go.Shape, "Rectangle", shapeStyle(),
-            { fill: green }),  // override the default fill (from shapeStyle()) to be green
-          $(go.Shape, "Rectangle", portStyle(true),  // the only port
-            { portId: "", alignment: new go.Spot(0, 0.5) })
-        );
-
-      var andTemplate =
-        $(go.Node, "Spot", nodeStyle(),
-          $(go.Shape, "AndGate", shapeStyle()),
-          $(go.Shape, "Rectangle", portStyle(true),
-            { portId: "in1", alignment: new go.Spot(0, 0.3) }),
-          $(go.Shape, "Rectangle", portStyle(true),
-            { portId: "in2", alignment: new go.Spot(0, 0.7) }),
-          $(go.Shape, "Rectangle", portStyle(false),
-            { portId: "out", alignment: new go.Spot(1, 0.5) })
-        );
-
-      var orTemplate =
-        $(go.Node, "Spot", nodeStyle(),
-          $(go.Shape, "OrGate", shapeStyle()),
-          $(go.Shape, "Rectangle", portStyle(true),
-            { portId: "in1", alignment: new go.Spot(0.16, 0.3) }),
-          $(go.Shape, "Rectangle", portStyle(true),
-            { portId: "in2", alignment: new go.Spot(0.16, 0.7) }),
-          $(go.Shape, "Rectangle", portStyle(false),
-            { portId: "out", alignment: new go.Spot(1, 0.5) })
-        );
-
-      var xorTemplate =
-        $(go.Node, "Spot", nodeStyle(),
-          $(go.Shape, "XorGate", shapeStyle()),
-          $(go.Shape, "Rectangle", portStyle(true),
-            { portId: "in1", alignment: new go.Spot(0.26, 0.3) }),
-          $(go.Shape, "Rectangle", portStyle(true),
-            { portId: "in2", alignment: new go.Spot(0.26, 0.7) }),
-          $(go.Shape, "Rectangle", portStyle(false),
-            { portId: "out", alignment: new go.Spot(1, 0.5) })
-        );
-
-      var norTemplate =
-        $(go.Node, "Spot", nodeStyle(),
-          $(go.Shape, "NorGate", shapeStyle()),
-          $(go.Shape, "Rectangle", portStyle(true),
-            { portId: "in1", alignment: new go.Spot(0.16, 0.3) }),
-          $(go.Shape, "Rectangle", portStyle(true),
-            { portId: "in2", alignment: new go.Spot(0.16, 0.7) }),
-          $(go.Shape, "Rectangle", portStyle(false),
-            { portId: "out", alignment: new go.Spot(1, 0.5) })
-        );
-
-      var xnorTemplate =
-        $(go.Node, "Spot", nodeStyle(),
-          $(go.Shape, "XnorGate", shapeStyle()),
-          $(go.Shape, "Rectangle", portStyle(true),
-            { portId: "in1", alignment: new go.Spot(0.26, 0.3) }),
-          $(go.Shape, "Rectangle", portStyle(true),
-            { portId: "in2", alignment: new go.Spot(0.26, 0.7) }),
-          $(go.Shape, "Rectangle", portStyle(false),
-            { portId: "out", alignment: new go.Spot(1, 0.5) })
-        );
-
-      var nandTemplate =
-        $(go.Node, "Spot", nodeStyle(),
-          $(go.Shape, "NandGate", shapeStyle()),
-          $(go.Shape, "Rectangle", portStyle(true),
-            { portId: "in1", alignment: new go.Spot(0, 0.3) }),
-          $(go.Shape, "Rectangle", portStyle(true),
-            { portId: "in2", alignment: new go.Spot(0, 0.7) }),
-          $(go.Shape, "Rectangle", portStyle(false),
-            { portId: "out", alignment: new go.Spot(1, 0.5) })
-        );
-
-      var notTemplate =
-        $(go.Node, "Spot", nodeStyle(),
-          $(go.Shape, "Inverter", shapeStyle()),
-          $(go.Shape, "Rectangle", portStyle(true),
-            { portId: "in", alignment: new go.Spot(0, 0.5) }),
-          $(go.Shape, "Rectangle", portStyle(false),
-            { portId: "out", alignment: new go.Spot(1, 0.5) })
-        );
+	/*ivrDiagram.addDiagramListener("ClipboardPasted",
+		function(e) { showMessage("Pasted " + e.diagram.selection.count + " parts"); 
+	});
+	*/
+	ivrDiagram.addDiagramListener("SelectionDeleting",
+		function(e) {
+			if (e.diagram.selection.count > 1) {
+		    	e.cancel = true;
+		        showMessage("Cannot delete multiple selected parts");
+		    }
+	});
 
 	
-      
-      // add the templates created above to myDiagram and palette
-      myDiagram.nodeTemplateMap.add("input", inputTemplate);
-      myDiagram.nodeTemplateMap.add("output", outputTemplate);
-      myDiagram.nodeTemplateMap.add("and", andTemplate);
-      myDiagram.nodeTemplateMap.add("or", orTemplate);
-      myDiagram.nodeTemplateMap.add("xor", xorTemplate);
-      myDiagram.nodeTemplateMap.add("not", notTemplate);
-      myDiagram.nodeTemplateMap.add("nand", nandTemplate);
-      myDiagram.nodeTemplateMap.add("nor", norTemplate);
-      myDiagram.nodeTemplateMap.add("xnor", xnorTemplate);
+    // load the initial diagram
+    load();
 
-     jQuery("#accordion").accordion({
-          activate: function(event, ui) {
-            myPaletteSmall.requestUpdate();
-            myPaletteTall.requestUpdate();
-            myPaletteSVG.requestUpdate();
-           
-          }
-        });
-
-        // initialize the first Palette
-        myPaletteSmall =
-          $(go.Palette, "myPaletteSmall",
-            { // share the templates with the main Diagram
-              nodeTemplateMap: myDiagram.nodeTemplateMap,
-              //groupTemplate: myDiagram.groupTemplate,
-              layout: $(go.GridLayout)
-            });
-
-	myPaletteSmall.model.nodeDataArray = [
-     	{ category: "input" },
-        { category: "output" },
-        { category: "and" },
-        { category: "or" },
-        { category: "xor" }
-    ];
-        
-    // initialize the second Palette, of tall items
-    myPaletteTall =
-	$(go.Palette, "myPaletteTall",
-    	{ // share the templates with the main Diagram
-        	nodeTemplateMap: myDiagram.nodeTemplateMap,
-            //groupTemplate: myDiagram.groupTemplate,
-            layout: $(go.GridLayout)
-        });
-           
-   	myPaletteTall.model.nodeDataArray = [
-    	{ category: "not" },
-		{ category: "nand" },
-		{ category: "nor" },
-		{ category: "xnor" },
-		
-    ];
-   	
-   	
-   	
-   	//SVG ELEMENTS
- // initialize the second Palette, of tall items
-    myPaletteSVG =
-	$(go.Palette, "myPaletteSVG",
-    	{ // share the templates with the main Diagram
-		nodeTemplate: myDiagram.nodeTemplate,
-            //groupTemplate: myDiagram.groupTemplate,
-            layout: $(go.GridLayout)
-        });
-           
- // Convert the icons collection into an Array of JavaScript objects
-    var nodeArray = [];
-    for (var k in icons) {
-    	nodeArray.push({ geo: k, color: colors["blue"], from: true, to: true });
-    }
-    myPaletteSVG.model.nodeDataArray = nodeArray;
-    
-    
-            
-     // load the initial diagram
-        load();
-
-        // continually update the diagram
-        loop();
-    }
-
-    // update the diagram every 250 milliseconds
-    function loop() {
-      setTimeout(function() { updateStates(); loop(); }, 250);
-    }
-
-    // update the value and appearance of each node according to its type and input values
-    function updateStates() {
-      var oldskip = myDiagram.skipsUndoManager;
-      myDiagram.skipsUndoManager = true;
-      // do all "input" nodes first
-      myDiagram.nodes.each(function(node) {
-          if (node.category === "input") {
-            doInput(node);
-          }
-        });
-      // now we can do all other kinds of nodes
-      myDiagram.nodes.each(function(node) {
-          switch (node.category) {
-            case "and":       doAnd(node); break;
-            case "or":         doOr(node); break;
-            case "xor":       doXor(node); break;
-            case "not":       doNot(node); break;
-            case "nand":     doNand(node); break;
-            case "nor":       doNor(node); break;
-            case "xnor":     doXnor(node); break;
-            case "output": doOutput(node); break;
-            case "input": break;  // doInput already called, above
-          }
-        });
-      myDiagram.skipsUndoManager = oldskip;
-    }
-
-    // helper predicate
-    function linkIsTrue(link) {  // assume the given Link has a Shape named "SHAPE"
-      return link.findObject("SHAPE").stroke === green;
-    }
-
-    // helper function for propagating results
-    function setOutputLinks(node, color) {
-      node.findLinksOutOf().each(function(link) { link.findObject("SHAPE").stroke = color; });
-    }
-
-    // update nodes by the specific function for its type
-    // determine the color of links coming out of this node based on those coming in and node type
-
-    function doInput(node) {
-      // the output is just the node's Shape.fill
-      setOutputLinks(node, node.findObject("NODESHAPE").fill);
-    }
-
-    function doAnd(node) {
-      var color = node.findLinksInto().all(linkIsTrue) ? green : red;
-      setOutputLinks(node, color);
-    }
-    function doNand(node) {
-      var color = !node.findLinksInto().all(linkIsTrue) ? green : red;
-      setOutputLinks(node, color);
-    }
-    function doNot(node) {
-      var color = !node.findLinksInto().all(linkIsTrue) ? green : red;
-      setOutputLinks(node, color);
-    }
-
-    function doOr(node) {
-      var color = node.findLinksInto().any(linkIsTrue) ? green : red;
-      setOutputLinks(node, color);
-    }
-    function doNor(node) {
-      var color = !node.findLinksInto().any(linkIsTrue) ? green : red;
-      setOutputLinks(node, color);
-    }
-
-    function doXor(node) {
-      var truecount = 0;
-      node.findLinksInto().each(function(link) { if (linkIsTrue(link)) truecount++; });
-      var color = truecount % 2 === 0 ? green : red;
-      setOutputLinks(node, color);
-    }
-    function doXnor(node) {
-      var truecount = 0;
-      node.findLinksInto().each(function(link) { if (linkIsTrue(link)) truecount++; });
-      var color = truecount % 2 !== 0 ? green : red;
-      setOutputLinks(node, color);
-    }
-
-    function doOutput(node) {
-      // assume there is just one input link
-      // we just need to update the node's Shape.fill
-      node.linksConnected.each(function(link) { node.findObject("NODESHAPE").fill = link.findObject("SHAPE").stroke; });
-    }
-
+}
     // save a model to and load a model from JSON text, displayed below the Diagram
     function save() {
-      document.getElementById("mySavedModel").value = myDiagram.model.toJson();
-      myDiagram.isModified = false;
+      document.getElementById("mySavedModel").value = ivrDiagram.model.toJson();
+      ivrDiagram.isModified = false;
     }
     function load() {
-      myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
+      ivrDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
+      clearElementSettingsView();
     }
-	          
+    
+ 	// a GraphObject.click event handler to show arrowhead information
+    function showMessage(s) {
+ 		alert(s);
+    //document.getElementById("diagramEventsMsg").textContent = s;
+  	}
+ 	
+    var schemaMap = new Map();
+    
+ 	function addNode(type, index){
+ 		$.ajax({
+			type: 'POST',
+			url: "/ivrs/addNode",
+			data: ({
+				index: index,
+				type: type
+			}),
+		}).done(function(data) {
+			schemaMap.set(index, data);
+			schemaMap.forEach(logMapElements);
+			infoNode(index);	
+			
+		});
+ 	}
+ 	
+ 	function removeNode(type, index){
+ 		var sisyphus = $("#"+type+"FormContent"+index).sisyphus(); 
+		$.ajax({
+			type: 'POST',
+			url: "/ivrs/removeNode",
+			data: ({
+				index: index,
+				type: type
+			}),
+		}).done(function(data) {
+			schemaMap.delete(data.index);
+			sisyphus.manuallyReleaseData();
+			schemaMap.forEach(logMapElements);
+		});
+ 	}
+ 	
+ 	function infoNode(index){
+ 		$.ajax({
+			type: 'GET',
+			url: "/ivrs/infoNode",
+			data: ({
+				index: index
+			}),
+		}).done(function(data) {
+			$("#ivrElementSettings").html(data);
+			
+		});
+ 	}
+ 	
+ 	function clearElementSettingsView(){
+		$("#ivrElementSettings").html(emptySelection());
+ 	}
+ 	
+ 	function nodeSelected(type, index){
+ 		if(!getNodeInfo(index))
+ 			newNode(type, index);
+ 	}
+ 	
+ 	function getNodeInfo(key){
+ 		if(schemaMap.has(key)){
+ 			console.log("Object with key: "+key+" from schema map: "+schemaMap.get(key));
+ 			schemaMap.forEach(logMapElements);
+ 		}	
+ 		else
+ 			return false;
+ 	} 
+ 	
+ 	function logMapElements(value, key, map) {
+ 	    console.log("index[" + key + "] = " + value);
+ 	}
+ 	
+ 	function emptySelection(){
+ 		var html='<div id="emptySelectionFormContent" class="col-lg-12"> <center><h4>Empty Selection</h4></center> <br/> <br/> </div>';
+ 		return html;
+ 	}
+ 	
+ 	function clearLocalStorage(){
+ 		while (localStorage.length) localStorage.removeItem(localStorage.key(0));
+ 	}
+
 	/*]]>*/
 	</script>
 

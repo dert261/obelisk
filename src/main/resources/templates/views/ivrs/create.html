@@ -20,7 +20,7 @@
 		<div class="row">
 			
 			<form action="#" th:action="@{/timezones/create}" th:object="${timezone}" th:method="POST" method="POST" class="well form">
-				<head th:replace="timezones/form :: timezoneFormContent" />			
+				<div th:replace="timezones/form :: timezoneFormContent" ></div>			
 			</form>
 		</div>
 	</div>
