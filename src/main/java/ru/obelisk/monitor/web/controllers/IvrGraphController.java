@@ -38,14 +38,18 @@ public class IvrGraphController {
 	@RequestMapping(value = {"/infoNode"}, method = RequestMethod.GET)
 	@Secured("ROLE_ADMIN")
 	public String getNodeInfo(Model model,
-					@RequestParam int index/*,
-					@RequestParam String type*/
+					@RequestParam int index,
+					@RequestParam String type
 			) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{ 
 		logger.info("Requesting ivr node info objects");
 		
 		Node node = null;
 		if(schemaMap.containsKey(index)){
 			node = schemaMap.get(index);
+		} else {
+			node = new HandsetInNode();
+			node.setIndex(index);
+			node.setType(type);
 		}
 		model.addAttribute("node", node);
 		return "ivrs/nodes/"+node.getType()+"::"+node.getType()+"FormContent";

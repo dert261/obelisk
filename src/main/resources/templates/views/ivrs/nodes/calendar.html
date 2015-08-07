@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-				<div th:fragment="handsetInFormContent" id="handsetInFormContent" class="col-lg-12">
+				<div th:fragment="calendarFormContent" id="calendarFormContent" class="col-lg-12">
 					<form action="#" th:object="${node}" th:id="${node.type}+'FormContent'+${node.index}">
-						<center><h4 th:text="#{handsetInNode.elementSettings.title}">HeadsetIn menu context form</h4></center>
+						<center><h4 th:text="#{calendarNode.elementSettings.title}">Calendar menu context form</h4></center>
 				    		<fieldset>
 								<div th:include="fragment/fielddefinition :: textFormField('numberPatternA',true, text, 'handsetInNode.field')">Number pattern A</div>
 								<div th:include="fragment/fielddefinition :: textFormField('numberPatternB',true, text, 'handsetInNode.field')">Number pattern B</div>

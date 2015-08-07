@@ -52,17 +52,34 @@
 						</div>
 					</div>				
 			</div>
- 			<div class="row" style="display: none;">
+ 			<div class="row" style="display: block;">
 
   <textarea id="mySavedModel" style="width:100%;height:200px">
 { "class": "go.GraphLinksModel",
   "linkFromPortIdProperty": "fromPort",
   "linkToPortIdProperty": "toPort",
   "nodeDataArray": [ 
-{"category":"handsetOut", "geo":"handset-out", "color":"#00B5CB", "fromLink":true, "toLink":true, "key":-7, "loc":"-420 -60"},
-{"category":"numpad", "geo":"numpad", "color":"#00B5CB", "fromLink":true, "toLink":true, "key":-10, "loc":"-400 60"}
+{"category":"handsetIn", "geo":"handset-in", "color":"#00B5CB", "fromLink":true, "toLink":true, "hint":"Входящий вызов", "key":-2, "loc":"-470 -210"},
+{"category":"calendar", "geo":"calendar", "color":"#00B5CB", "fromLink":true, "toLink":true, "hint":"Время работы", "key":-4, "loc":"-470 -110"},
+{"category":"handsetOut", "geo":"handset-out", "color":"#00B5CB", "fromLink":true, "toLink":true, "hint":"Исходящий вызов", "key":-3, "loc":"-580 -10"},
+{"category":"lanWhite", "geo":"lan-white", "color":"#00B5CB", "fromLink":true, "toLink":true, "hint":"Голосовое меню", "key":-9, "loc":"-360 -10"},
+{"category":"handsetOut", "geo":"handset-out", "color":"#00B5CB", "fromLink":true, "toLink":true, "hint":"Исходящий вызов", "key":-5, "loc":"-440 100"},
+{"category":"handsetOut", "geo":"handset-out", "color":"#00B5CB", "fromLink":true, "toLink":true, "hint":"Исходящий вызов", "key":-6, "loc":"-360 100"},
+{"category":"exchange", "geo":"exchange", "color":"#00B5CB", "fromLink":true, "toLink":true, "hint":"Точка обмена", "key":-7, "loc":"-280 100"},
+{"category":"handsetHangup", "geo":"handset-hangup", "color":"#00B5CB", "fromLink":true, "toLink":true, "hint":"Завершение вызова", "key":-8, "loc":"-510 200"}
  ],
-  "linkDataArray": [ {"from":-7, "to":-10, "fromPort":"", "toPort":""} ]}
+  "linkDataArray": [ 
+{"from":-2, "to":-4, "fromPort":"", "toPort":""},
+{"from":-4, "to":-3, "fromPort":"", "toPort":""},
+{"from":-4, "to":-9, "fromPort":"", "toPort":""},
+{"from":-9, "to":-5, "fromPort":"", "toPort":""},
+{"from":-9, "to":-6, "fromPort":"", "toPort":""},
+{"from":-9, "to":-7, "fromPort":"", "toPort":""},
+{"from":-5, "to":-8, "fromPort":"", "toPort":""},
+{"from":-6, "to":-8, "fromPort":"", "toPort":""},
+{"from":-7, "to":-8, "fromPort":"", "toPort":""},
+{"from":-3, "to":-8, "fromPort":"", "toPort":""}
+ ]}
   </textarea>
 			</div>	
 		</div>
@@ -464,6 +481,23 @@
 			)
 		);
 
+    var calendarTemplate =
+		$(go.Node, "Spot", nodeTemplateStyle(),
+			$(go.Shape, "Rectangle", shapeStyle(),
+				new go.Binding("fill", "color"),
+				new go.Binding("fromLinkable", "fromLink"),
+				new go.Binding("toLinkable", "toLink")
+			),
+			$(go.Panel, "Vertical",
+				{ margin: 3 },
+				$(go.Shape,
+					{ fill: colors["white"], strokeWidth: 0},
+					new go.Binding("geometryString", "geo", geoFunc)
+				)	
+			)
+		);
+
+    
     var nodeTemplateMap = new go.Map("string", go.Node); 
     
     nodeTemplateMap.add("arrowOut", arrowOutTemplate);
@@ -481,6 +515,7 @@
     nodeTemplateMap.add("database", databaseTemplate);
     nodeTemplateMap.add("record", recordTemplate);
     nodeTemplateMap.add("lanWhite", lanWhiteTemplate);
+    nodeTemplateMap.add("calendar", calendarTemplate);
     
     ivrDiagram.nodeTemplateMap = nodeTemplateMap;
             
@@ -507,6 +542,7 @@
 		{ category: "handset", 			geo: "handset", 		color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"handset"+"Node.elementSettings.title"}__}]]  },
 		{ category: "handsetIn", 		geo: "handset-in", 		color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"handsetIn"+"Node.elementSettings.title"}__}]]  },
 		{ category: "handsetOut", 		geo: "handset-out", 	color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"handsetOut"+"Node.elementSettings.title"}__}]]  },
+		{ category: "calendar", 		geo: "calendar", 		color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"calendar"+"Node.elementSettings.title"}__}]]  },
 		{ category: "handsetHangup", 	geo: "handset-hangup", 	color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"handsetHangup"+"Node.elementSettings.title"}__}]]  },
 		{ category: "handsetHold", 		geo: "handset-hold", 	color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"handsetHold"+"Node.elementSettings.title"}__}]]  },
 		{ category: "numpad", 			geo: "numpad", 			color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"numpad"+"Node.elementSettings.title"}__}]]  },
@@ -533,8 +569,8 @@
 		{ category: "treasureMap", 		geo: "treasure-map", 	color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"treasureMap"+"Node.elementSettings.title"}__}]] },
 		{ category: "exchange", 		geo: "exchange", 		color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"exchange"+"Node.elementSettings.title"}__}]] },
 		{ category: "database", 		geo: "database", 		color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"database"+"Node.elementSettings.title"}__}]] },
-		{ category: "record", 			geo: "record", 			color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"record"+"Node.elementSettings.title"}__}]] },
-		{ category: "lanWhite", 		geo: "lan-white", 		color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"lanWhite"+"Node.elementSettings.title"}__}]] }
+		{ category: "record", 			geo: "record", 			color: colors["blue"], fromLink: true, toLink: true, hint: [[#{__${"record"+"Node.elementSettings.title"}__}]] }
+		
 	];
 
 	ivrDiagram.addDiagramListener("ExternalObjectsDropped",
@@ -562,7 +598,7 @@
 		function(e) {
 			var part = e.subject.part;
 		    if (!(part instanceof go.Link)) {
-		    	infoNode(part.data.key);
+		    	infoNode(part.data.category, part.data.key);
 		    	//showMessage("Clicked on " + part.data.key + " " + part.data.category);
 		    }
 	});
@@ -641,16 +677,32 @@
 		});
  	}
  	
- 	function infoNode(index){
+ 	function infoNode(type,index){
+ 		
  		$.ajax({
 			type: 'GET',
 			url: "/ivrs/infoNode",
 			data: ({
-				index: index
+				index: index,
+				type:type
 			}),
 		}).done(function(data) {
 			$("#ivrElementSettings").html(data);
-			
+			var node = schemaMap.get(index);
+			//var sisyphusForm = $("#"+node.type+"FormContent"+node.index);
+			//var node = schemaMap.get(index);
+			/*if(!node.sisyphus) {
+				 
+				node.sisyphus = sisyphusInit(sisyphusForm, node); 
+				schemaMap.set(index, node);
+			} else {
+				node.sisyphus.restoreAllData();
+				//sisyphusInit(sisyphusForm, node);
+				//sisyphusInit(node);
+				//var sisyphus = $("#"+node.type+"FormContent"+node.index).sisyphus();
+				//sisyphus.restore();
+			}*/
+			schemaMap.forEach(logMapElements);
 		});
  	}
  	
@@ -673,7 +725,7 @@
  	} 
  	
  	function logMapElements(value, key, map) {
- 	    console.log("index[" + key + "] = " + value);
+ 	    console.log("index[" + key + "] = " + JSON.stringify(value));
  	}
  	
  	function emptySelection(){
@@ -684,6 +736,49 @@
  	function clearLocalStorage(){
  		while (localStorage.length) localStorage.removeItem(localStorage.key(0));
  	}
+ 	
+ 	function updateSchemaMapDataBinding(index, object){
+ 		var curr = schemaMap.get(index);
+ 		curr["form"]=object;
+ 		schemaMap.set(index,curr);
+ 		schemaMap.forEach(logMapElements);
+ 	}
+ 	
+ 	function formSerialize(idForm){
+		return $('#'+idForm).serializeArray().reduce(function(obj, item) {
+		    obj[item.name] = item.value;
+		    return obj;
+		}, {});
+	}
+ 	
+ 	function sisyphusInit (form, node) {
+		var sys = form.sisyphus({
+			timeout: 0,
+			autoRelease: true,
+			
+			onBeforeSave: function(){
+				console.log('AUTOSAVE : Before Save');
+			},
+			onSave: function() {            
+		        
+				console.log('AUTOSAVE : Saved');
+		        updateSchemaMapDataBinding(
+		        		node.index, 
+		        		formSerialize(node.type+'FormContent'+node.index
+		        ));
+		        
+		    },
+		    onRestore: function() {
+		        console.log('AUTOSAVE : Restored');  
+		    },
+		    onRelease: function() {
+		        console.log("AUTOSAVE : Release cache");
+		    }
+			
+		});
+		return sys;
+			
+	}	
 
 	/*]]>*/
 	</script>
