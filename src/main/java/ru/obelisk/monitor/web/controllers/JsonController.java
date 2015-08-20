@@ -2,9 +2,13 @@ package ru.obelisk.monitor.web.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.servlet.http.HttpServletResponse;
+
+
 
 
 
@@ -40,8 +44,12 @@ public class JsonController {
 	@Secured("ROLE_ADMIN")
 	public @ResponseBody List<Channel> channelsData(HttpServletResponse res) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception {
 		List<Channel> list = new ArrayList<Channel>();
-		for (HostInfo host : hosts.getHostInfoList())
+		List<HostInfo> hostList = new CopyOnWriteArrayList<HostInfo>(hosts.getHostInfoList());
+		Iterator<HostInfo> hostIter = hostList.iterator();
+		while(hostIter.hasNext()){
+			HostInfo host = hostIter.next();
 			list.addAll(host.getChannels().getChannels());
+		}
 		return list;
 	}
 	
@@ -50,10 +58,13 @@ public class JsonController {
 	public @ResponseBody List<Peer> peersData(HttpServletResponse res) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception {
 		
 		List<Peer> list = new ArrayList<Peer>();
-		for (HostInfo host : hosts.getHostInfoList())
+		List<HostInfo> hostList = new CopyOnWriteArrayList<HostInfo>(hosts.getHostInfoList());
+		Iterator<HostInfo> hostIter = hostList.iterator();
+		while(hostIter.hasNext()){
+			HostInfo host = hostIter.next();
 			list.addAll(host.getPeers().getPeers());
-		
-		return list;//peers.getPeers();
+		}	
+		return list;
 	}
 		
 	@RequestMapping(value = {"/activeChannelCount.json"}, method = RequestMethod.GET)
@@ -61,9 +72,13 @@ public class JsonController {
 	public @ResponseBody int[] activeChannelsCount(HttpServletResponse res) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception {
 		
 		List<Channel> list = new ArrayList<Channel>();
-		for (HostInfo host : hosts.getHostInfoList())
+		List<HostInfo> hostList = new CopyOnWriteArrayList<HostInfo>(hosts.getHostInfoList());
+		Iterator<HostInfo> hostIter = hostList.iterator();
+		while(hostIter.hasNext()){
+			HostInfo host = hostIter.next();
 			list.addAll(host.getChannels().getChannels());
-				
+		}
+						
 		int[] count = {list.size()};
 		return count;
 	}
@@ -73,8 +88,12 @@ public class JsonController {
 	public @ResponseBody int activePeersCount(HttpServletResponse res) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception {
 		
 		List<Peer> list = new ArrayList<Peer>();
-		for (HostInfo host : hosts.getHostInfoList())
+		List<HostInfo> hostList = new CopyOnWriteArrayList<HostInfo>(hosts.getHostInfoList());
+		Iterator<HostInfo> hostIter = hostList.iterator();
+		while(hostIter.hasNext()){
+			HostInfo host = hostIter.next();
 			list.addAll(host.getPeers().getPeers());
+		}	
 		
 		return list.size();//peers.getPeers().size();
 	}

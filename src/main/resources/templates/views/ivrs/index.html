@@ -656,7 +656,7 @@
 		}).done(function(data) {
 			schemaMap.set(index, data);
 			schemaMap.forEach(logMapElements);
-			infoNode(index);	
+			infoNode(type,index);	
 			
 		});
  	}
@@ -703,11 +703,17 @@
 				//sisyphus.restore();
 			}*/
 			schemaMap.forEach(logMapElements);
+		}).fail(function(){
+			errorElementSettingsView();
 		});
  	}
  	
  	function clearElementSettingsView(){
 		$("#ivrElementSettings").html(emptySelection());
+ 	}
+ 	
+ 	function errorElementSettingsView(){
+		$("#ivrElementSettings").html(elementNotFoundSelection());
  	}
  	
  	function nodeSelected(type, index){
@@ -730,6 +736,11 @@
  	
  	function emptySelection(){
  		var html='<div id="emptySelectionFormContent" class="col-lg-12"> <center><h4>Empty Selection</h4></center> <br/> <br/> </div>';
+ 		return html;
+ 	}
+ 	
+ 	function elementNotFoundSelection(){
+ 		var html='<div id="emptySelectionFormContent" class="col-lg-12"> <center><h4>Element Not Found</h4></center> <br/> <br/> </div>';
  		return html;
  	}
  	

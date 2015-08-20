@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+				<div th:fragment="handsetOutFormContent" id="handsetOutFormContent" class="col-lg-12">
+					<form action="#" th:object="${node}" th:id="${node.type}+'FormContent'+${node.index}">
+						<center><h4 th:text="#{handsetOutNode.elementSettings.title}">HeadsetOut menu context form</h4></center>
+				    		<fieldset>
+								<div th:include="fragment/fielddefinition :: textFormField('numberPatternA',true, text, 'handsetInNode.field')">Number pattern A</div>
+								<div th:include="fragment/fielddefinition :: textFormField('numberPatternB',true, text, 'handsetInNode.field')">Number pattern B</div>
+							</fieldset>
+					</form>
+				</div>	
+</html>	

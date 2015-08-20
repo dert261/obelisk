@@ -5,8 +5,7 @@
 					<form action="#" th:object="${node}" th:id="${node.type}+'FormContent'+${node.index}">
 						<center><h4 th:text="#{calendarNode.elementSettings.title}">Calendar menu context form</h4></center>
 				    		<fieldset>
-								<div th:include="fragment/fielddefinition :: textFormField('numberPatternA',true, text, 'handsetInNode.field')">Number pattern A</div>
-								<div th:include="fragment/fielddefinition :: textFormField('numberPatternB',true, text, 'handsetInNode.field')">Number pattern B</div>
+								<div th:include="fragment/fielddefinition :: textFormField('timePeriod',true, text, 'calendarNode.field')">Time period</div>
 							</fieldset>
 					</form>
 				</div>	

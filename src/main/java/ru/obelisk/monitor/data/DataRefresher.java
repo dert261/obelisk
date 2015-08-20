@@ -1,10 +1,11 @@
 package ru.obelisk.monitor.data;
 
-//import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+
+//import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -28,10 +29,10 @@ public class DataRefresher {
 	@Scheduled(initialDelay=1000, fixedRate=1000)
 	public void refresh(){
 		Date curr = new Date();
-		List<HostInfo> removedHosts = new CopyOnWriteArrayList<HostInfo>();
-		
-		Iterator<HostInfo> iter = hosts.getHostInfoList().iterator();
-		//for(HostInfo host : hosts.getHostInfoList()){
+		List<HostInfo> hostsList = new ArrayList<HostInfo>(hosts.getHostInfoList());
+		List<HostInfo> removedHosts = new ArrayList<HostInfo>();
+				
+		Iterator<HostInfo> iter = hostsList.iterator();
 		while(iter.hasNext()){
 			HostInfo host = iter.next();
 			int secs = Seconds.secondsBetween(new DateTime(host.getTimestamp()), new DateTime(curr)).getSeconds();
@@ -39,10 +40,12 @@ public class DataRefresher {
 				removedHosts.add(host);
 			}
 		}	
-		//}
+
 		if(removedHosts.size()>0)
-			logger.info("Remove host. No packet from host: {}",removedHosts);
-		hosts.getHostInfoList().removeAll(removedHosts);
+			logger.trace("Remove host by timeout. No packet from host: {}",removedHosts);
+		hosts.removeAllHostsInfo(removedHosts);
+		
+		//hosts.getHostInfoList().removeAll(removedHosts);
 		
 	}
 }
