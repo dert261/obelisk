@@ -33,7 +33,7 @@ import ru.obelisk.monitor.web.ui.datatables.DatatablesResponse;
 import ru.obelisk.monitor.web.ui.select2.Select2Result;
 
 @Controller
-@RequestMapping("/timezones")
+@RequestMapping("/calendar/timezones")
 public class TimezoneController {
 	
 	private static Logger logger = LogManager.getLogger(TimezoneController.class);
@@ -57,7 +57,7 @@ public class TimezoneController {
 		Timezone timezone = new Timezone();
 		model.addAttribute("timezone", timezone);
 		model.addAttribute("timezoneAll", timezoneService.getAllTimezones());
-		return "timezones/index";
+		return "calendar/timezones/index";
 	}
 	
 	@JsonView(View.Timezone.class)
@@ -91,7 +91,7 @@ public class TimezoneController {
 		logger.info("Requesting create timezone page");
 		Timezone timezone = new Timezone();
 		model.addAttribute("timezone", timezone);
-		return "timezones/create";
+		return "calendar/timezones/create";
 	}
 		
 	@RequestMapping(value = {"/create"}, method = RequestMethod.POST)
@@ -102,11 +102,11 @@ public class TimezoneController {
 					throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting add timezone method");
 		if(bindingResult.hasErrors()){
-			return "timezones/create";
+			return "calendar/timezones/create";
 		}
 		timezoneService.addTimezone(timezone);
 		model.clear();
-        return "redirect:/timezones/index.html";
+        return "redirect:/calendar/timezones/index.html";
 	}
 	
 	@RequestMapping(value = {"/update/{id}"}, method = RequestMethod.GET)
@@ -117,7 +117,7 @@ public class TimezoneController {
 		logger.info("Requesting update timezones page");
 		Timezone timezone = timezoneService.getTimezoneById(id);
 		model.addAttribute("timezone", timezone);
-		return "timezones/update";
+		return "calendar/timezones/update";
 	}
 	
 	@RequestMapping(value = {"/update"}, method = RequestMethod.PUT)
@@ -129,11 +129,11 @@ public class TimezoneController {
 			throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting save update timezones method");
 		if(bindingResult.hasErrors()){
-			return "timezones/update";
+			return "calendar/timezones/update";
 		}
 		timezoneService.editTimezone(formTimezone);
 		status.setComplete();
-		return "redirect:/timezones/index.html";
+		return "redirect:/calendar/timezones/index.html";
 	}
 	
 	@RequestMapping(value = {"/delete"}, method = RequestMethod.DELETE)
@@ -143,6 +143,6 @@ public class TimezoneController {
 		logger.info("Requesting delete timezone");
 		timezoneService.deleteTimezone(id);
 		status.setComplete();
-		return "redirect:/timezones/index.html";
+		return "redirect:/calendar/timezones/index.html";
 	}
 }

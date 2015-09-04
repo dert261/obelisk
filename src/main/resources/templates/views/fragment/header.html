@@ -12,7 +12,10 @@
 	<link rel="stylesheet" src="/static/assets/startbootstrap/dist/css/timeline.css" th:href="@{/static/assets/startbootstrap/dist/css/timeline.css}" />
 	<link rel="stylesheet" src="/static/assets/startbootstrap/dist/css/sb-admin-2.css" th:href="@{/static/assets/startbootstrap/dist/css/sb-admin-2.css}" />
 	<link rel="stylesheet" src="/static/assets/startbootstrap/bower_components/morrisjs/morris.css" th:href="@{/static/assets/startbootstrap/bower_components/morrisjs/morris.css}" />
-	<link rel="stylesheet" src="/static/assets/startbootstrap/bower_components/font-awesome/css/font-awesome.min.css" th:href="@{/static/assets/startbootstrap/bower_components/font-awesome/css/font-awesome.min.css}" />
+	<link rel="stylesheet" src="/static/assets/font-awesome/4.4.0/css/font-awesome.min.css" th:href="@{/static/assets/font-awesome/4.4.0/css/font-awesome.min.css}" />
+	
+	<link rel="stylesheet" src="/static/assets/extensions/bootstrap-timepicker/css/bootstrap-timepicker.min.css" th:href="@{/static/assets/extensions/bootstrap-timepicker/css/bootstrap-timepicker.min.css}" />
+	
 	<link rel="stylesheet" src="/static/assets/data-tables-1.10.6/css/jquery.dataTables.css" th:href="@{/static/assets/data-tables-1.10.6/css/jquery.dataTables.css}" />  
 	<!-- <link rel="stylesheet" src="//cdn.datatables.net/1.10.7/css/jquery.dataTables.css" th:href="@{//cdn.datatables.net/1.10.7/css/jquery.dataTables.css}" /> -->
 	
@@ -34,7 +37,7 @@
 	<link rel="stylesheet" src="/static/assets/startbootstrap/dist/css/timeline.css" th:href="@{/static/assets/startbootstrap/dist/css/timeline.css}" />
 	<link rel="stylesheet" src="/static/assets/startbootstrap/dist/css/sb-admin-2.css" th:href="@{/static/assets/startbootstrap/dist/css/sb-admin-2.css}" />
 	<link rel="stylesheet" src="/static/assets/startbootstrap/bower_components/morrisjs/morris.css" th:href="@{/static/assets/startbootstrap/bower_components/morrisjs/morris.css}" />
-	<link rel="stylesheet" src="/static/assets/startbootstrap/bower_components/font-awesome/css/font-awesome.min.css" th:href="@{/static/assets/startbootstrap/bower_components/font-awesome/css/font-awesome.min.css}" />
+	<link rel="stylesheet" src="/static/assets/font-awesome/4.4.0/css/font-awesome.min.css" th:href="@{/static/assets/font-awesome/4.4.0/css/font-awesome.min.css}" />
 	<script src="/static/assets/jquery-1.11.2.min.js" th:href="@{/static/assets/jquery-1.11.2.min.js}" > </script>  
 	<link rel="stylesheet" src="/static/assets/metisMenu/2.0.1/metisMenu.min.css" th:href="@{/static/assets/metisMenu/2.0.1/metisMenu.min.css}" />
 </head>
@@ -292,7 +295,7 @@
                             <a href="#" th:utext="'&lt;i class=\'fa fa-table fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.state}+' &lt;span class=\'fa arrow\'&gt;&lt;/span&gt;'"><i class="fa fa-table fa-fw"></i>State<span class="fa arrow"></span></a>
 	                            <ul class="nav nav-second-level">
 	                            	<li>
-	                                    <a href="/server/all" th:utext="'&lt;i class=\'fa fa-cloud  fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.state.servers}">Servers</a>
+	                                    <a href="/server/all" th:utext="'&lt;i class=\'fa fa-server  fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.state.servers}">Servers</a>
 	                                </li>
 	                                <li>
 	                                    <a href="/channels.html" th:utext="'&lt;i class=\'fa fa-exchange  fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.state.activechannels}">Active channels</a>
@@ -327,10 +330,21 @@
 	                        		<a href="/devicepools/index.html" th:utext="'&lt;i class=\'fa fa-cubes fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.settings.devicePools}">Device Pools</a>
 	                            </li>
 	                            <li>
-	                        		<a href="/timezones/index.html" th:utext="'&lt;i class=\'fa fa-clock-o fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.settings.timezones}">Timezones</a>
+	                        		<a href="/ivrs/index.html" th:utext="'&lt;i class=\'fa fa-puzzle-piece fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.settings.ivrgraph}">IVR</a>
 	                            </li>
 	                            <li>
-	                        		<a href="/ivrs/index.html" th:utext="'&lt;i class=\'fa fa-puzzle-piece fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.settings.ivrgraph}">IVR</a>
+	                        		<a href="#" th:utext="'&lt;i class=\'fa fa-calendar  fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.settings.calendar}+' &lt;span class=\'fa arrow\'&gt;&lt;/span&gt;'"><i class="fa fa-table fa-fw"></i>Calendar<span class="fa arrow"></span></a> 
+	                        		<ul class="nav nav-third-level">
+	                        			<li>
+	                        				<a href="/calendar/timeperiods/index.html" th:utext="'&lt;i class=\'fa fa-hourglass-half  fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.settings.calendar.timeperiods}">Time period</a>
+	                        			</li>
+	                        			<li>
+	                        				<a href="/calendar/timeschedgroups/index.html" th:utext="'&lt;i class=\'fa fa-calendar-plus-o fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.settings.calendar.timeschedgroups}">Time schedule group</a>
+	                        			</li>
+	                        			<li>
+	                        				<a href="/calendar/timezones/index.html" th:utext="'&lt;i class=\'fa fa-clock-o fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.settings.calendar.timezones}">Timezones</a>
+	                            		</li>
+	                        		</ul>	
 	                            </li>
 	                        </ul>
                         </li>
@@ -631,6 +645,7 @@
 	<script src="/static/assets/tableExport.jquery.plugin-master/tableExport.js" th:src="@{/static/assets/tableExport.jquery.plugin-master/tableExport.js}" > </script>
 	<script src="/static/assets/bootstrap-table-filter-master/src/bootstrap-table-filter.js" th:src="@{/static/assets/bootstrap-table-filter-master/src/bootstrap-table-filter.js}" ></script>
 	<script src="/static/assets/my/my.js" th:src="@{/static/assets/my/my.js}" > </script>
+	<script src="/static/assets/extensions/bootstrap-timepicker/js/bootstrap-timepicker.js" th:src="@{/static/assets/extensions/bootstrap-timepicker/js/bootstrap-timepicker.js}" > </script>
 	<!-- <script src="/static/assets/startbootstrap/bower_components/metisMenu/dist/metisMenu.min.js" th:src="@{/static/assets/startbootstrap/bower_components/metisMenu/dist/metisMenu.min.js}" > </script> -->
 	<script src="/static/assets/startbootstrap/bower_components/raphael/raphael-min.js" th:src="@{/static/assets/startbootstrap/bower_components/raphael/raphael-min.js}" > </script>
 	<script src="/static/assets/startbootstrap/dist/js/sb-admin-2.js" th:src="@{/static/assets/startbootstrap/dist/js/sb-admin-2.js}" > </script>
