@@ -46,7 +46,7 @@ public class LdapController {
 	
 	private static Logger logger = LogManager.getLogger(LdapController.class);
 	
-	@RequestMapping(value = {"/authentication/index.html"}, method = RequestMethod.GET)
+	@RequestMapping(value = {"/authentication/index.html","/authentication/"}, method = RequestMethod.GET)
 	@Secured("ROLE_ADMIN")
 	public String viewUpdateAuthenticationParametersPage(ModelMap model) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting update ldap authentication page");

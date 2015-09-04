@@ -57,7 +57,7 @@ public class TimeScheduleGroupController {
 		TimeScheduleGroup timeschedgroup = new TimeScheduleGroup();
 		model.addAttribute("timeschedgroup", timeschedgroup);
 		model.addAttribute("timeschedgroupAll", timeschedgroupService.getAllTimeScheduleGroups());
-		return "timeschedgroups/index";
+		return "calendar/timeschedgroups/index";
 	}
 	
 	@JsonView(View.TimeScheduleGroup.class)
@@ -91,7 +91,7 @@ public class TimeScheduleGroupController {
 		logger.info("Requesting create timeschedgroup page");
 		TimeScheduleGroup timeschedgroup = new TimeScheduleGroup();
 		model.addAttribute("timeschedgroup", timeschedgroup);
-		return "timeschedgroups/create";
+		return "calendar/timeschedgroups/create";
 	}
 		
 	@RequestMapping(value = {"/create"}, method = RequestMethod.POST)
@@ -102,11 +102,11 @@ public class TimeScheduleGroupController {
 					throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting add timeschedgroup method");
 		if(bindingResult.hasErrors()){
-			return "timeschedgroups/create";
+			return "calendar/timeschedgroups/create";
 		}
 		timeschedgroupService.addTimeScheduleGroup(timeschedgroup);
 		model.clear();
-        return "redirect:/timeschedgroups/index.html";
+        return "redirect:/calendar/timeschedgroups/index.html";
 	}
 	
 	@RequestMapping(value = {"/update/{id}"}, method = RequestMethod.GET)
@@ -117,7 +117,7 @@ public class TimeScheduleGroupController {
 		logger.info("Requesting update timeschedgroups page");
 		TimeScheduleGroup timeschedgroup = timeschedgroupService.getTimeScheduleGroupById(id);
 		model.addAttribute("timeschedgroup", timeschedgroup);
-		return "timeschedgroups/update";
+		return "calendar/timeschedgroups/update";
 	}
 	
 	@RequestMapping(value = {"/update"}, method = RequestMethod.PUT)
@@ -129,11 +129,11 @@ public class TimeScheduleGroupController {
 			throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting save update timeschedgroups method");
 		if(bindingResult.hasErrors()){
-			return "timeschedgroups/update";
+			return "calendar/timeschedgroups/update";
 		}
 		timeschedgroupService.editTimeScheduleGroup(formTimeScheduleGroup);
 		status.setComplete();
-		return "redirect:/timeschedgroups/index.html";
+		return "redirect:/calendar/timeschedgroups/index.html";
 	}
 	
 	@RequestMapping(value = {"/delete"}, method = RequestMethod.DELETE)
@@ -143,6 +143,6 @@ public class TimeScheduleGroupController {
 		logger.info("Requesting delete timeschedgroup");
 		timeschedgroupService.deleteTimeScheduleGroup(id);
 		status.setComplete();
-		return "redirect:/timeschedgroups/index.html";
+		return "redirect:/calendar/timeschedgroups/index.html";
 	}
 }

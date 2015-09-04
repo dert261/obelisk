@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+				<div th:fragment="timeschedgroupFormContent" id="timeschedgroupFormContent" class="row">
+			    	<div class="col-lg-12">
+			    		<fieldset>
+							<legend>
+								<h1><th:block th:text="${timeschedgroup.isNew()} ? #{timeschedgroups.title.create} : #{timeschedgroups.title.update}" /></h1>
+								<p class="note"><th:block th:text="#{field.required.start}" />	<span class="required" style="color:red">*</span>	<th:block th:text="#{field.required.end}" /></p>
+								
+								<!-- Errors alerts field -->					
+								<div class="alert alert-block alert-danger" th:if="${#fields.hasErrors('*')}"><p th:text="#{field.validation.error.global.message}" >Please fix the following input errors:</p>
+									<ul>
+		    							<li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
+			        						<span th:text="${e.global}? '*' : #{field}+' \''+#{timeschedgroup.field+'.'+${e.fieldName}} +'\''">The field name</span> 
+			        						<span th:text="#{${e.message}}">The error message</span>
+		    							</li>
+									</ul>
+								</div>
+							</legend>
+							
+							<input type="hidden" th:field="*{id}" />
+							<div th:include="fragment/fielddefinition :: textFormField('name',true, text, 'timeschedgroup.field')">Name</div>
+							<div th:include="fragment/fielddefinition :: textAreaFormField('description', false, 3, 'timeschedgroup.field')">Description</div>
+							
+							<!-- <div class="panel panel-default">
+  								<div class="panel-heading">
+    								<h3 class="panel-title"><b><th:block th:text="#{timeschedgroup.form.rangegroupname}">Range specification</th:block></b></h3>
+  								</div>
+  								<div class="panel-body">
+    								<div class="col-md-6">
+										<div th:include="fragment/fielddefinition :: timepickerFormField('timeStart', true, text, 'timeschedgroup.field')">Time start</div>
+									</div>
+									<div class="col-md-6">
+										<div th:include="fragment/fielddefinition :: timepickerFormField('timeStop', true, text, 'timeschedgroup.field')">Time start</div>
+									</div>
+									
+									<div class="col-md-6">
+										<div th:include="fragment/fielddefinition :: selectEnumFormField('weekdayStart', false, 'calendarDays', 'timeschedgroup.field', *{weekdayStart}, false, false)">Weekday start</div>
+									</div>
+									<div class="col-md-6">	
+										<div th:include="fragment/fielddefinition :: selectEnumFormField('weekdayStop', false, 'calendarDays', 'timeschedgroup.field', *{weekdayStop}, false, false)">Weekday stop</div>
+									</div>	
+									
+									<div class="col-md-6">
+										<div th:include="fragment/fielddefinition :: selectEnumFormField('monthStart', false, 'calendarMonths', 'timeschedgroup.field', *{monthStart}, false, false)">Month start</div>
+									</div>
+									<div class="col-md-6">	
+										<div th:include="fragment/fielddefinition :: selectEnumFormField('monthStop', false, 'calendarMonths', 'timeschedgroup.field', *{monthStop}, false, false)">Month stop</div>
+									</div>
+									
+									<div class="col-md-6">
+										<div th:include="fragment/fielddefinition :: selectEnumFormField('monthDayStart', false, 'calendarMonthDays', 'timeschedgroup.field', *{monthDayStart}, false, false)">Month start</div>
+									</div>
+									<div class="col-md-6">	
+										<div th:include="fragment/fielddefinition :: selectEnumFormField('monthDayStop', false, 'calendarMonthDays', 'timeschedgroup.field', *{monthDayStop}, false, false)">Month stop</div>
+									</div>	
+									
+ 								</div>
+							</div> -->
+							
+							
+						</fieldset>
+						<div class="form-actions">
+            				<button class="btn btn-primary" type="submit" th:text="${timeschedgroup.isNew()} ? #{timeschedgroup.form.button.create.submit} : #{timeschedgroup.form.button.update.submit}">Submit</button>
+            				<button class="btn btn-default" type="reset" th:text="#{timeschedgroup.form.button.reset}">Reset</button>
+            			</div>	
+					</div>
+				</div>	
+</html>	
