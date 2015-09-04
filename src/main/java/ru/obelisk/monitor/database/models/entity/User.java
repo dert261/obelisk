@@ -1,7 +1,9 @@
 package ru.obelisk.monitor.database.models.entity;
 
 import java.io.Serializable;
+//import java.util.Arrays;
 import java.util.Date;
+//import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -133,7 +135,7 @@ public class User implements Serializable {
     private Date blockDate=null;
        
     public User(){
-    	
+    	//roles.add(new UserRole("USER",this)); 
     }
 
 	public Integer getId() {

@@ -13,7 +13,7 @@ public interface TimezoneService {
 	@Transactional
 	Timezone addTimezone(Timezone timezone);
 	@Transactional
-	Timezone editTimezone(Timezone Timezone);
+	Timezone editTimezone(Timezone timezone);
 	@Transactional
     void deleteTimezone(int id);
     
