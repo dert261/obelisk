@@ -141,7 +141,7 @@
 		
 		<select th:unless="${multipleFlag}"
 				th:field="*{__${fieldName}__}" 
-				class="select2-chosen" 
+				class="select2-chosen"
 				data-placeholder="select value"
 				th:attr="data-placeholder=#{${i18nName}+'.'+${fieldName}}">
 				<option th:each="data : ${__${dataSet}__}" 

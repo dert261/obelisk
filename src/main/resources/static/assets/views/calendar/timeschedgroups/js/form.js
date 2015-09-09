@@ -1,68 +1,110 @@
-	$(document).ready(function() {
+$(document).ready(function() {
 	
 		$(function () {
 			$('[data-toggle="tooltip"]').tooltip()
 		})
 		
-		/*$('#monthStart')
-			.on("change", function(e) {
-				console.log(monthDaysCount(e.target.value));
-				$('#monthStop').select2('data', monthDaysCount(e.target.value));
-				select2ChangeData('monthStop',monthDaysCount(e.target.value));
-				
+		jQuery.fn.filterByText = function(textbox) {
+			return this.each(function() {
+				var select = this;
+				var options = [];
+				$(select).find('option').each(function() {
+					options.push({value: $(this).val(), text: $(this).text()});
+				});
+				$(select).data('options', options);
+
+				$(textbox).bind('change keyup', function() {
+					var options = $(select).empty().data('options');
+					var search = $.trim($(this).val());
+					var regex = new RegExp(search,"gi");
+
+					$.each(options, function(i) {
+						var option = options[i];
+						if(option.text.match(regex) !== null) {
+							$(select).append(
+									$('<option>').text(option.text).val(option.value)
+							);
+						}
+					});
+				});
+			});
+		};
+							
+		function addPeriod(ids) {	
+			$.ajax({
+				type: 'GET',
+				url: "/calendar/timeschedgroups/ajax/serverside/addperiod",
+				data: ({
+					'ids': ids
+				}),
+				traditional: true,
+			}).done(function(result) {
+				updateLists(result);
+			});
+			return false;
+		}
+		
+		function delPeriod(ids) {	
+			$.ajax({
+				type: 'GET',
+				url: "/calendar/timeschedgroups/ajax/serverside/delperiod",
+				data: ({
+					'ids': ids
+				}), 
+				traditional: true,
+			}).done(function(result) {
+				updateLists(result);
+			});
+			return false;
+		}
+		
+		function updateLists(data){
+			var availableTimePeriods = data.availableTimePeriods;
+			var selectedTimePeriods = data.selectedTimePeriods;
+			$("#sel2").empty();
+			var selectedOptions = selectedTimePeriods;
+						
+			$.each(selectedOptions, function(i) {
+				var selectedOption = selectedOptions[i];
+				$("#sel2").append(
+					$('<option>').text(selectedOption.name).val(selectedOption.id)
+				);
+			});
+			
+			$("#sel1").empty();
+			var availableOptions = availableTimePeriods;
+						
+			$.each(availableOptions, function(i) {
+				var availableOption = availableOptions[i];
+				$("#sel1").append(
+						$('<option>').text(availableOption.name).val(availableOption.id)
+				);
+			});
+			return false;
+		}
+			
+		$("#sel1").filterByText($("#search1"));
+		$("#sel2").filterByText($("#search2"));
+		
+		$("#addNewItems").click(function(){
+			var selval = []; 
+			$('#sel1 :selected').each(function(i, selected){ 
+				selval.push($(selected).val());
+			});
+			if(selval.length>0) addPeriod(selval);
+			return false;
 		});
+			
+		$("#removeItems").click(function(){
+			var selval = []; 
+			$('#sel2 :selected').each(function(i, selected){ 
+				selval.push($(selected).val());
+			});
+				
+			if(selval.length>0) delPeriod(selval);
+			return false;
+		});
+});
 		
-		$('#monthStop')
-			.on("change", function(e) {
-				select2ChangeData('monthDayStop',monthDaysCount(e.target.value));
-				//console.log(monthDaysCount(e.target.value));
-		});*/
 		
-	});
-	
-	/*function select2ChangeData(selectId, data){
-		
-		var $select = $('#'+selectId);
-		// save current config. options
-		var options = $select.data('select2').options.options;
-
-		// delete all items of the native select element
-		$select.html('');
-
-		// build new items
-		var items = data;
-		for (var i = 0; i < data.length; i++) {
-		    $select.append("<option value=\"" + data[i].id + "\">" + data[i].text + "</option>");
-		}
-
-		// add new items
-		options.data = data;
-		$select.select2(options);
-	}
-	
-	function monthDaysCount(month){
-		var dayCount=0;
-		var days=[];
-		switch(month){
-			case 'JANUARY': 	dayCount=31; break;
-			case 'FEBRUARY': 	dayCount=29; break;
-			case 'MARCH': 		dayCount=31; break;
-			case 'APRIL': 		dayCount=30; break;
-			case 'MAY': 		dayCount=31; break;
-			case 'JUNE': 		dayCount=30; break;
-			case 'JULY': 		dayCount=31; break;
-			case 'AUGUST': 		dayCount=31; break;
-			case 'SEPTEMBER': 	dayCount=30; break;
-			case 'OCTOBER': 	dayCount=31; break;
-			case 'NOVEMBER': 	dayCount=30; break;
-			case 'DECEMBER': 	dayCount=31; break;
-			default: break;
-		}
-		
-		for(i=1;i<=dayCount;i++){
-			days[i-1]={id: i, text: i};
-		}
-		
-		return days;
-	}*/
 	

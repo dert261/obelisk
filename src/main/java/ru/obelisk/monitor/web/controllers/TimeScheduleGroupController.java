@@ -1,6 +1,7 @@
 package ru.obelisk.monitor.web.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -22,9 +23,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.security.access.annotation.Secured;
+
 import com.fasterxml.jackson.annotation.JsonView;
+
 import ru.obelisk.monitor.annotations.DatatableCriterias;
+import ru.obelisk.monitor.database.models.entity.TimePeriod;
 import ru.obelisk.monitor.database.models.entity.TimeScheduleGroup;
+import ru.obelisk.monitor.database.models.entity.utils.MMTimePeriods;
+import ru.obelisk.monitor.database.models.services.TimePeriodService;
 import ru.obelisk.monitor.database.models.services.TimeScheduleGroupService;
 import ru.obelisk.monitor.database.models.views.View;
 import ru.obelisk.monitor.web.ui.datatables.DataSet;
@@ -40,6 +46,10 @@ public class TimeScheduleGroupController {
 	
 	@Autowired
     private TimeScheduleGroupService timeschedgroupService;
+	@Autowired
+    private TimePeriodService timeperiodService;
+	
+	private MMTimePeriods mmTimePeriods = new MMTimePeriods();
 	
 	@RequestMapping(value = {"/search/timeschedgroups"}, method = RequestMethod.GET)
 	@Secured("ROLE_ADMIN")
@@ -106,20 +116,28 @@ public class TimeScheduleGroupController {
 		}
 		timeschedgroupService.addTimeScheduleGroup(timeschedgroup);
 		model.clear();
-        return "redirect:/calendar/timeschedgroups/index.html";
+        return "redirect:/calendar/timeschedgroups/update/"+timeschedgroup.getId();
 	}
-	
+	@JsonView(View.TimeScheduleGroup.class)	
 	@RequestMapping(value = {"/update/{id}"}, method = RequestMethod.GET)
 	@Secured("ROLE_ADMIN")
 	public String viewUpdateTimeScheduleGroupPage(	ModelMap model, 
 											@PathVariable(value = "id") int id) 
 			throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting update timeschedgroups page");
+		
 		TimeScheduleGroup timeschedgroup = timeschedgroupService.getTimeScheduleGroupById(id);
+		List<TimePeriod> allTimePeriods = timeperiodService.getAllTimePeriods(); 
+		allTimePeriods.removeAll(timeschedgroup.getTimePeriods());
+		
+		mmTimePeriods.setAvailableTimePeriods(allTimePeriods);
+		mmTimePeriods.setSelectedTimePeriods(timeschedgroup.getTimePeriods());
+				
+		model.addAttribute("allTimePeriods", allTimePeriods);
 		model.addAttribute("timeschedgroup", timeschedgroup);
 		return "calendar/timeschedgroups/update";
 	}
-	
+	@JsonView(View.TimeScheduleGroup.class)	
 	@RequestMapping(value = {"/update"}, method = RequestMethod.PUT)
 	@Secured("ROLE_ADMIN")
 	public String saveUpdateTimeScheduleGroupPage(final ModelMap model, 
@@ -129,8 +147,10 @@ public class TimeScheduleGroupController {
 			throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting save update timeschedgroups method");
 		if(bindingResult.hasErrors()){
+			model.addAttribute("allTimePeriods", mmTimePeriods.getAvailableTimePeriods());
 			return "calendar/timeschedgroups/update";
 		}
+		formTimeScheduleGroup.setTimePeriods(mmTimePeriods.getSelectedTimePeriods());
 		timeschedgroupService.editTimeScheduleGroup(formTimeScheduleGroup);
 		status.setComplete();
 		return "redirect:/calendar/timeschedgroups/index.html";
@@ -144,5 +164,45 @@ public class TimeScheduleGroupController {
 		timeschedgroupService.deleteTimeScheduleGroup(id);
 		status.setComplete();
 		return "redirect:/calendar/timeschedgroups/index.html";
+	}
+	@JsonView(View.MMTimePeriods.class)
+	@RequestMapping(value = {"/ajax/serverside/addperiod"}, method = RequestMethod.GET)
+	@Secured("ROLE_ADMIN")
+	public @ResponseBody MMTimePeriods addTimePeriod(
+					@RequestParam(value="ids") int [] ids
+			) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
+		logger.info("Requesting add mm time period");
+		List<TimePeriod> periods = timeperiodService.getTimePeriodByIds(ids);
+		mmTimePeriods.setAvailableTimePeriods(filterTimePeriod(mmTimePeriods.getAvailableTimePeriods(), periods));
+		mmTimePeriods.getSelectedTimePeriods().addAll(periods);
+		return mmTimePeriods;
+	}
+		
+	@JsonView(View.MMTimePeriods.class)	
+	@RequestMapping(value = {"/ajax/serverside/delperiod"}, method = RequestMethod.GET)
+	@Secured("ROLE_ADMIN")
+	public @ResponseBody MMTimePeriods removeTimePeriod(
+					@RequestParam(value="ids") int [] ids
+			) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
+		logger.info("Requesting delete mm time period");
+		List<TimePeriod> periods = timeperiodService.getTimePeriodByIds(ids);
+		mmTimePeriods.setSelectedTimePeriods(filterTimePeriod(mmTimePeriods.getSelectedTimePeriods(), periods));
+		mmTimePeriods.getAvailableTimePeriods().addAll(periods);
+		return mmTimePeriods;
+	}
+	
+	private List<TimePeriod> filterTimePeriod(List<TimePeriod> src, List<TimePeriod> dst){
+		boolean found;
+		List<TimePeriod> result = new ArrayList<TimePeriod>();
+		for(int i = 0; i<src.size(); i++){
+			found=false;
+			for(int j = 0; j<dst.size(); j++){
+				if(src.get(i).getId()==dst.get(j).getId()){
+					found=true;
+				}
+			}
+			if(!found) result.add(src.get(i));
+		}
+		return result;
 	}
 }

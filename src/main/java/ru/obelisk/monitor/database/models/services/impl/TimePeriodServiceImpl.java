@@ -52,9 +52,10 @@ public class TimePeriodServiceImpl implements TimePeriodService {
     @Override
     @Transactional
     public TimePeriod editTimePeriod(TimePeriod formTimePeriod) {
-    	TimePeriod TimePeriod = new TimePeriod();
-    	BeanUtils.copyProperties(formTimePeriod, TimePeriod);
-    	return TimePeriodRepository.saveAndFlush(TimePeriod);
+    	TimePeriod timePeriod = new TimePeriod();
+    	BeanUtils.copyProperties(formTimePeriod, timePeriod);
+    	timePeriod.setTimeScheduleGroup(TimePeriodRepository.findOne(formTimePeriod.getId()).getTimeScheduleGroup());
+    	return TimePeriodRepository.saveAndFlush(timePeriod);
     }
  
     @Override
@@ -65,6 +66,11 @@ public class TimePeriodServiceImpl implements TimePeriodService {
 	@Override
 	public TimePeriod getTimePeriodById(int id) {
 		return TimePeriodRepository.findOne(id);
+	}
+	
+	@Override
+	public List<TimePeriod> getTimePeriodByIds(int[] ids) {
+		return TimePeriodRepository.findByIds(ids);
 	}
 	
 	public List<Select2Result> findTimePeriodByTerm(String term) {

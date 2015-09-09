@@ -37,7 +37,7 @@ import ru.obelisk.monitor.web.validators.TimePeriodFieldMatch;
 @Table(name = "time_period")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @TimePeriodFieldMatch(groups=TimePeriod.TimePeriodValidationStepTwo.class, message = "field.validation.error.timeperiod")
-public class TimePeriod implements Serializable {
+public class TimePeriod implements Serializable{
 	/**
 	 * 
 	 */
@@ -47,63 +47,74 @@ public class TimePeriod implements Serializable {
 	private static final long serialVersionUID = -1981251271982227994L;
 
 	@Transient
-	@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class})
+	@JsonView(value={View.TimePeriod.class})
     private int numberLocalized;
 		
-	@JsonView(value={View.TimePeriod.class})
+	@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class, View.MMTimePeriods.class})
+	//@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class})
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", length = 11, nullable = false)
 	private Integer id;
 	
-	@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class})
+	@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class, View.MMTimePeriods.class})
+	//@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class})
 	@Column(name = "name", length = 100, nullable = false)
 	@NotNull(groups=TimePeriod.TimePeriodValidationStepOne.class) 
 	@NotEmpty(groups=TimePeriod.TimePeriodValidationStepOne.class) 
 	private String name;
 		
-	@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class})
+	@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class, View.MMTimePeriods.class})
+	//@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class})
 	@Column(name = "description", length = 500, nullable = true)
 	private String description;
 	
-	@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class})
+	@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class, View.MMTimePeriods.class})
+	//@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class})
 	@Column(name = "time_start", length = 10, nullable = false)
 	@NotNull(groups=TimePeriod.TimePeriodValidationStepOne.class) 
 	@NotEmpty(groups=TimePeriod.TimePeriodValidationStepOne.class) 
 	private String timeStart;
 	
-	@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class})
+	@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class, View.MMTimePeriods.class})
+	//@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class})
 	@Column(name = "time_stop", length = 10, nullable = false)
 	@NotNull(groups=TimePeriod.TimePeriodValidationStepOne.class)  
 	@NotEmpty(groups=TimePeriod.TimePeriodValidationStepOne.class) 
 	private String timeStop;
 	
-	@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class})
+	@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class, View.MMTimePeriods.class})
+	//@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class})
 	@Column(name = "weekday_start", nullable = true)
 	@Enumerated(EnumType.ORDINAL)
 	private CalendarDays weekdayStart=CalendarDays.NOTSELECT;
 	
-	@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class})
+	@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class, View.MMTimePeriods.class})
+	//@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class})
 	@Column(name = "weekday_stop", nullable = true)
 	@Enumerated(EnumType.ORDINAL)
 	private CalendarDays weekdayStop=CalendarDays.NOTSELECT;
 	
-	@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class})
+	@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class, View.MMTimePeriods.class})
+	//@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class})
 	@Column(name = "month_start", nullable = true)
 	@Enumerated(EnumType.ORDINAL)
 	private CalendarMonths monthStart=CalendarMonths.NOTSELECT;
 	
-	@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class})
+	@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class, View.MMTimePeriods.class})
+	//@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class})
 	@Column(name = "month_stop", nullable = true)
 	@Enumerated(EnumType.ORDINAL)
 	private CalendarMonths monthStop=CalendarMonths.NOTSELECT;
 	
-	@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class})
+	@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class, View.MMTimePeriods.class})
+	//@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class})
 	@Column(name = "month_day_start", nullable = true)
 	@Enumerated(EnumType.ORDINAL)
 	private CalendarMonthDays monthDayStart=CalendarMonthDays.NOTSELECT;
 	
-	@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class})
+	@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class, View.MMTimePeriods.class})
+	//@JsonView(value={View.TimePeriod.class, View.TimeScheduleGroup.class})
 	@Column(name = "month_day_stop", nullable = true)
 	@Enumerated(EnumType.ORDINAL)
 	private CalendarMonthDays monthDayStop=CalendarMonthDays.NOTSELECT;
@@ -236,4 +247,6 @@ public class TimePeriod implements Serializable {
 				+ ", monthDayStart=" + monthDayStart + ", monthStop="
 				+ monthStop + ", monthDayStop=" + monthDayStop + "]";
 	}
+
+	
 }

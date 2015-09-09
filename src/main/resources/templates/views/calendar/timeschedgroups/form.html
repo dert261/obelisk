@@ -23,42 +23,74 @@
 							<div th:include="fragment/fielddefinition :: textFormField('name',true, text, 'timeschedgroup.field')">Name</div>
 							<div th:include="fragment/fielddefinition :: textAreaFormField('description', false, 3, 'timeschedgroup.field')">Description</div>
 							
-							<!-- <div class="panel panel-default">
-  								<div class="panel-heading">
-    								<h3 class="panel-title"><b><th:block th:text="#{timeschedgroup.form.rangegroupname}">Range specification</th:block></b></h3>
+							
+							<div th:unless="${timeschedgroup.isNew()}" class="panel panel-default">
+								<div class="panel-heading">
+    								<h3 class="panel-title"><b><th:block th:text="#{timeschedgroup.form.timeperiodsgroupname}">Time periods group name</th:block></b></h3>
   								</div>
   								<div class="panel-body">
-    								<div class="col-md-6">
-										<div th:include="fragment/fielddefinition :: timepickerFormField('timeStart', true, text, 'timeschedgroup.field')">Time start</div>
+  									<div class="timePeriodGroupsPart">
+  									<div class="row">
+										<div class="col-md-2">
+											<div class="panel panel-primary">
+  												<div class="panel-heading">
+    												<h3 class="panel-title">Доступные периоды</h3>
+  												</div>
+												<div class="input-group">
+													<span class="input-group-addon" style="border-radius:0" id="basic-addon1">
+														<i class="fa fa-search"></i>
+													</span>
+      												<input id="search1" type="text" class="form-control" style="border-radius:0" placeholder="Найти..."></input>
+      											</div>	
+      										      										
+												<select id="sel1"
+														class="form-control"
+														multiple="multiple"
+														size="6"
+														style="width:100%; border-radius:0">
+														<option th:each="data : ${allTimePeriods}" 
+										        				th:value="${data.id}" 
+										          				th:text="${data.name}">
+										          		</option>
+												</select>
+											</div>
+										</div>
+											
+										<div class="col-md-1">
+											<br></br><br></br><br></br>
+												<p class="text-center"><a href="#" id="addNewItems" class="add-period"><i class="fa fa-arrow-circle-o-right fa-2x"></i></a></p>
+												<p class="text-center"><a href="#" id="removeItems" class="del-period"><i class="fa fa-arrow-circle-o-left fa-2x"></i></a></p>
+											
+										</div>
+										<div class="col-md-2">
+											<div class="panel panel-primary">
+  												<div class="panel-heading">
+    												<h3 class="panel-title">Выбранные периоды</h3>
+  												</div>
+												<div class="input-group">
+													<span class="input-group-addon" style="border-radius:0" id="basic-addon1">
+														<i class="fa fa-search"></i>
+													</span>
+      												<input id="search2" type="text" class="form-control" style="border-radius:0" placeholder="Найти..."></input>
+      											</div>	
+      										      										
+												<select th:field="*{timePeriods}" 
+														class="form-control"
+														id="sel2"
+														multiple="multiple"
+														size="6"
+														style="width:100%; border-radius:0">
+														<option th:each="data : ${timeschedgroup.timePeriods}" 
+									        				th:value="${data.id}" 
+									          				th:text="${data.name}">
+									          		</option>
+												</select>
+											</div>
+										</div>	
 									</div>
-									<div class="col-md-6">
-										<div th:include="fragment/fielddefinition :: timepickerFormField('timeStop', true, text, 'timeschedgroup.field')">Time start</div>
 									</div>
-									
-									<div class="col-md-6">
-										<div th:include="fragment/fielddefinition :: selectEnumFormField('weekdayStart', false, 'calendarDays', 'timeschedgroup.field', *{weekdayStart}, false, false)">Weekday start</div>
-									</div>
-									<div class="col-md-6">	
-										<div th:include="fragment/fielddefinition :: selectEnumFormField('weekdayStop', false, 'calendarDays', 'timeschedgroup.field', *{weekdayStop}, false, false)">Weekday stop</div>
-									</div>	
-									
-									<div class="col-md-6">
-										<div th:include="fragment/fielddefinition :: selectEnumFormField('monthStart', false, 'calendarMonths', 'timeschedgroup.field', *{monthStart}, false, false)">Month start</div>
-									</div>
-									<div class="col-md-6">	
-										<div th:include="fragment/fielddefinition :: selectEnumFormField('monthStop', false, 'calendarMonths', 'timeschedgroup.field', *{monthStop}, false, false)">Month stop</div>
-									</div>
-									
-									<div class="col-md-6">
-										<div th:include="fragment/fielddefinition :: selectEnumFormField('monthDayStart', false, 'calendarMonthDays', 'timeschedgroup.field', *{monthDayStart}, false, false)">Month start</div>
-									</div>
-									<div class="col-md-6">	
-										<div th:include="fragment/fielddefinition :: selectEnumFormField('monthDayStop', false, 'calendarMonthDays', 'timeschedgroup.field', *{monthDayStop}, false, false)">Month stop</div>
-									</div>	
-									
- 								</div>
-							</div> -->
-							
+  								</div>
+							</div>
 							
 						</fieldset>
 						<div class="form-actions">

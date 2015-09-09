@@ -52,9 +52,9 @@ public class TimeScheduleGroupServiceImpl implements TimeScheduleGroupService {
     @Override
     @Transactional
     public TimeScheduleGroup editTimeScheduleGroup(TimeScheduleGroup formTimeScheduleGroup) {
-    	TimeScheduleGroup TimeScheduleGroup = new TimeScheduleGroup();
-    	BeanUtils.copyProperties(formTimeScheduleGroup, TimeScheduleGroup);
-    	return TimeScheduleGroupRepository.saveAndFlush(TimeScheduleGroup);
+    	TimeScheduleGroup timeScheduleGroup = new TimeScheduleGroup();
+    	BeanUtils.copyProperties(formTimeScheduleGroup, timeScheduleGroup);
+    	return TimeScheduleGroupRepository.saveAndFlush(timeScheduleGroup);
     }
  
     @Override
