@@ -3,6 +3,7 @@
 
 <head th:include="fragment/header :: headerFragment" />
 <!-- <div ddl:bundle-includes="select2,users-form" />  -->
+<link rel="stylesheet" src="/static/assets/extensions/lou-multi-select/0.9.12/css/multi-select.css" th:href="@{/static/assets/extensions/lou-multi-select/0.9.12/css/multi-select.css}" />
 
 <body>
 <div id="wrapper">
@@ -28,6 +29,9 @@
 
 <div th:replace="fragment/header :: scripts" > </div>
 <script src="/static/assets/views/calendar/timeschedgroups/js/form.js" th:href="@{/static/assets/views/calendar/timeschedgroups/js/form.js}" > </script>
+<script src="/static/assets/extensions/multiselect/multiselect.min.js" th:src="@{/static/assets/extensions/multiselect/multiselect.min.js}"></script>
+<script src="/static/assets/extensions/jquery.quicksearch.js" th:src="@{/static/assets/extensions/jquery.quicksearch.js}"></script>
+<script src="/static/assets/extensions/lou-multi-select/0.9.12/js/jquery.multi-select.js" th:src="@{/static/assets/extensions/lou-multi-select/0.9.12/js/jquery.multi-select.js}"></script>
 
 </body>
 </html>

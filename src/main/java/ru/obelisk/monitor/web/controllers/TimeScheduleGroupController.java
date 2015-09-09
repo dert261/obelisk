@@ -1,7 +1,6 @@
 package ru.obelisk.monitor.web.controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -27,9 +26,7 @@ import org.springframework.security.access.annotation.Secured;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import ru.obelisk.monitor.annotations.DatatableCriterias;
-import ru.obelisk.monitor.database.models.entity.TimePeriod;
 import ru.obelisk.monitor.database.models.entity.TimeScheduleGroup;
-import ru.obelisk.monitor.database.models.entity.utils.MMTimePeriods;
 import ru.obelisk.monitor.database.models.services.TimePeriodService;
 import ru.obelisk.monitor.database.models.services.TimeScheduleGroupService;
 import ru.obelisk.monitor.database.models.views.View;
@@ -48,9 +45,7 @@ public class TimeScheduleGroupController {
     private TimeScheduleGroupService timeschedgroupService;
 	@Autowired
     private TimePeriodService timeperiodService;
-	
-	private MMTimePeriods mmTimePeriods = new MMTimePeriods();
-	
+		
 	@RequestMapping(value = {"/search/timeschedgroups"}, method = RequestMethod.GET)
 	@Secured("ROLE_ADMIN")
 	public @ResponseBody List<Select2Result> searchTimeScheduleGroup(@RequestParam String searchString) 
@@ -127,13 +122,7 @@ public class TimeScheduleGroupController {
 		logger.info("Requesting update timeschedgroups page");
 		
 		TimeScheduleGroup timeschedgroup = timeschedgroupService.getTimeScheduleGroupById(id);
-		List<TimePeriod> allTimePeriods = timeperiodService.getAllTimePeriods(); 
-		allTimePeriods.removeAll(timeschedgroup.getTimePeriods());
-		
-		mmTimePeriods.setAvailableTimePeriods(allTimePeriods);
-		mmTimePeriods.setSelectedTimePeriods(timeschedgroup.getTimePeriods());
-				
-		model.addAttribute("allTimePeriods", allTimePeriods);
+		model.addAttribute("allTimePeriods", timeperiodService.getAllTimePeriods());
 		model.addAttribute("timeschedgroup", timeschedgroup);
 		return "calendar/timeschedgroups/update";
 	}
@@ -147,10 +136,9 @@ public class TimeScheduleGroupController {
 			throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting save update timeschedgroups method");
 		if(bindingResult.hasErrors()){
-			model.addAttribute("allTimePeriods", mmTimePeriods.getAvailableTimePeriods());
+			model.addAttribute("allTimePeriods", timeperiodService.getAllTimePeriods());
 			return "calendar/timeschedgroups/update";
 		}
-		formTimeScheduleGroup.setTimePeriods(mmTimePeriods.getSelectedTimePeriods());
 		timeschedgroupService.editTimeScheduleGroup(formTimeScheduleGroup);
 		status.setComplete();
 		return "redirect:/calendar/timeschedgroups/index.html";
@@ -165,7 +153,7 @@ public class TimeScheduleGroupController {
 		status.setComplete();
 		return "redirect:/calendar/timeschedgroups/index.html";
 	}
-	@JsonView(View.MMTimePeriods.class)
+/*	@JsonView(View.MMTimePeriods.class)
 	@RequestMapping(value = {"/ajax/serverside/addperiod"}, method = RequestMethod.GET)
 	@Secured("ROLE_ADMIN")
 	public @ResponseBody MMTimePeriods addTimePeriod(
@@ -204,5 +192,5 @@ public class TimeScheduleGroupController {
 			if(!found) result.add(src.get(i));
 		}
 		return result;
-	}
+	}*/
 }
