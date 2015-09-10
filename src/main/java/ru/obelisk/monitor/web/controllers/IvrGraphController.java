@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.TimeoutException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.security.access.annotation.Secured;
 
+import ru.obelisk.monitor.database.models.services.TimeScheduleGroupService;
+import ru.obelisk.monitor.graph.CalendarNode;
 import ru.obelisk.monitor.graph.HandsetInNode;
 import ru.obelisk.monitor.graph.Node;
 
@@ -26,6 +29,9 @@ public class IvrGraphController {
 	private static Logger logger = LogManager.getLogger(IvrGraphController.class);
 	
 	private Map<Integer, Node> schemaMap = new HashMap<Integer, Node>();
+	
+	@Autowired
+	private TimeScheduleGroupService timeSchedGroupService;
 	
 	@RequestMapping(value = {"/", "/index.html"}, method = RequestMethod.GET)
 	@Secured("ROLE_ADMIN")
@@ -47,12 +53,30 @@ public class IvrGraphController {
 		if(schemaMap.containsKey(index)){
 			node = schemaMap.get(index);
 		} else {
-			node = new HandsetInNode();
+			//node = new HandsetInNode();
+			node = nodeFabric(type);
 			node.setIndex(index);
 			node.setType(type);
 		}
 		model.addAttribute("node", node);
+		
+		switch(type){
+			case "calendar": model.addAttribute("allTimeScheduleGroups", timeSchedGroupService.getAllTimeScheduleGroups()); break;
+			case "handsetIn": break;
+		default: break;	
+	}
+		
 		return "ivrs/nodes/"+node.getType()+"::"+node.getType()+"FormContent";
+	}
+	
+	private Node nodeFabric(String type){
+		Node node = null;
+		switch(type){
+			case "calendar": node = new CalendarNode(); break;
+			case "handsetIn": node = new HandsetInNode(); break;
+			default: break;	
+		}
+		return node;
 	}
 	
 	@RequestMapping(value = {"/addNode"}, method = RequestMethod.POST)
@@ -62,7 +86,7 @@ public class IvrGraphController {
 					@RequestParam String type
 			) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting ivr new node info objects");
-		HandsetInNode node = new HandsetInNode();
+		Node node = nodeFabric(type);//new HandsetInNode();
 		node.setIndex(index);
 		node.setType(type);
 		schemaMap.put(index, node);

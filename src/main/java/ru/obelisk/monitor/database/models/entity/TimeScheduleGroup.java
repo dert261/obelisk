@@ -57,7 +57,7 @@ public class TimeScheduleGroup implements Serializable{
 		
 	
 	@JsonView(value={View.TimeScheduleGroup.class})
-	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinTable(name="time_schedule_group2time_period",
     	joinColumns=@JoinColumn(name="tshed_id"),
     	inverseJoinColumns=@JoinColumn(name="tperiod_id")
