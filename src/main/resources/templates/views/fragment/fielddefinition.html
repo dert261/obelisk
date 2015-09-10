@@ -29,7 +29,7 @@
 
 
 <!-- MM SELECT BOX FIELD TEMPLATE -->
-<div th:fragment="mmSelectBox(fieldName,dataSet,objectName,i18nName,availLabel,selectedLabel,size,valueParam,textParam)" th:remove="all">
+<div th:fragment="mmSelectBox(fieldName,dataSet,objectName,i18nName,availLabel,availSearchPlaceholder,selectedLabel,selectedSearchPlaceholder,size,valueParam,textParam)" th:remove="all">
 	<select th:field = "*{__${fieldName}__}"
 			class="form-control"
 			multiple="multiple"
@@ -54,7 +54,7 @@
 						"</div>" +
 						"<div class='input-group'>" +
 							"<span class='input-group-addon'><i class='fa fa-search'></i></span>" +
-							"<input type='text' class='search-input form-control' autocomplete='off' placeholder=\"Найти...\" ></input>" +
+							"<input type='text' class='search-input form-control' autocomplete='off' placeholder=\""+[[${availSearchPlaceholder}]]+"\" ></input>" +
 						"</div>",
 				
 				selectionHeader: "" +
@@ -63,7 +63,7 @@
 						"</div>" +
 						"<div class='input-group'>" +
 							"<span class='input-group-addon'><i class='fa fa-search'></i></span>" +
-							"<input type='text' class='search-input form-control' autocomplete='off' placeholder=\"Найти...\" ></input>" +
+							"<input type='text' class='search-input form-control' autocomplete='off' placeholder=\""+[[${selectedSearchPlaceholder}]]+"\" ></input>" +
 						"</div>",		
 							
 				afterInit: function(ms){

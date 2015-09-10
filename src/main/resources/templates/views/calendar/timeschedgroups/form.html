@@ -29,7 +29,13 @@
     								<h3 class="panel-title"><b><th:block th:text="#{timeschedgroup.form.timeperiodsgroupname}">Time periods group name</th:block></b></h3>
   								</div>
   								<div class="panel-body">
-  									<div th:include="fragment/fielddefinition :: mmSelectBox('timePeriods',allTimePeriods,'timeschedgroup','timeschedgroup.field','Avail','Selected',8,'id','name')">Description</div>
+  									<div th:include="fragment/fielddefinition :: mmSelectBox('timePeriods', allTimePeriods,
+  										'timeschedgroup','timeschedgroup.field',
+  										#{timeschedgroup.field.timePeriods.available},
+  										#{timeschedgroup.field.timePeriods.available.search.placeholder},
+  										#{timeschedgroup.field.timePeriods.selected},
+  										#{timeschedgroup.field.timePeriods.selected.search.placeholder},
+  										8,'id','name')">Description</div>
   								</div>
   							</div>
 						</fieldset>
