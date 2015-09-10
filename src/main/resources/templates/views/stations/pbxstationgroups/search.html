@@ -1,31 +1,31 @@
 <!DOCTYPE html>
 <html>
-	<div th:fragment="pbxstations_search_form" class="col-lg-12">
+	<div th:fragment="pbxstationgroups_search_form" class="col-lg-12">
 		
-		<a class="search-button" href="#" th:text="#{pbxStation.form.search.message}">Extended search</a>
+		<a class="search-button" href="#" th:text="#{timeperiod.form.search.message}">Extended search</a>
 		
-		<div th:object="${pbxStation}" class="search-form" style="display: none;">
-			<form action="#" th:action="@{/pbxstations/search/pbxstations}" th:object="${pbxStation}" th:method="GET" method="GET" id="pbxstations-search-form" class="well-search form">
+		<div th:object="${timeperiod}" class="search-form" style="display: none;">
+			<form action="#" th:action="@{/stations/pbxstationgroups/search/pbxstationgroups}" th:object="${pbxstationgroup}" th:method="GET" method="GET" id="pbxstationgroups-search-form" class="well-search form">
 								
 				<div	class="form-group">
 					<label 	class="control-label"
 							for="id" 
-							th:text="#{pbxStation.field.name}"> 
+							th:text="#{pbxstationgroup.field.name}"> 
 					</label>
 			
 					<select th:field="*{id}" 
 							class="select2-chosen" 
 							multiple="multiple">
 							
-							<option th:each="data : ${pbxStationAll}" 
+							<option th:each="data : ${pbxStationGroupAll}" 
 	        						th:value="${data.id}" 
-	          						th:text="${data.name}+' ('+${data.host}+')'">
+	          						th:text="${data.name}+' ('+${data.description}+')'">
 	          				</option>
 					</select>
 				</div>
 				
 				<div class="form-actions">
-					<button id="doSearch" class="btn btn-primary" name="doSearch" type="submit" th:text="#{pbxStation.searchform.button.search}">Search</button>
+					<button id="doSearch" class="btn btn-primary" name="doSearch" type="submit" th:text="#{pbxstationgroup.searchform.button.search}">Search</button>
 				</div>
 			</form>
 		</div>
@@ -43,11 +43,11 @@
 			    			width:'100%', 
 			    			minimumInputLength:'2', 
 			    			language: [[${#locale.language}]], 
-			    			placeholder: [[#{pbxStation.searchform.searchfield.placeholder.name}]],
+			    			placeholder: [[#{pbxstationgroup.searchform.searchfield.placeholder.name}]],
 			    			ajax: {
 			    				delay: 500,
 			    				url: function (params) {
-			    					return '/pbxstations/search/pbxstations';
+			    					return '/stations/pbxstationgroups/search/pbxstationgroups';
 			    				},
 			    				data: function (params) {
 			    					var queryParameters = {

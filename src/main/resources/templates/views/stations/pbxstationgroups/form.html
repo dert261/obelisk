@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+				<div th:fragment="pbxstationgroupFormContent" id="pbxstationgroupFormContent" class="row">
+			    	<div class="col-lg-12">
+			    		<fieldset>
+							<legend>
+								<h1><th:block th:text="${pbxstationgroup.isNew()} ? #{pbxstationgroups.title.create} : #{pbxstationgroups.title.update}" /></h1>
+								<p class="note"><th:block th:text="#{field.required.start}" />	<span class="required" style="color:red">*</span>	<th:block th:text="#{field.required.end}" /></p>
+								
+								<!-- Errors alerts field -->					
+								<div class="alert alert-block alert-danger" th:if="${#fields.hasErrors('*')}"><p th:text="#{field.validation.error.global.message}" >Please fix the following input errors:</p>
+									<ul>
+		    							<li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
+			        						<span th:text="${e.global}? '*' : #{field}+' \''+#{pbxstationgroup.field+'.'+${e.fieldName}} +'\''">The field name</span> 
+			        						<span th:text="#{${e.message}}">The error message</span>
+		    							</li>
+									</ul>
+								</div>
+							</legend>
+							
+							<input type="hidden" th:field="*{id}" />
+							<div th:include="fragment/fielddefinition :: textFormField('name',true, text, 'pbxstationgroup.field')">Name</div>
+							<div th:include="fragment/fielddefinition :: textAreaFormField('description', false, 3, 'pbxstationgroup.field')">Description</div>
+							
+							
+							<div th:unless="${pbxstationgroup.isNew()}" class="panel panel-default">
+								<div class="panel-heading">
+    								<h3 class="panel-title"><b><th:block th:text="#{pbxstationgroup.form.pbxstationgroupname}">Pbx station group name</th:block></b></h3>
+  								</div>
+  								<div class="panel-body">
+  									<div th:include="fragment/fielddefinition :: mmSelectBox('pbxStations', allPbxStations,
+  										'pbxstationgroup','pbxstationgroup.field',
+  										#{pbxstationgroup.field.pbxStations.available},
+  										#{pbxstationgroup.field.pbxStations.available.search.placeholder},
+  										#{pbxstationgroup.field.pbxStations.selected},
+  										#{pbxstationgroup.field.pbxStations.selected.search.placeholder},
+  										8,'id','name')">Description</div>
+  								</div>
+  							</div>
+						</fieldset>
+						<div class="form-actions">
+            				<button class="btn btn-primary" type="submit" th:text="${pbxstationgroup.isNew()} ? #{pbxstationgroup.form.button.create.submit} : #{pbxstationgroup.form.button.update.submit}">Submit</button>
+            				<button class="btn btn-default" type="reset" th:text="#{pbxstationgroup.form.button.reset}">Reset</button>
+            			</div>	
+					</div>
+				</div>	
+</html>	

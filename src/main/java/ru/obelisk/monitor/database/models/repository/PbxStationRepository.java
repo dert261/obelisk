@@ -15,11 +15,11 @@ import ru.obelisk.monitor.database.models.entity.PbxStation;
 
 public interface PbxStationRepository extends JpaRepository<PbxStation, Integer> {
 
-	@Query("SELECT b FROM PbxStation b LEFT JOIN FETCH b.locations WHERE b.name = :name")
+	@Query("SELECT b FROM PbxStation b LEFT JOIN FETCH b.pbxStationGroup WHERE b.name = :name")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value ="true") })
 	PbxStation findByName(@Param("name") String name);
 	
-	@Query("SELECT b FROM PbxStation b LEFT JOIN FETCH b.locations WHERE b.id = :id")
+	@Query("SELECT b FROM PbxStation b LEFT JOIN FETCH b.pbxStationGroup WHERE b.id = :id")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value ="true") })
 	PbxStation findOne(@Param("id") int id);
 	

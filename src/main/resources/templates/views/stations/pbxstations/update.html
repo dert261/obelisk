@@ -13,21 +13,21 @@
 	<div id="page-wrapper">
 		<div class="row">
 			<ol class="breadcrumb">
-				<li><a href="/pbxstations/index.html"><th:block th:text="#{breadcrumbs.pbxStations}" /></a></li>
+				<li><a href="/stations/pbxstations/index.html"><th:block th:text="#{breadcrumbs.pbxStations}" /></a></li>
 				<li class="active"><th:block th:text="#{breadcrumbs.pbxStations.update}" /></li>
 			</ol>
 		</div> 
 		<div class="row">
 			
-			<form action="#" th:action="@{/pbxstations/update}" th:object="${pbxStation}" th:method="PUT" method="PUT" class="well form">
-				<head th:replace="pbxstations/form :: pbxStationFormContent" />
+			<form action="#" th:action="@{/stations/pbxstations/update}" th:object="${pbxStation}" th:method="PUT" method="PUT" class="well form">
+				<head th:replace="stations/pbxstations/form :: pbxStationFormContent" />
 			</form>
 		</div>
 	</div>
 </div>
 
 <div th:replace="fragment/header :: scripts" > </div>
-<script src="/static/assets/views/pbxstations/js/form.js" th:href="@{/static/assets/views/pbxstations/js/form.js}" > </script>
+<script src="/static/assets/views/stations/pbxstations/js/form.js" th:href="@{/static/assets/views/stations/pbxstations/js/form.js}" > </script>
 
 </body>
 </html>

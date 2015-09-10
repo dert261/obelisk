@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -27,45 +28,48 @@ import ru.obelisk.monitor.database.models.views.View;
 import ru.obelisk.monitor.web.validators.NotEmpty;
 
 @Entity
-@Table(name = "time_schedule_groups")
+@Table(name = "pbx_station_group")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class TimeScheduleGroup implements Serializable{
-	
+public class PbxStationGroup implements Serializable{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 806374255537431879L;
+	private static final long serialVersionUID = 4533626033456904966L;
 
 	@Transient
-	@JsonView(value={View.TimeScheduleGroup.class, View.TimePeriod.class})
+	@JsonView(value={View.PbxStationGroup.class, View.PbxStation.class, View.Location.class})
     private int numberLocalized;
-		
-	@JsonView(value={View.TimeScheduleGroup.class, View.TimePeriod.class})
+	
+	@JsonView(value={View.PbxStationGroup.class, View.PbxStation.class, View.Location.class})
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", length = 11, nullable = false)
 	private Integer id;
 	
-	@JsonView(value={View.TimeScheduleGroup.class, View.TimePeriod.class})
+	@JsonView(value={View.PbxStationGroup.class, View.PbxStation.class, View.Location.class})
 	@Column(name = "name", length = 100, nullable = false)
 	@NotNull 
 	@NotEmpty
 	private String name;
 		
-	@JsonView(value={View.TimeScheduleGroup.class, View.TimePeriod.class})
+	@JsonView(value={View.PbxStationGroup.class, View.PbxStation.class, View.Location.class})
 	@Column(name = "description", length = 500, nullable = true)
 	private String description;
 		
-	
-	@JsonView(value={View.TimeScheduleGroup.class})
-	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-    @JoinTable(name="time_schedule_group2time_period",
-    	joinColumns=@JoinColumn(name="tshed_id"),
-    	inverseJoinColumns=@JoinColumn(name="tperiod_id")
+	@JsonView(value={View.PbxStationGroup.class})
+	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    @JoinTable(name="pbx_station_group2pbx_station",
+    	joinColumns=@JoinColumn(name="tstationgroup_id"),
+    	inverseJoinColumns=@JoinColumn(name="tstation_id")
     )
     
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-	private List<TimePeriod> timePeriods = new ArrayList<TimePeriod>();
+	private List<PbxStation> pbxStations = new ArrayList<PbxStation>();
+	
+	@JsonView(value={View.PbxStationGroup.class})
+	@OneToMany(mappedBy="pbxStationGroup", fetch=FetchType.LAZY)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private List<Location> locations;
 	
 	public boolean isNew(){
 		return (this.id==null);
@@ -103,19 +107,25 @@ public class TimeScheduleGroup implements Serializable{
 		this.description = description;
 	}
 
-	public List<TimePeriod> getTimePeriods() {
-		return timePeriods;
+	public List<PbxStation> getPbxStations() {
+		return pbxStations;
 	}
 
-	public void setTimePeriods(List<TimePeriod> timePeriods) {
-		this.timePeriods = timePeriods;
+	public void setPbxStations(List<PbxStation> pbxStations) {
+		this.pbxStations = pbxStations;
+	}
+	
+	public List<Location> getLocations() {
+		return locations;
+	}
+
+	public void setLocations(List<Location> locations) {
+		this.locations = locations;
 	}
 
 	@Override
 	public String toString() {
-		return "TimeScheduleGroup [numberLocalized=" + numberLocalized
-				+ ", id=" + id + ", name=" + name + ", description="
-				+ description + ", timePeriods=" + timePeriods + "]";
+		return "PbxStationGroup [numberLocalized=" + numberLocalized + ", id="
+				+ id + ", name=" + name + ", description=" + description + "]";
 	}
-	
 }

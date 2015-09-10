@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="fragment/header :: headerFragment" />
+<!-- <div ddl:bundle-includes="select2,users-form" />  -->
+<link rel="stylesheet" src="/static/assets/extensions/lou-multi-select/0.9.12/css/multi-select.css" th:href="@{/static/assets/extensions/lou-multi-select/0.9.12/css/multi-select.css}" />
+
+<body>
+<div id="wrapper">
+	<!-- Header -->
+	<div th:replace="fragment/header :: navbar_alt" > </div>
+		
+	<br/>
+	<div id="page-wrapper">
+		<div class="row">
+			<ol class="breadcrumb">
+				<li><a href="/stations/pbxstationgroups/index.html"><th:block th:text="#{breadcrumbs.pbxstationgroups}" /></a></li>
+				<li class="active"><th:block th:text="#{breadcrumbs.pbxstationgroups.update}" /></li>
+			</ol>
+		</div> 
+		<div class="row">
+			
+			<form action="#" th:action="@{/stations/pbxstationgroups/update}" th:object="${pbxstationgroup}" th:method="PUT" method="PUT" class="well form">
+				<head th:replace="stations/pbxstationgroups/form :: pbxstationgroupFormContent" />
+			</form>
+		</div>
+	</div>
+</div>
+
+<div th:replace="fragment/header :: scripts" > </div>
+<script src="/static/assets/views/stations/pbxstationgroups/js/form.js" th:href="@{/static/assets/views/calendar/pbxstationgroups/js/form.js}" > </script>
+<script src="/static/assets/extensions/jquery.quicksearch.js" th:src="@{/static/assets/extensions/jquery.quicksearch.js}"></script>
+<script src="/static/assets/extensions/lou-multi-select/0.9.12/js/jquery.multi-select.js" th:src="@{/static/assets/extensions/lou-multi-select/0.9.12/js/jquery.multi-select.js}"></script>
+</body>
+</html>

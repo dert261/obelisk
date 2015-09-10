@@ -1,15 +1,20 @@
 package ru.obelisk.monitor.database.models.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -31,42 +36,49 @@ public class PbxStation implements Serializable {
 	 */
 	private static final long serialVersionUID = 7656616659864458028L;
 	
-	@JsonView(View.Location.class)
+	@JsonView(value={View.PbxStation.class, View.Location.class, View.PbxStationGroup.class})
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", length = 11, nullable = false)
     private Integer id;
 	
-	@JsonView(View.Location.class)
+	@JsonView(value={View.PbxStation.class, View.Location.class, View.PbxStationGroup.class})
 	@Column(name = "name", length = 50, nullable = false)
 	@NotNull 
 	@NotEmpty
 	private String name;
 	
-	@JsonView(View.Location.class)
+	@JsonView(value={View.PbxStation.class, View.Location.class, View.PbxStationGroup.class})
 	@Column(name = "host", length = 100, nullable = false)
 	@NotNull 
 	@NotEmpty
 	private String host;
 
-	@JsonView(View.Location.class)
+	@JsonView(value={View.PbxStation.class, View.Location.class, View.PbxStationGroup.class})
 	@Column(name = "update_flag")
 	private boolean updateFlag=false;
 	
-	@JsonView(View.Location.class)
+	@JsonView(value={View.PbxStation.class, View.Location.class, View.PbxStationGroup.class})
 	@Column(name = "rabbit_queue", length = 200, nullable = false)
 	@NotNull 
 	@NotEmpty
 	private String rabbitQueue;
 	
-	@JsonView(View.Location.class)
+	@JsonView(value={View.PbxStation.class, View.Location.class, View.PbxStationGroup.class})
 	@Column(name = "reinit_flag")
 	private boolean reinitFlag=false;
 	
-	@OneToMany(mappedBy="pbxStation", fetch=FetchType.LAZY)
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-	private List<Location> locations;
+	@JsonView(value={View.PbxStation.class})
+	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    @JoinTable(name="pbx_station_group2pbx_station",
+    	joinColumns=@JoinColumn(name="tstation_id"),
+    	inverseJoinColumns=@JoinColumn(name="tstationgroup_id")
+    )
+    //@NotNullField(groups=TimePeriod.TimePeriodValidationStepOne.class)  
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private List<PbxStationGroup> pbxStationGroup = new ArrayList<PbxStationGroup>();
 	
+	@JsonView(value={View.PbxStation.class, View.Location.class, View.PbxStationGroup.class})
 	@Transient
     private int numberLocalized;
 	
@@ -126,6 +138,14 @@ public class PbxStation implements Serializable {
 		this.numberLocalized = numberLocalized;
 	}
 
+	public List<PbxStationGroup> getPbxStationGroup() {
+		return pbxStationGroup;
+	}
+
+	public void setPbxStationGroup(List<PbxStationGroup> pbxStationGroup) {
+		this.pbxStationGroup = pbxStationGroup;
+	}
+
 	public boolean isNew(){
 		return (this.id == null);
 	}
@@ -134,8 +154,9 @@ public class PbxStation implements Serializable {
 	public String toString() {
 		return "PbxStation [id=" + id + ", name=" + name + ", host=" + host
 				+ ", updateFlag=" + updateFlag + ", rabbitQueue=" + rabbitQueue
-				+ ", reinitFlag=" + reinitFlag + ", numberLocalized="
-				+ numberLocalized + "]";
+				+ ", reinitFlag=" + reinitFlag + ", pbxStationGroup="
+				+ pbxStationGroup + ", numberLocalized=" + numberLocalized
+				+ "]";
 	}
 
 	

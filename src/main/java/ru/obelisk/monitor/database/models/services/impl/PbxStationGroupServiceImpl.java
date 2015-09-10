@@ -4,10 +4,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ru.obelisk.monitor.database.models.entity.Location;
-import ru.obelisk.monitor.database.models.repository.LocationRepository;
-import ru.obelisk.monitor.database.models.services.LocationService;
-import ru.obelisk.monitor.database.models.services.utils.LocationServiceUtils;
+import ru.obelisk.monitor.database.models.entity.PbxStationGroup;
+import ru.obelisk.monitor.database.models.repository.PbxStationGroupRepository;
+import ru.obelisk.monitor.database.models.services.PbxStationGroupService;
+import ru.obelisk.monitor.database.models.services.utils.PbxStationGroupServiceUtils;
 import ru.obelisk.monitor.web.ui.datatables.ColumnDef;
 import ru.obelisk.monitor.web.ui.datatables.DatatablesCriterias;
 import ru.obelisk.monitor.web.ui.select2.Select2Result;
@@ -23,56 +23,56 @@ import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
  
 @Service
-public class LocationServiceImpl implements LocationService {
+public class PbxStationGroupServiceImpl implements PbxStationGroupService {
  
     @Autowired
-    private LocationRepository locationRepository;
+    private PbxStationGroupRepository pbxStationGroupRepository;
     
     @PersistenceContext
     private EntityManager entityManager;
     
     @Override
     @Transactional
-    public Location addLocation(Location location) {
-    	Location savedLocation = locationRepository.saveAndFlush(location);
-        return savedLocation;
+    public PbxStationGroup addPbxStationGroup(PbxStationGroup pbxStationGroup) {
+    	PbxStationGroup savedPbxStationGroup = pbxStationGroupRepository.saveAndFlush(pbxStationGroup);
+        return savedPbxStationGroup;
     }
  
     @Override
     @Transactional
-    public void deleteLocation(int id) {
-    	locationRepository.delete(id);
+    public void deletePbxStationGroup(int id) {
+    	pbxStationGroupRepository.delete(id);
     }
     
     @Override
-    public Location getLocationByName(String name) {
-    	return locationRepository.findByName(name);
+    public PbxStationGroup getPbxStationGroupByName(String name) {
+        return pbxStationGroupRepository.findByName(name);
     }
  
     @Override
     @Transactional
-    public Location editLocation(Location formLocation) {
-    	Location location = new Location();
-    	BeanUtils.copyProperties(formLocation, location);
-    	return locationRepository.saveAndFlush(location);
+    public PbxStationGroup editPbxStationGroup(PbxStationGroup formPbxStationGroup) {
+    	PbxStationGroup timeScheduleGroup = new PbxStationGroup();
+    	BeanUtils.copyProperties(formPbxStationGroup, timeScheduleGroup);
+    	return pbxStationGroupRepository.saveAndFlush(timeScheduleGroup);
     }
  
     @Override
-    public List<Location> getAllLocations() {
-    	return locationRepository.findAll();
+    public List<PbxStationGroup> getAllPbxStationGroups() {
+        return pbxStationGroupRepository.findAll();
     }
 
 	@Override
-	public Location getLocationById(int id) {
-		return locationRepository.findOne(id);
+	public PbxStationGroup getPbxStationGroupById(int id) {
+		return pbxStationGroupRepository.findOne(id);
 	}
 	
-	public List<Select2Result> findLocationByTerm(String term) {
+	public List<Select2Result> findPbxStationGroupByTerm(String term) {
 		
 		List<Select2Result> resultList = entityManager.createQuery(
-                "SELECT NEW ru.obelisk.monitor.web.ui.select2.Select2Result(loc.id, loc.name) FROM Location loc" 
+                "SELECT NEW ru.obelisk.monitor.web.ui.select2.Select2Result(tstationgroup.id, tstationgroup.name) FROM PbxStationGroup tstationgroup" 
                 		+ " WHERE "
-                        + " loc.name LIKE :term", Select2Result.class)
+                        + " tstationgroup.name LIKE :term", Select2Result.class)
         .setParameter("term", "%" + term.toLowerCase() + "%")
         .setHint("org.hibernate.cacheable", true)
         .getResultList();
@@ -88,14 +88,13 @@ public class LocationServiceImpl implements LocationService {
 	* (maxResult, filtering, paging, ...)
 	* @return a filtered list of persons.
 	*/
-	@Override
-	public List<Location> findLocationWithDatatablesCriterias(DatatablesCriterias criterias) {
-		StringBuilder queryBuilder = new StringBuilder("SELECT loc FROM Location loc LEFT JOIN FETCH loc.pbxStationGroup LEFT JOIN FETCH loc.devicePool");
+	public List<PbxStationGroup> findPbxStationGroupWithDatatablesCriterias(DatatablesCriterias criterias) {
+		StringBuilder queryBuilder = new StringBuilder("SELECT tstationgroup FROM PbxStationGroup tstationgroup");
 		
 		/**
 		* Step 1: global and individual column filtering
 		*/
-		queryBuilder.append(LocationServiceUtils.getFilterQuery(criterias));
+		queryBuilder.append(PbxStationGroupServiceUtils.getFilterQuery(criterias));
 				
 		/**
 		* Step 2: sorting
@@ -109,7 +108,7 @@ public class LocationServiceImpl implements LocationService {
 				} else {
 					columnName=columnDef.getName();
 				}
-				orderParams.add("loc." + columnName + " " + columnDef.getSortDirection());
+				orderParams.add("tstationgroup." + columnName + " " + columnDef.getSortDirection());
 			}
 			if(!orderParams.isEmpty()){
 				queryBuilder.append(" ORDER BY ");
@@ -123,7 +122,7 @@ public class LocationServiceImpl implements LocationService {
 			}
 		}
 		
-		TypedQuery<Location> query = entityManager.createQuery(queryBuilder.toString(), Location.class);
+		TypedQuery<PbxStationGroup> query = entityManager.createQuery(queryBuilder.toString(), PbxStationGroup.class);
 		
 		/**
 		* Step 3: paging
@@ -135,12 +134,12 @@ public class LocationServiceImpl implements LocationService {
 		return idGenerate(query.getResultList(),criterias.getStart());
 	}
 	
-	private List<Location> idGenerate(List<Location> Locations, int start){
+	private List<PbxStationGroup> idGenerate(List<PbxStationGroup> PbxStationGroups, int start){
 		
-		for(int i=0;i<Locations.size();i++){
-			Locations.get(i).setNumberLocalized(start+i+1);
+		for(int i=0;i<PbxStationGroups.size();i++){
+			PbxStationGroups.get(i).setNumberLocalized(start+i+1);
 		}
-		return Locations;
+		return PbxStationGroups;
 	}
 	/**
 	* <p>
@@ -152,8 +151,8 @@ public class LocationServiceImpl implements LocationService {
 	* @return the number of filtered persons.
 	*/
 	public Long getFilteredCount(DatatablesCriterias criterias) {
-		StringBuilder queryBuilder = new StringBuilder("SELECT loc FROM Location loc");
-		queryBuilder.append(LocationServiceUtils.getFilterQuery(criterias));
+		StringBuilder queryBuilder = new StringBuilder("SELECT tstationgroup FROM PbxStationGroup tstationgroup");
+		queryBuilder.append(PbxStationGroupServiceUtils.getFilterQuery(criterias));
 		Query query = entityManager.createQuery(queryBuilder.toString());
 		query.setHint("org.hibernate.cacheable", true);
 		return Long.parseLong(String.valueOf(query.getResultList().size()));
@@ -162,7 +161,7 @@ public class LocationServiceImpl implements LocationService {
 	* @return the total count of persons.
 	*/
 	public Long getTotalCount() {
-		Query query = entityManager.createQuery("SELECT COUNT(loc) FROM Location loc");
+		Query query = entityManager.createQuery("SELECT COUNT(tstationgroup) FROM PbxStationGroup tstationgroup");
 		query.setHint("org.hibernate.cacheable", true);
 		return (Long) query.getSingleResult();
 	}
