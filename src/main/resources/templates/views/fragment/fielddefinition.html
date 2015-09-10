@@ -26,6 +26,95 @@
 	</div>
 </div>
 
+
+
+<!-- MM SELECT BOX FIELD TEMPLATE -->
+<div th:fragment="mmSelectBox(fieldName,dataSet,objectName,i18nName,availLabel,availSearchPlaceholder,selectedLabel,selectedSearchPlaceholder,size,valueParam,textParam)" th:remove="all">
+	<select th:field = "*{__${fieldName}__}"
+			class="form-control"
+			multiple="multiple"
+			th:size="${size}">
+			<option th:each="data : ${__${dataSet}__}" 
+					th:value="${data.__${valueParam}__}"
+					th:selected="${__${objectName}__.__${fieldName}__.contains(data)}" 
+					th:text="${data.__${textParam}__}">
+			</option>
+	</select>
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+		jQuery(function($) {
+						
+			$([['#'+${fieldName}]]).multiSelect({
+				dblClick: true,
+				keepRenderingSort: true,
+										
+				selectableHeader: "" +
+						"<div class='panel-heading'>" +
+							"<h3 class='panel-title'>"+[[${availLabel}]]+"</h3>" +
+						"</div>" +
+						"<div class='input-group'>" +
+							"<span class='input-group-addon'><i class='fa fa-search'></i></span>" +
+							"<input type='text' class='search-input form-control' autocomplete='off' placeholder=\""+[[${availSearchPlaceholder}]]+"\" ></input>" +
+						"</div>",
+				
+				selectionHeader: "" +
+						"<div class='panel-heading'>" +
+							"<h3 class='panel-title'>"+[[${selectedLabel}]]+"</h3>" +
+						"</div>" +
+						"<div class='input-group'>" +
+							"<span class='input-group-addon'><i class='fa fa-search'></i></span>" +
+							"<input type='text' class='search-input form-control' autocomplete='off' placeholder=\""+[[${selectedSearchPlaceholder}]]+"\" ></input>" +
+						"</div>",		
+							
+				afterInit: function(ms){
+				    var that = this,
+				        $selectableSearch = that.$selectableUl.prev().children().next(),
+				        $selectionSearch = that.$selectionUl.prev().children().next(),
+				        selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)',
+				        selectionSearchString = '#'+that.$container.attr('id')+' .ms-elem-selection.ms-selected';
+				    
+				    that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+				    .on('keydown', function(e){
+				    if (e.which === 40){
+				        that.$selectableUl.focus();
+				        return false;
+				      }
+				    });
+
+				    that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+				    .on('keydown', function(e){
+				      if (e.which == 40){
+				        that.$selectionUl.focus();
+				        return false;
+				      }
+				    });
+				  },
+				  afterSelect: function(){
+				    this.qs1.cache();
+				    this.qs2.cache();
+				    
+				  },
+				  afterDeselect: function(){
+				    this.qs1.cache();
+				    this.qs2.cache();
+				    
+				  }
+			});
+			
+    	});  
+	/*]]>*/
+	</script>
+</div>
+
+
+
+
+
+
+
+
+
+
 <!-- TIME PICKER FIELD TEMPLATE -->
 <div th:fragment="timepickerFormField(fieldName,requiredFlag,inputType,i18nName)" th:remove="all">
 	<div	class="form-group" 
@@ -141,7 +230,7 @@
 		
 		<select th:unless="${multipleFlag}"
 				th:field="*{__${fieldName}__}" 
-				class="select2-chosen" 
+				class="select2-chosen"
 				data-placeholder="select value"
 				th:attr="data-placeholder=#{${i18nName}+'.'+${fieldName}}">
 				<option th:each="data : ${__${dataSet}__}" 

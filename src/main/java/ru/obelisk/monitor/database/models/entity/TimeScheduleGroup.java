@@ -25,12 +25,11 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import ru.obelisk.monitor.database.models.views.View;
 import ru.obelisk.monitor.web.validators.NotEmpty;
-import ru.obelisk.monitor.web.validators.NotNullField;
 
 @Entity
 @Table(name = "time_schedule_groups")
 public class TimeScheduleGroup implements Serializable{
-
+	
 	/**
 	 * 
 	 */
@@ -55,9 +54,7 @@ public class TimeScheduleGroup implements Serializable{
 	@JsonView(value={View.TimeScheduleGroup.class, View.TimePeriod.class})
 	@Column(name = "description", length = 500, nullable = true)
 	private String description;
-	
-	
-	
+		
 	
 	@JsonView(value={View.TimeScheduleGroup.class})
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
@@ -65,7 +62,7 @@ public class TimeScheduleGroup implements Serializable{
     	joinColumns=@JoinColumn(name="tshed_id"),
     	inverseJoinColumns=@JoinColumn(name="tperiod_id")
     )
-    @NotNullField 
+    
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<TimePeriod> timePeriods = new ArrayList<TimePeriod>();
 	

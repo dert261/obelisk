@@ -23,43 +23,21 @@
 							<div th:include="fragment/fielddefinition :: textFormField('name',true, text, 'timeschedgroup.field')">Name</div>
 							<div th:include="fragment/fielddefinition :: textAreaFormField('description', false, 3, 'timeschedgroup.field')">Description</div>
 							
-							<!-- <div class="panel panel-default">
-  								<div class="panel-heading">
-    								<h3 class="panel-title"><b><th:block th:text="#{timeschedgroup.form.rangegroupname}">Range specification</th:block></b></h3>
+							
+							<div th:unless="${timeschedgroup.isNew()}" class="panel panel-default">
+								<div class="panel-heading">
+    								<h3 class="panel-title"><b><th:block th:text="#{timeschedgroup.form.timeperiodsgroupname}">Time periods group name</th:block></b></h3>
   								</div>
   								<div class="panel-body">
-    								<div class="col-md-6">
-										<div th:include="fragment/fielddefinition :: timepickerFormField('timeStart', true, text, 'timeschedgroup.field')">Time start</div>
-									</div>
-									<div class="col-md-6">
-										<div th:include="fragment/fielddefinition :: timepickerFormField('timeStop', true, text, 'timeschedgroup.field')">Time start</div>
-									</div>
-									
-									<div class="col-md-6">
-										<div th:include="fragment/fielddefinition :: selectEnumFormField('weekdayStart', false, 'calendarDays', 'timeschedgroup.field', *{weekdayStart}, false, false)">Weekday start</div>
-									</div>
-									<div class="col-md-6">	
-										<div th:include="fragment/fielddefinition :: selectEnumFormField('weekdayStop', false, 'calendarDays', 'timeschedgroup.field', *{weekdayStop}, false, false)">Weekday stop</div>
-									</div>	
-									
-									<div class="col-md-6">
-										<div th:include="fragment/fielddefinition :: selectEnumFormField('monthStart', false, 'calendarMonths', 'timeschedgroup.field', *{monthStart}, false, false)">Month start</div>
-									</div>
-									<div class="col-md-6">	
-										<div th:include="fragment/fielddefinition :: selectEnumFormField('monthStop', false, 'calendarMonths', 'timeschedgroup.field', *{monthStop}, false, false)">Month stop</div>
-									</div>
-									
-									<div class="col-md-6">
-										<div th:include="fragment/fielddefinition :: selectEnumFormField('monthDayStart', false, 'calendarMonthDays', 'timeschedgroup.field', *{monthDayStart}, false, false)">Month start</div>
-									</div>
-									<div class="col-md-6">	
-										<div th:include="fragment/fielddefinition :: selectEnumFormField('monthDayStop', false, 'calendarMonthDays', 'timeschedgroup.field', *{monthDayStop}, false, false)">Month stop</div>
-									</div>	
-									
- 								</div>
-							</div> -->
-							
-							
+  									<div th:include="fragment/fielddefinition :: mmSelectBox('timePeriods', allTimePeriods,
+  										'timeschedgroup','timeschedgroup.field',
+  										#{timeschedgroup.field.timePeriods.available},
+  										#{timeschedgroup.field.timePeriods.available.search.placeholder},
+  										#{timeschedgroup.field.timePeriods.selected},
+  										#{timeschedgroup.field.timePeriods.selected.search.placeholder},
+  										8,'id','name')">Description</div>
+  								</div>
+  							</div>
 						</fieldset>
 						<div class="form-actions">
             				<button class="btn btn-primary" type="submit" th:text="${timeschedgroup.isNew()} ? #{timeschedgroup.form.button.create.submit} : #{timeschedgroup.form.button.update.submit}">Submit</button>

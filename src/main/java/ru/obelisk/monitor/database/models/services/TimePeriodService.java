@@ -19,6 +19,7 @@ public interface TimePeriodService {
     
 	TimePeriod getTimePeriodByName(String timeperiodName);
 	TimePeriod getTimePeriodById(int id);
+	List<TimePeriod> getTimePeriodByIds(int[] ids);
     List<TimePeriod> getAllTimePeriods();
     
     List<Select2Result> findTimePeriodByTerm(String term);

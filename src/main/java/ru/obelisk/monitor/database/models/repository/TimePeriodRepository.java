@@ -21,9 +21,11 @@ public interface TimePeriodRepository extends JpaRepository<TimePeriod, Integer>
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value ="true") })
 	TimePeriod findOne(@Param("id") int id);
 	
+	@Query("SELECT tperiod FROM TimePeriod tperiod WHERE tperiod.id IN (:ids)")
+	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value ="true") })
+	List<TimePeriod> findByIds(@Param("ids") int[] ids);
+	
 	@Query("SELECT tperiod FROM TimePeriod tperiod")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value ="true") })
 	List<TimePeriod> findAll();
-	
-	
 }
