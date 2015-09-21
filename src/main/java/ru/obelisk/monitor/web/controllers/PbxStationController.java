@@ -43,7 +43,7 @@ public class PbxStationController {
 	@Autowired
     private PbxStationService pbxStationService;
 	
-	@JsonView(View.PbxStation.class)	
+	
 	@RequestMapping(value = {"/search/pbxstations"}, method = RequestMethod.GET)
 	@Secured("ROLE_ADMIN")
 	public @ResponseBody List<Select2Result> searchPbxStation(@RequestParam String searchString) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{

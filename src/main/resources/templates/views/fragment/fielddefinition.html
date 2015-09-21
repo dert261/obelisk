@@ -27,6 +27,50 @@
 </div>
 
 
+<!-- DROPDOWN SELECT2 FIELD TEMPLATE -->
+<div th:fragment="select2FormField(fieldName, requiredFlag, objectName, dataSet, dataValue, dataText, i18nName, allowClearFlag, defaultValuei18nText)" th:remove="all">
+	<div	class="form-group" 
+			th:classappend="${#fields.hasErrors(fieldName)}? 'has-error'">
+		<label 	class="control-label"
+				th:classappend="${requiredFlag} ? 'required'"
+				th:class="${#fields.hasErrors(fieldName)}? 'control-label error' : 'control-label'" 
+				for="fieldName" 
+				th:inline="text">[[#{${i18nName}+'.'+${fieldName}}]] <span th:if="${requiredFlag}" class="required" style="color:red">*</span>
+		</label>
+				
+		<select th:field="*{__${fieldName}__}" 
+				class="select2-chosen"
+				data-placeholder="select value"
+				th:attr="data-placeholder=#{${i18nName}+'.'+${fieldName}}">
+				<option value="0" th:text="#{${i18nName}+'.'+${fieldName}+'.'+${defaultValuei18nText}}"></option>
+				<option th:each="data : ${__${dataSet}__}" 
+        				th:value="${data.__${dataValue}__}" 
+          				th:text="${data.__${dataText}__}"
+          				th:selected="${__${objectName}__.__${fieldName}__==data}"> 
+				</option>
+		</select>
+		<div th:if="${#fields.hasErrors(fieldName)}" class="help-block error">
+			<ul>
+				<li th:each="err : ${#fields.errors(fieldName)}" th:text="#{${err}}" />
+			</ul>
+		</div>
+	</div>
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+		jQuery(function($) {
+    		jQuery([['#'+${fieldName}]]).select2({
+    			'allowClear':[[${allowClearFlag}]],
+    			'width':'100%',
+    			'placeholder': {
+    			    'id': "",
+    			    'placeholder': [[#{${i18nName}+'.'+${fieldName}}]]
+    			},
+    		})//.select2('val', [[${activeValue}]]);
+    	});  
+	/*]]>*/
+	</script>
+</div>
+
 
 <!-- MM SELECT BOX FIELD TEMPLATE -->
 <div th:fragment="mmSelectBox(fieldName,dataSet,objectName,i18nName,availLabel,availSearchPlaceholder,selectedLabel,selectedSearchPlaceholder,size,valueParam,textParam)" th:remove="all">

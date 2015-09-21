@@ -51,7 +51,11 @@ public class PbxStationGroupController {
 	public @ResponseBody List<Select2Result> searchPbxStationGroup(@RequestParam String searchString) 
 			throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting search pbxstationgroup with term: {}",searchString);
-		return pbxstationgroupService.findPbxStationGroupByTerm(searchString);
+		
+		List<Select2Result> res =pbxstationgroupService.findPbxStationGroupByTerm(searchString); 
+		logger.info(res);
+		return res;
+		//return pbxstationgroupService.findPbxStationGroupByTerm(searchString);
 	}
 	
 	@RequestMapping(value = {"/", "/index.html"}, method = RequestMethod.GET)

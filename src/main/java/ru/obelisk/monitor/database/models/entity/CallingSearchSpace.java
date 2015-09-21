@@ -14,68 +14,60 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import com.fasterxml.jackson.annotation.JsonView;
+import org.hibernate.annotations.SortNatural;
 
 import ru.obelisk.monitor.database.models.views.View;
 import ru.obelisk.monitor.web.validators.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 @Entity
-@Table(name = "time_schedule_groups")
+@Table(name = "calling_search_space")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class TimeScheduleGroup implements Serializable{
-	
+public class CallingSearchSpace implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 806374255537431879L;
+	private static final long serialVersionUID = -2805477308288170889L;
 
 	@Transient
-	@JsonView(value={View.TimeScheduleGroup.class, View.TimePeriod.class})
+	@JsonView(value={View.CallingSearchSpace.class, View.Partition.class})
+	@SortNatural
     private int numberLocalized;
 		
-	@JsonView(value={View.TimeScheduleGroup.class, View.TimePeriod.class})
+	@JsonView(value={View.CallingSearchSpace.class, View.Partition.class})
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", length = 11, nullable = false)
 	private Integer id;
 	
-	@JsonView(value={View.TimeScheduleGroup.class, View.TimePeriod.class})
+	@JsonView(value={View.CallingSearchSpace.class, View.Partition.class})
 	@Column(name = "name", length = 100, nullable = false)
 	@NotNull 
-	@NotEmpty
+	@NotEmpty 
+	@SortNatural
 	private String name;
 		
-	@JsonView(value={View.TimeScheduleGroup.class, View.TimePeriod.class})
+	@JsonView(value={View.CallingSearchSpace.class, View.Partition.class})
 	@Column(name = "description", length = 500, nullable = true)
+	@SortNatural
 	private String description;
-		
 	
-	@JsonView(value={View.TimeScheduleGroup.class})
-	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-    @JoinTable(name="time_schedule_group2time_period",
-    	joinColumns=@JoinColumn(name="tshed_id"),
-    	inverseJoinColumns=@JoinColumn(name="tperiod_id")
+	@JsonView(value={View.CallingSearchSpace.class})
+	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    @JoinTable(name="partition2css",
+    	joinColumns=@JoinColumn(name="tcss_id"),
+    	inverseJoinColumns=@JoinColumn(name="tpartition_id")
     )
-		    
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-	private List<TimePeriod> timePeriods = new ArrayList<TimePeriod>();
-	
-	@JsonView(value={View.TimeScheduleGroup.class})
-	@OneToMany(mappedBy="timeScheduleGroup", fetch=FetchType.LAZY)
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-	private List<Partition> partitions;
-	
-	public boolean isNew(){
-		return (this.id==null);
-	}
+	@SortNatural
+	private List<Partition> partitions = new ArrayList<Partition>();
 
 	public int getNumberLocalized() {
 		return numberLocalized;
@@ -109,19 +101,23 @@ public class TimeScheduleGroup implements Serializable{
 		this.description = description;
 	}
 
-	public List<TimePeriod> getTimePeriods() {
-		return timePeriods;
+	public List<Partition> getPartitions() {
+		return partitions;
 	}
 
-	public void setTimePeriods(List<TimePeriod> timePeriods) {
-		this.timePeriods = timePeriods;
+	public void setPartitions(List<Partition> partitions) {
+		this.partitions = partitions;
+	}
+	
+	public boolean isNew(){
+		return (this.id==null);
 	}
 
 	@Override
 	public String toString() {
-		return "TimeScheduleGroup [numberLocalized=" + numberLocalized
+		return "CallingSearchSpace [numberLocalized=" + numberLocalized
 				+ ", id=" + id + ", name=" + name + ", description="
-				+ description + ", timePeriods=" + timePeriods + "]";
+				+ description + "]";
 	}
 	
 }
