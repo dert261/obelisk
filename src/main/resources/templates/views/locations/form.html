@@ -25,34 +25,34 @@
 							
 							<!-- PBXSTATION FIELD -->
 							<div	class="form-group" 
-									th:classappend="${#fields.hasErrors('pbxStation')}? 'has-error'">
+									th:classappend="${#fields.hasErrors('pbxStationGroup')}? 'has-error'">
 								<label 	class="control-label"
 										th:classappend="${true} ? 'required'"
-										th:class="${#fields.hasErrors('pbxStation')}? 'control-label error' : 'control-label'" 
+										th:class="${#fields.hasErrors('pbxStationGroup')}? 'control-label error' : 'control-label'" 
 										for="pbxStation" 
-										th:inline="text">[[#{location.field.pbxStation}]] <span th:if="${true}" class="required" style="color:red">*</span>
+										th:inline="text">[[#{location.field.pbxStationGroup}]] <span th:if="${true}" class="required" style="color:red">*</span>
 								</label>
 									
-								<select th:field="*{pbxStation}" 
+								<select th:field="*{pbxStationGroup}" 
 										class="select2-chosen" 
 										placeholder="select field" 
-										th:attr="placeholder=#{location.field.pbxStation}">
-										<option th:each="data : ${pbxStationAll}" 
+										th:attr="placeholder=#{location.field.pbxStationGroup}">
+										<option th:each="data : ${pbxStationGroupAll}" 
 											th:value="${data.id}" 
 											th:text="${data.name}">
 									</option>
 								</select>
 									
-								<div th:if="${#fields.hasErrors('pbxStation')}" class="help-block error">
+								<div th:if="${#fields.hasErrors('pbxStationGroup')}" class="help-block error">
 									<ul>
-										<li th:each="err : ${#fields.errors('pbxStation')}" th:text="#{${err}}" />
+										<li th:each="err : ${#fields.errors('pbxStationGroup')}" th:text="#{${err}}" />
 									</ul>
 								</div> 
 									
 								<script th:inline="javascript">
 								/*<![CDATA[*/
 									jQuery(function($) {
-										jQuery('#pbxStation').select2({'allowClear':true,'width':'100%'}).select2('val', [[${location.isNew()} ? '':*{pbxStation.id}]]);
+										jQuery('#pbxStationGroup').select2({'allowClear':true,'width':'100%'}).select2('val', [[${location.isNew()} ? '':*{pbxStationGroup.id}]]);
 									});  
 								/*]]>*/
 								</script> 

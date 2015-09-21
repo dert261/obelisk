@@ -321,8 +321,27 @@
 	                        		</ul>	
 	                            </li>
 	                            <li>
-	                        		<a href="/pbxstations/" th:utext="'&lt;i class=\'fa fa-phone-square fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.settings.pbxStations}">Pbx Stations</a>
-	                            </li>
+	                        		<a href="#" th:utext="'&lt;i class=\'fa fa-server  fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.settings.stations}+' &lt;span class=\'fa arrow\'&gt;&lt;/span&gt;'"><i class="fa fa-table fa-fw"></i>Stations<span class="fa arrow"></span></a> 
+	                        		<ul class="nav nav-third-level">
+			                            <li>
+			                        		<a href="/stations/pbxstations/" th:utext="'&lt;i class=\'fa fa-phone-square fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.settings.stations.pbxStations}">Pbx Stations</a>
+			                            </li>
+			                            <li>
+			                        		<a href="/stations/pbxstationgroups/" th:utext="'&lt;i class=\'fa fa-th-list fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.settings.stations.pbxStationGroups}">Pbx Station Groups</a>
+			                            </li>
+			                        </ul>
+			                    </li>
+			                    <li>
+	                        		<a href="#" th:utext="'&lt;i class=\'fa fa-shield fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.settings.accessclass}+' &lt;span class=\'fa arrow\'&gt;&lt;/span&gt;'"><i class="fa fa-table fa-fw"></i>Access class<span class="fa arrow"></span></a> 
+	                        		<ul class="nav nav-third-level">
+	                        			<li>
+	                        				<a href="/accessclass/partitions/" th:utext="'&lt;i class=\'fa fa-lock  fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.settings.accessclass.partitions}">Partition</a>
+	                        			</li>
+	                        			<li>
+	                        				<a href="/accessclass/css/" th:utext="'&lt;i class=\'fa fa-key fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.settings.accessclass.css}">Calling search space</a>
+	                        			</li>
+	                        		</ul>	
+	                            </li>        
 	                            <li>
 	                        		<a href="/locations/" th:utext="'&lt;i class=\'fa fa-building-o fa-fw\'&gt;&lt;/i&gt; '+#{header.menu.left.settings.locations}">Locations</a>
 	                            </li>

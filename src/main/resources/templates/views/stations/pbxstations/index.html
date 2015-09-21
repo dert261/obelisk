@@ -14,13 +14,13 @@
 					<li class="active" th:text="#{breadcrumbs.pbxStations}">Pbx Stations</li>
 				</ol>
 				<div class="col-lg-12">
-					<a href="/pbxstations/create" th:text="#{breadcrumbs.pbxStations.create}">Create</a>
+					<a href="/stations/pbxstations/create" th:text="#{breadcrumbs.pbxStations.create}">Create</a>
 				</div>
 				<div class="col-lg-12">
 					<h1 class="page-header" th:text="#{pbxStations.ui.messages.index.title}">Pbx Stations management</h1>
 					
 				</div>
-				<div th:replace="pbxstations/search :: pbxstations_search_form" > </div>
+				<div th:replace="stations/pbxstations/search :: pbxstations_search_form" > </div>
 			</div>
 			
 			 <div class="row">
@@ -75,7 +75,7 @@
 	        "serverSide": true,
 	        "ajax": {
 	        	"method": "GET",
-	        	"url": "/pbxstations/ajax/serverside/pbxstationdata.json",
+	        	"url": "/stations/pbxstations/ajax/serverside/pbxstationdata.json",
 	        	"data": function ( d ) {
 	            	return $.extend( {}, d, {
 	                    "extra_search[id]": $('#id').val()!=undefined ? $('#id').val() : "null",
@@ -111,13 +111,13 @@
 	    			"orderable": false,
 		            "data": "Actions",
 		            "render": function (data, type, full, meta) {
-		            	var updateField = '<a class="update" href="/pbxstations/update/'+data+'" data-toggle="tooltip" title="'+[[#{ui.messages.table.edit}]]+'" data-original-title="'+[[#{ui.messages.table.edit}]]+'"> \
+		            	var updateField = '<a class="update" href="/stations/pbxstations/update/'+data+'" data-toggle="tooltip" title="'+[[#{ui.messages.table.edit}]]+'" data-original-title="'+[[#{ui.messages.table.edit}]]+'"> \
 		     	 								<i class="glyphicon glyphicon-pencil"></i></a>';
-		     	 		var deleteField = '<a class="delete" href="/pbxstations/delete" data-delete="'+data+'" data-toggle="tooltip" title="'+[[#{ui.messages.table.delete}]]+'" data-original-title="'+[[#{ui.messages.table.delete}]]+'"> \
+		     	 		var deleteField = '<a class="delete" href="/stations/pbxstations/delete" data-delete="'+data+'" data-toggle="tooltip" title="'+[[#{ui.messages.table.delete}]]+'" data-original-title="'+[[#{ui.messages.table.delete}]]+'"> \
 		         								<i class="glyphicon glyphicon-trash"></i> </a>';
-		         		var updateConfigField = '<a class="update-config" href="/pbxstations/updateconfig" data-update="'+data+'" data-toggle="tooltip" title="'+[[#{ui.messages.table.actions.pbxstations.updateconfig}]]+'" data-original-title="'+[[#{ui.messages.table.delete}]]+'"> \
+		         		var updateConfigField = '<a class="update-config" href="/stations/pbxstations/updateconfig" data-update="'+data+'" data-toggle="tooltip" title="'+[[#{ui.messages.table.actions.pbxstations.updateconfig}]]+'" data-original-title="'+[[#{ui.messages.table.delete}]]+'"> \
 		         								<i class="glyphicon glyphicon-repeat"></i> </a>';
-		         		var reinitBaseField = '<a class="reinit-base" href="/pbxstations/reinitbase" data-reinit="'+data+'" data-toggle="tooltip" title="'+[[#{ui.messages.table.actions.pbxstations.reinitbase}]]+'" data-original-title="'+[[#{ui.messages.table.delete}]]+'"> \
+		         		var reinitBaseField = '<a class="reinit-base" href="/stations/pbxstations/reinitbase" data-reinit="'+data+'" data-toggle="tooltip" title="'+[[#{ui.messages.table.actions.pbxstations.reinitbase}]]+'" data-original-title="'+[[#{ui.messages.table.delete}]]+'"> \
 		         								<i class="glyphicon glyphicon-refresh"></i> </a>';						
 			            return "<center>"+updateConfigField+"&nbsp;&nbsp;&nbsp;"+reinitBaseField+"&nbsp;&nbsp;&nbsp;"+updateField+"&nbsp;&nbsp;&nbsp;"+deleteField+"</center>";
 	           		}

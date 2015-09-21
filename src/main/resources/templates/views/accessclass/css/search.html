@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<div th:fragment="css_search_form" class="col-lg-12">
+		
+		<a class="search-button" href="#" th:text="#{css.form.search.message}">Extended search</a>
+		
+		<div th:object="${css}" class="search-form" style="display: none;">
+			<form action="#" th:action="@{/css/search/css}" th:object="${css}" th:method="GET" method="GET" id="css-search-form" class="well-search form">
+								
+				<div	class="form-group">
+					<label 	class="control-label"
+							for="id" 
+							th:text="#{css.field.name}"> 
+					</label>
+			
+					<select th:field="*{id}" 
+							class="select2-chosen" 
+							multiple="multiple">
+							
+							<option th:each="data : ${cssAll}" 
+	        						th:value="${data.id}" 
+	          						th:text="${data.name}">
+	          				</option>
+					</select>
+				</div>
+				
+				<div class="form-actions">
+					<button id="doSearch" class="btn btn-primary" name="doSearch" type="submit" th:text="#{css.searchform.button.search}">Search</button>
+				</div>
+			</form>
+		</div>
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+			    $(document).ready(function() {
+					$('.search-button').click(function(){
+						$('.search-form').toggle();
+						return false;
+					});
+				
+					jQuery(function($) {
+			    		jQuery('#id').select2({
+			    			allowClear:true,
+			    			width:'100%', 
+			    			minimumInputLength:'2', 
+			    			language: [[${#locale.language}]], 
+			    			placeholder: [[#{css.searchform.searchfield.placeholder.name}]],
+			    			ajax: {
+			    				delay: 500,
+			    				url: function (params) {
+			    					return '/accessclass/css/search/css';
+			    				},
+			    				data: function (params) {
+			    					var queryParameters = {
+			    					 	searchString: params.term
+			    					}
+			    					return queryParameters;
+			    				},
+			    				processResults: function (data) {
+			    					return {
+			    						results: data
+			    					};
+			    				},
+			    				
+			    				
+			    			}
+			    		
+			    		});
+			    	});
+			    });	
+			/*]]>*/
+		</script>
+	</div>
+</html>

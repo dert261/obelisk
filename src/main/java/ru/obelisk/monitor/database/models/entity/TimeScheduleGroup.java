@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -28,6 +29,7 @@ import ru.obelisk.monitor.web.validators.NotEmpty;
 
 @Entity
 @Table(name = "time_schedule_groups")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class TimeScheduleGroup implements Serializable{
 	
 	/**
@@ -57,14 +59,19 @@ public class TimeScheduleGroup implements Serializable{
 		
 	
 	@JsonView(value={View.TimeScheduleGroup.class})
-	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinTable(name="time_schedule_group2time_period",
     	joinColumns=@JoinColumn(name="tshed_id"),
     	inverseJoinColumns=@JoinColumn(name="tperiod_id")
     )
-    
+		    
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<TimePeriod> timePeriods = new ArrayList<TimePeriod>();
+	
+	@JsonView(value={View.TimeScheduleGroup.class})
+	@OneToMany(mappedBy="timeScheduleGroup", fetch=FetchType.LAZY)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private List<Partition> partitions;
 	
 	public boolean isNew(){
 		return (this.id==null);

@@ -90,7 +90,7 @@ public class LocationServiceImpl implements LocationService {
 	*/
 	@Override
 	public List<Location> findLocationWithDatatablesCriterias(DatatablesCriterias criterias) {
-		StringBuilder queryBuilder = new StringBuilder("SELECT loc FROM Location loc LEFT JOIN FETCH loc.pbxStation LEFT JOIN FETCH loc.devicePool");
+		StringBuilder queryBuilder = new StringBuilder("SELECT loc FROM Location loc LEFT JOIN FETCH loc.pbxStationGroup LEFT JOIN FETCH loc.devicePool");
 		
 		/**
 		* Step 1: global and individual column filtering

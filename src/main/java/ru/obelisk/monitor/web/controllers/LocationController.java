@@ -29,7 +29,7 @@ import ru.obelisk.monitor.annotations.DatatableCriterias;
 import ru.obelisk.monitor.database.models.entity.Location;
 import ru.obelisk.monitor.database.models.services.DevicePoolService;
 import ru.obelisk.monitor.database.models.services.LocationService;
-import ru.obelisk.monitor.database.models.services.PbxStationService;
+import ru.obelisk.monitor.database.models.services.PbxStationGroupService;
 import ru.obelisk.monitor.database.models.views.View;
 import ru.obelisk.monitor.web.ui.datatables.DataSet;
 import ru.obelisk.monitor.web.ui.datatables.DatatablesCriterias;
@@ -46,7 +46,7 @@ public class LocationController {
     private LocationService locationService;
 	
 	@Autowired
-    private PbxStationService pbxStationService;
+    private PbxStationGroupService pbxStationGroupService;
 	
 	@Autowired
     private DevicePoolService devicePoolService;
@@ -97,7 +97,7 @@ public class LocationController {
 		Location location = new Location();
 		model.addAttribute("location", location);
 		model.addAttribute("devicePoolAll", devicePoolService.getAllDevicePools());
-		model.addAttribute("pbxStationAll", pbxStationService.getAllPbxStations());
+		model.addAttribute("pbxStationGroupAll", pbxStationGroupService.getAllPbxStationGroups());
 		return "locations/create";
 	}
 		
@@ -110,7 +110,7 @@ public class LocationController {
 		logger.info("Requesting add location method");
 		if(bindingResult.hasErrors()){
 			model.addAttribute("devicePoolAll", devicePoolService.getAllDevicePools());
-			model.addAttribute("pbxStationAll", pbxStationService.getAllPbxStations());
+			model.addAttribute("pbxStationGroupAll", pbxStationGroupService.getAllPbxStationGroups());
 			return "locations/create";
 		}
 		locationService.addLocation(location);
@@ -127,7 +127,7 @@ public class LocationController {
 		Location location = locationService.getLocationById(id);
 		model.addAttribute("location", location);
 		model.addAttribute("devicePoolAll", devicePoolService.getAllDevicePools());
-		model.addAttribute("pbxStationAll", pbxStationService.getAllPbxStations());
+		model.addAttribute("pbxStationGroupAll", pbxStationGroupService.getAllPbxStationGroups());
 		return "locations/update";
 	}
 	
@@ -141,7 +141,7 @@ public class LocationController {
 		logger.info("Requesting save update location method");
 		if(bindingResult.hasErrors()){
 			model.addAttribute("devicePoolAll", devicePoolService.getAllDevicePools());
-			model.addAttribute("pbxStationAll", pbxStationService.getAllPbxStations());
+			model.addAttribute("pbxStationGroupAll", pbxStationGroupService.getAllPbxStationGroups());
 			return "locations/update";
 		}
 		locationService.editLocation(formLocation);

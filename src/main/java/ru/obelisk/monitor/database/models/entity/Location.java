@@ -57,7 +57,7 @@ public class Location implements Serializable {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@NotNullField
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-	private PbxStation pbxStation;
+	private PbxStationGroup pbxStationGroup;
 		
 	@JsonView(value={View.Location.class})
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -66,7 +66,7 @@ public class Location implements Serializable {
 	private DevicePool devicePool;
 	
 	@JsonView(value={View.Location.class, View.DevicePool.class})
-	@Column(name = "prefix", length = 1, nullable = true)
+	@Column(name = "prefix", length = 5, nullable = true)
 	@NullOrDigit(message="field.validation.error.nullordigit")
 	private String prefix = null;
 	
@@ -94,12 +94,12 @@ public class Location implements Serializable {
 		this.name = name;
 	}
 	
-	public PbxStation getPbxStation() {
-		return pbxStation;
+	public PbxStationGroup getPbxStationGroup() {
+		return pbxStationGroup;
 	}
 
-	public void setPbxStation(PbxStation pbxStation) {
-		this.pbxStation = pbxStation;
+	public void setPbxStationGroup(PbxStationGroup pbxStationGroup) {
+		this.pbxStationGroup = pbxStationGroup;
 	}
 
 	public String getRecordDirName() {
@@ -133,7 +133,7 @@ public class Location implements Serializable {
 	@Override
 	public String toString() {
 		return "Location [numberLocalized=" + numberLocalized + ", id=" + id
-				+ ", name=" + name + ", pbxStation=" + pbxStation
+				+ ", name=" + name + ", pbxStationGroup=" + pbxStationGroup
 				+ ", recordDirName=" + recordDirName + ", devicePool="
 				+ devicePool + ", prefix=" + prefix + "]";
 	}

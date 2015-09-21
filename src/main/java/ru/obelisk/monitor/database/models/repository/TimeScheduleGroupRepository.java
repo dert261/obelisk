@@ -14,12 +14,10 @@ import ru.obelisk.monitor.database.models.entity.TimeScheduleGroup;
 public interface TimeScheduleGroupRepository extends JpaRepository<TimeScheduleGroup, Integer> {
 
 	@Query("SELECT tschedgroup FROM TimeScheduleGroup tschedgroup LEFT JOIN FETCH tschedgroup.timePeriods WHERE tschedgroup.name = :name")
-	//@Query("SELECT tschedgroup FROM TimeScheduleGroup tschedgroup WHERE tschedgroup.name = :name")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value ="true") })
 	TimeScheduleGroup findByName(@Param("name") String name);
 	
 	@Query("SELECT tschedgroup FROM TimeScheduleGroup tschedgroup LEFT JOIN FETCH tschedgroup.timePeriods WHERE tschedgroup.id = :id")
-	//@Query("SELECT tschedgroup FROM TimeScheduleGroup tschedgroup WHERE tschedgroup.id = :id")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value ="true") })
 	TimeScheduleGroup findOne(@Param("id") int id);
 	

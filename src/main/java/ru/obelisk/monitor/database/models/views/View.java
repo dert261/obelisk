@@ -8,4 +8,8 @@ public class View {
 	public interface TimePeriod extends Datatable {}
 	public interface MMTimePeriods extends Datatable {}
 	public interface TimeScheduleGroup extends Datatable {}
+	public interface PbxStation extends Datatable {}
+	public interface PbxStationGroup extends Datatable {}
+	public interface Partition extends Datatable {}
+	public interface CallingSearchSpace extends Datatable {}
 }

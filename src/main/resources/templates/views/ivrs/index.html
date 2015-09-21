@@ -3,6 +3,7 @@
 
 <head th:include="fragment/header :: headerFragment" />
 
+
 <body>
 	<div id="wrapper">
 		<!-- Header -->
@@ -87,6 +88,10 @@
 	<div th:replace="fragment/header :: scripts" > </div>
 	<link rel="stylesheet" th:href="@{/static/assets/jquery-ui/1.11.4/cupertino/jquery-ui.css}" />
 	<style type="text/css">
+		.ajax_loader {background: url("/static/assets/extensions/ajax-loader/spinner_squares_circle.gif") no-repeat center center transparent;width:100%;height:100%;}
+		.blue-loader .ajax_loader {background: url("/static/assets/extensions/ajax-loader/ajax-loader_blue.gif") no-repeat center center transparent;}
+	
+	
   		.ui-accordion .ui-accordion-content {
     		padding: 1px;
  		}
@@ -108,6 +113,7 @@
 	<script src="/static/assets/views/ivrs/icons.js" th:href="@{/static/assets/views/ivrs/icons.js}" > </script>
 	<script src="/static/assets/gojs/1.5.2/go-debug.js" th:href="@{/static/assets/gojs/1.5.2/go-debug.js}" > </script> <!-- use go.js when deploying -->
 	<script src="/static/assets/sisyphus/v1.1.2-11/sisyphus.js" th:href="@{/static/assets/sisyphus/v1.1.2-11/sisyphus.js}" > </script> <!-- use go.js when deploying -->
+	<script src="/static/assets/extensions/ajax-loader/script.js" th:href="@{/static/assets/extensions/ajax-loader/script.js}" > </script>
 	
 	<script th:inline="javascript">
 	/*<![CDATA[*/
@@ -645,7 +651,12 @@
  	
     var schemaMap = new Map();
     
+    
+    
+    
  	function addNode(type, index){
+ 		//clearElementSettingsView();
+ 		fadeElementSettingsView();
  		$.ajax({
 			type: 'POST',
 			url: "/ivrs/addNode",
@@ -678,7 +689,8 @@
  	}
  	
  	function infoNode(type,index){
- 		
+ 		//clearElementSettingsView();
+ 		fadeElementSettingsView();
  		$.ajax({
 			type: 'GET',
 			url: "/ivrs/infoNode",
@@ -689,22 +701,14 @@
 		}).done(function(data) {
 			$("#ivrElementSettings").html(data);
 			var node = schemaMap.get(index);
-			//var sisyphusForm = $("#"+node.type+"FormContent"+node.index);
-			//var node = schemaMap.get(index);
-			/*if(!node.sisyphus) {
-				 
-				node.sisyphus = sisyphusInit(sisyphusForm, node); 
-				schemaMap.set(index, node);
-			} else {
-				node.sisyphus.restoreAllData();
-				//sisyphusInit(sisyphusForm, node);
-				//sisyphusInit(node);
-				//var sisyphus = $("#"+node.type+"FormContent"+node.index).sisyphus();
-				//sisyphus.restore();
-			}*/
 			schemaMap.forEach(logMapElements);
+<<<<<<< HEAD
 		}).fail(function(){
 			errorElementSettingsView();
+=======
+		}).fail(function(data){
+			clearElementSettingsView();
+>>>>>>> develop
 		});
  	}
  	
@@ -712,8 +716,19 @@
 		$("#ivrElementSettings").html(emptySelection());
  	}
  	
+<<<<<<< HEAD
  	function errorElementSettingsView(){
 		$("#ivrElementSettings").html(elementNotFoundSelection());
+=======
+ 	function fadeElementSettingsView(){
+ 	/*	var options = {
+ 			bgColor         : '#fff',
+ 			duration        : 0,
+ 			opacity     : 0.7,
+ 			classOveride    : false
+ 		}*/
+ 		new ajaxLoader($("#ivrElementSettings"));
+>>>>>>> develop
  	}
  	
  	function nodeSelected(type, index){

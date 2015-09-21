@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+				<div th:fragment="partitionFormContent" id="partitionFormContent" class="row">
+			    	<div class="col-lg-12">
+			    		<fieldset>
+							<legend>
+								<h1><th:block th:text="${partition.isNew()} ? #{partitions.title.create} : #{partitions.title.update}" /></h1>
+								<p class="note"><th:block th:text="#{field.required.start}" />	<span class="required" style="color:red">*</span>	<th:block th:text="#{field.required.end}" /></p>
+								
+								<!-- Errors alerts field -->					
+								<div class="alert alert-block alert-danger" th:if="${#fields.hasErrors('*')}"><p th:text="#{field.validation.error.global.message}" >Please fix the following input errors:</p>
+									<ul>
+		    							<li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
+			        						<span th:text="${e.global}? '*' : #{field}+' \''+#{partition.field+'.'+${e.fieldName}} +'\''">The field name</span> 
+			        						<span th:text="#{${e.message}}">The error message</span>
+		    							</li>
+									</ul>
+								</div>
+							</legend>
+							
+							<input type="hidden" th:field="*{id}" />
+							
+							<div th:include="fragment/fielddefinition :: textFormField('name',true, text, 'partition.field')">Name</div>
+							<div th:include="fragment/fielddefinition :: textAreaFormField('description', false, 3, 'timeperiod.field')">Description</div>
+							<div th:unless="${partition.isNew()}" class="panel panel-default">
+								<div class="panel-heading">
+    								<h3 class="panel-title"><b><th:block th:text="#{partition.form.timeschedparam}">Time schedule group params</th:block></b></h3>
+  								</div>
+  								<div class="panel-body">
+  									<div th:include="fragment/fielddefinition :: select2FormField('timezone', false, 'partition','timezones', 'id', 'name', 'partition.field', true, 'defaultValueText')"></div>			
+  									<div th:include="fragment/fielddefinition :: select2FormField('timeScheduleGroup', false, 'partition','allTimeScheduleGroups', 'id', 'name', 'partition.field', true, 'defaultValueText')"></div>
+  								</div>
+  							</div>
+						
+							
+							
+						</fieldset>
+						<div class="form-actions">
+            				<button class="btn btn-primary" type="submit" th:text="${partition.isNew()} ? #{partition.form.button.create.submit} : #{partition.form.button.update.submit}">Submit</button>
+            				<button class="btn btn-default" type="reset" th:text="#{partition.form.button.reset}">Reset</button>
+            			</div>	
+					</div>
+				</div>	
+</html>	

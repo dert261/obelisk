@@ -4,10 +4,7 @@ import java.io.Serializable;
 
 public abstract class Node implements Serializable {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3574923691874416363L;
 	private int index=0;
 	private String type;
 //	private boolean sisyphus = false;

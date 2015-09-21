@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html>
-	<div th:fragment="timeperiods_search_form" class="col-lg-12">
+	<div th:fragment="timeschedgroups_search_form" class="col-lg-12">
 		
-		<a class="search-button" href="#" th:text="#{timeperiod.form.search.message}">Extended search</a>
+		<a class="search-button" href="#" th:text="#{timeschedgroup.form.search.message}">Extended search</a>
 		
-		<div th:object="${timeperiod}" class="search-form" style="display: none;">
-			<form action="#" th:action="@{/calendar/timeperiods/search/timeperiods}" th:object="${timeperiod}" th:method="GET" method="GET" id="timeperiods-search-form" class="well-search form">
+		<div th:object="${timeschedgroup}" class="search-form" style="display: none;">
+			<form action="#" th:action="@{/calendar/timeschedgroups/search/timeschedgroups}" th:object="${timeschedgroup}" th:method="GET" method="GET" id="timeschedgroups-search-form" class="well-search form">
 								
 				<div	class="form-group">
 					<label 	class="control-label"
 							for="id" 
-							th:text="#{timeperiod.field.name}"> 
+							th:text="#{timeschedgroup.field.name}"> 
 					</label>
 			
 					<select th:field="*{id}" 
 							class="select2-chosen" 
 							multiple="multiple">
 							
-							<option th:each="data : ${timeperiodAll}" 
+							<option th:each="data : ${timeschedgroupAll}" 
 	        						th:value="${data.id}" 
 	          						th:text="${data.name}+' ('+${data.description}+')'">
 	          				</option>
@@ -25,7 +25,7 @@
 				</div>
 				
 				<div class="form-actions">
-					<button id="doSearch" class="btn btn-primary" name="doSearch" type="submit" th:text="#{timeperiod.searchform.button.search}">Search</button>
+					<button id="doSearch" class="btn btn-primary" name="doSearch" type="submit" th:text="#{timeschedgroup.searchform.button.search}">Search</button>
 				</div>
 			</form>
 		</div>
@@ -43,11 +43,11 @@
 			    			width:'100%', 
 			    			minimumInputLength:'2', 
 			    			language: [[${#locale.language}]], 
-			    			placeholder: [[#{timeperiod.searchform.searchfield.placeholder.name}]],
+			    			placeholder: [[#{timeschedgroup.searchform.searchfield.placeholder.name}]],
 			    			ajax: {
 			    				delay: 500,
 			    				url: function (params) {
-			    					return '/calendar/timeperiods/search/timeperiods';
+			    					return '/calendar/timeschedgroups/search/timeschedgroups';
 			    				},
 			    				data: function (params) {
 			    					var queryParameters = {

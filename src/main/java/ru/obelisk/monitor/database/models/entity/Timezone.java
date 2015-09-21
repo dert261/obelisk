@@ -52,6 +52,11 @@ public class Timezone implements Serializable {
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<DevicePool> devicePools;
 	
+	@JsonView(value={View.Timezone.class})
+	@OneToMany(mappedBy="timezone", fetch=FetchType.LAZY)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private List<Partition> partitions;
+	
 	@JsonView(value={View.Timezone.class, View.DevicePool.class})
 	@Column(name = "description", length = 500, nullable = true)
 	private String description;

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="fragment/header :: headerFragment" />
+
+<body>
+	<div id="wrapper">
+		<!-- Header -->
+		<div th:replace="fragment/header :: navbar_alt" > </div>
+		<br/>
+		<div id="page-wrapper">
+			<div class="row">
+				<ol class="breadcrumb">
+					<li class="active" th:text="#{breadcrumbs.partitions}">Partitions</li>
+				</ol>
+				<div class="col-lg-12">
+					<a href="/accessclass/partitions/create" th:text="#{breadcrumbs.partitions.create}">Create</a>
+				</div>
+				<div class="col-lg-12">
+					<h1 class="page-header" th:text="#{partitions.ui.messages.index.title}">Partitions management</h1>
+					
+				</div>
+				<div th:replace="accessclass/partitions/search :: partitions_search_form" > </div>
+			</div>
+			
+			 <div class="row">
+			 	<table id="partitionstable" class="display" >
+			        <thead>
+			            <tr>
+			                <th th:text="#{partition.field.sequence}">№ п/п</th>
+			                <th th:text="#{partition.field.name}">Partition name</th>
+			                <th th:text="#{partition.field.description}">Description</th>
+			                <th th:text="#{partition.field.css}">Css</th>
+			                <th th:text="#{partition.field.actions}">Actions</th>
+			            </tr>
+			        </thead>
+			 
+			        <tfoot>
+			            <tr>
+			                <th th:text="#{partition.field.sequence}">№ п/п</th>
+			                <th th:text="#{partition.field.name}">Partition name</th>
+			                <th th:text="#{partition.field.description}">Description</th>
+			                <th th:text="#{partition.field.css}">Css</th>
+			                <th th:text="#{partition.field.actions}">Actions</th>
+			            </tr>
+			        </tfoot>
+			    </table>
+			</div>
+		</div>
+	</div>
+	<div th:replace="fragment/header :: scripts" > </div>
+
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+	
+	$(document).ready(function() {
+		
+		function cssFormatter(data){
+			var res=""
+			var count=data.length
+			var i=0;
+					
+			for(css in data){
+				res+='<a class="active" href="/accessclass/css/update/'+data[css].id+'">'+data[css].name+'</a>';
+				i++;
+				if(count!=i) res+=", "
+				
+			}
+	    	return res;
+		}
+		
+		
+		var myTable = $('#partitionstable').DataTable({
+	    	"stateSave": true,
+	    	"processing": true,
+	        "serverSide": true,
+	        "ajax": {
+	        	"method": "GET",
+	        	"url": "/accessclass/partitions/ajax/serverside/partitiondata.json",
+	        	"data": function ( d ) {
+	            	return $.extend( {}, d, {
+	                    "extra_search[id]": $('#id').val()!=undefined ? $('#id').val() : "null",
+	    
+	                });
+	            }
+	        },
+	    	"columns": [
+	    	            { "data": "numberLocalized" },
+	    	            { "data": "name" },
+	    	            { "data": "description" },
+	    	            { "data": "css" },
+	    	            { "data": "id" }
+	    	        ],
+	    	
+	    	
+			"language": {
+	        	"url": "/static/assets/data-tables-1.10.6/i18n/"+[[${#locale.language}]]+".lang"
+	        },
+	        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "Все"]],
+	        //"order": [[ 4, 'asc' ]],
+	        "columnDefs": [
+				{
+	    			"searchable": false,
+	    			"orderable": false,
+	    			"targets": [0]
+				},
+	            {
+		         	"targets": [-1],
+		         	"searchable": false,
+	    			"orderable": false,
+		            "data": "Actions",
+		            "render": function (data, type, full, meta) {
+		            	var updateField = '<a class="update" href="/accessclass/partitions/update/'+data+'" data-toggle="tooltip" title="'+[[#{ui.messages.table.edit}]]+'" data-original-title="'+[[#{ui.messages.table.edit}]]+'"> \
+		     	 								<i class="glyphicon glyphicon-pencil"></i></a>';
+		     	 		var deleteField = '<a class="delete" href="/accessclass/partitions/delete" data-delete="'+data+'" data-toggle="tooltip" title="'+[[#{ui.messages.table.delete}]]+'" data-original-title="'+[[#{ui.messages.table.delete}]]+'"> \
+		         								<i class="glyphicon glyphicon-trash"></i> </a>';
+		         		return "<center>"+updateField+"&nbsp;&nbsp;&nbsp;"+deleteField+"</center>";
+	           		}
+	           	},
+	           	{
+		         	"targets": [-2],
+		         	"searchable": false,
+	    			"orderable": false,
+		            "data": "CSS",
+		            "render": function (data, type, full, meta) {
+		            	return cssFormatter(data);
+	           		}
+	           	}/*,
+				{
+		         	"targets": [-3],
+		         	"searchable": true,
+	    			"orderable": true,
+		            "data": "Update Flag",
+		            "render": function (data, type, full, meta) {
+		            	return "<center>"+flagFormatter(data)+"</center>";
+	           		}
+	           	}*/
+	           	
+			]
+	    });
+		
+		
+		
+		//Handle for delete button
+	    myTable.on('click','a.delete',function() {
+			if(!confirm([[#{ui.messages.table.delete.partition.confirmation}]])) return false;
+			
+			var deletedRow = myTable.row( $(this).parents('tr') );
+			
+			$.ajax({
+				type: 'POST',
+				url: jQuery(this).attr('href'),
+				data: ({
+					id: jQuery(this).attr('data-delete'),
+					_method: 'DELETE'
+				}),
+				}).done(function() {
+					deletedRow
+				        .remove()
+				        .draw(false);
+			});
+				
+			return false;
+	    })
+	    
+	    /*myTable.on( 'order.dt search.dt', function () {
+	    	myTable.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+	            cell.innerHTML = i+1;
+	        } );
+	    } ).draw();*/
+		
+	    jQuery(function($) {
+			$('[data-toggle="tooltip"]').tooltip();
+		});
+		
+		function flagFormatter(data){
+			if(data==true) return [[#{ui.messages.table.field.boolean.true}]];
+			else return	[[#{ui.messages.table.field.boolean.false}]];
+		}
+	    
+	    $('#partitions-search-form').submit(function(){
+	      	myTable.draw();
+			return false;
+		});
+	    
+	 
+	});
+	
+	/*]]>*/
+	</script>
+
+</body>
+</html>
