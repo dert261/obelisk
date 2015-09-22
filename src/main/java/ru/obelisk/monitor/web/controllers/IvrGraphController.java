@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.security.access.annotation.Secured;
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
 import ru.obelisk.monitor.graph.*;
-=======
+//=======
 import ru.obelisk.monitor.database.models.services.TimeScheduleGroupService;
 import ru.obelisk.monitor.graph.CalendarNode;
 import ru.obelisk.monitor.graph.HandsetInNode;
 import ru.obelisk.monitor.graph.Node;
->>>>>>> develop
+//>>>>>>> develop
 
 @Controller
 @RequestMapping("/ivrs")
@@ -57,12 +57,8 @@ public class IvrGraphController {
 		if(schemaMap.containsKey(index)){
 			node = schemaMap.get(index);
 		} else {
-<<<<<<< HEAD
+
 			node = getTypedNode(type);
-=======
-			//node = new HandsetInNode();
-			node = nodeFabric(type);
->>>>>>> develop
 			node.setIndex(index);
 			node.setType(type);
 		}
@@ -77,16 +73,6 @@ public class IvrGraphController {
 		return "ivrs/nodes/"+node.getType()+"::"+node.getType()+"FormContent";
 	}
 	
-	private Node nodeFabric(String type){
-		Node node = null;
-		switch(type){
-			case "calendar": node = new CalendarNode(); break;
-			case "handsetIn": node = new HandsetInNode(); break;
-			default: break;	
-		}
-		return node;
-	}
-	
 	@RequestMapping(value = {"/addNode"}, method = RequestMethod.POST)
 	@Secured("ROLE_ADMIN")
 	public @ResponseBody Node addNode(
@@ -94,11 +80,9 @@ public class IvrGraphController {
 					@RequestParam String type
 			) throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException, AuthenticationFailedException, Exception	{
 		logger.info("Requesting ivr new node info objects");
-<<<<<<< HEAD
+
 		Node node = getTypedNode(type);
-=======
-		Node node = nodeFabric(type);//new HandsetInNode();
->>>>>>> develop
+
 		node.setIndex(index);
 		node.setType(type);
 		schemaMap.put(index, node);
@@ -129,6 +113,4 @@ public class IvrGraphController {
 		}	
 		return node;
 	}
-	
-	
 }
