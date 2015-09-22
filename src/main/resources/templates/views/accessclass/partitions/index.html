@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head th:include="fragment/header :: headerFragment" />
-
+<link rel="stylesheet" src="/static/assets/data-tables-1.10.6/plugin/css/buttons.dataTables.min.css" th:href="@{/static/assets/data-tables-1.10.6/plugin/css/buttons.dataTables.min.css}" />
 <body>
 	<div id="wrapper">
 		<!-- Header -->
@@ -49,7 +49,7 @@
 		</div>
 	</div>
 	<div th:replace="fragment/header :: scripts" > </div>
-
+	<script src="/static/assets/data-tables-1.10.6/plugin/js/dataTables.buttons.min.js" th:href="@{/static/assets/data-tables-1.10.6/plugin/js/dataTables.buttons.min.js}" > </script>
 	<script th:inline="javascript">
 	/*<![CDATA[*/
 	
@@ -69,6 +69,15 @@
 	    	return res;
 		}
 		
+		$.fn.dataTable.ext.buttons.reset = {
+				className: 'buttons-reset',
+				
+				action: function ( e, dt, node, config ) {
+					myTable.search('').draw();
+					$("#id").select2('val', 'All');
+					myTable.order( [ 4, 'asc' ] ).draw();
+				}
+			};
 		
 		var myTable = $('#partitionstable').DataTable({
 	    	"stateSave": true,
@@ -92,12 +101,21 @@
 	    	            { "data": "id" }
 	    	        ],
 	    	
-	    	
+   	        "dom":	
+		    			"<'row'<'col-sm-9'l><'col-sm-2'f><'col-sm-1'B>>" +
+						"<'row'<'col-sm-12'tr>>" +
+						"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+	    	"buttons": [
+		    	          	{
+		    	          		extend: 'reset',
+		    	          		text: [[#{datatable.button.reset}]]
+		    	            }
+				],
 			"language": {
 	        	"url": "/static/assets/data-tables-1.10.6/i18n/"+[[${#locale.language}]]+".lang"
 	        },
 	        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "Все"]],
-	        //"order": [[ 4, 'asc' ]],
+	        "order": [[ 4, 'asc' ]],
 	        "columnDefs": [
 				{
 	    			"searchable": false,
