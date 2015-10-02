@@ -64,7 +64,7 @@ public class User implements Serializable {
     @Transient
     private String statusLocalized=null;
     
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinTable(name="users2user_roles",
     	joinColumns=@JoinColumn(name="user_id"),
     	inverseJoinColumns=@JoinColumn(name="role_id")

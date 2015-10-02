@@ -30,15 +30,10 @@ import ru.obelisk.message.data.Channel;
 import ru.obelisk.message.data.HostInfo;
 import ru.obelisk.message.data.HostInfoListImpl;
 import ru.obelisk.message.data.Peer;
-//import ru.obelisk.message.data.PeersListImpl;
 
 @Controller
 public class JsonController {
-	//@Autowired private ChannelsListImpl channels;
-	//@Autowired private PeersListImpl peers;
 	@Autowired private HostInfoListImpl hosts;
-	
-//	private static Logger logger = LogManager.getLogger(JsonController.class);
 	
 	@RequestMapping(value = {"/channels.json"}, method = RequestMethod.GET)
 	@Secured("ROLE_ADMIN")
@@ -95,7 +90,7 @@ public class JsonController {
 			list.addAll(host.getPeers().getPeers());
 		}	
 		
-		return list.size();//peers.getPeers().size();
+		return list.size();
 	}
 	
 	@RequestMapping(value = {"/activeHostCount.json"}, method = RequestMethod.GET)

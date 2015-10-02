@@ -5,14 +5,8 @@
 					<form action="#" th:object="${node}" th:id="${node.type}+'FormContent'+${node.index}">
 						<center><h4 th:text="#{calendarNode.elementSettings.title}">Calendar menu context form</h4></center>
 				    		<fieldset>
-<<<<<<< HEAD
-								<div th:include="fragment/fielddefinition :: textFormField('timePeriod',true, text, 'calendarNode.field')">Time period</div>
-=======
 								
 								<div th:include="fragment/fielddefinition :: selectFormField('timeScheduleGroup', false, allTimeScheduleGroups, 'id', 'name', 'calendarNode.field', '', false)">Time schedule group</div>
-								
-								
->>>>>>> develop
 							</fieldset>
 					</form>
 				</div>	

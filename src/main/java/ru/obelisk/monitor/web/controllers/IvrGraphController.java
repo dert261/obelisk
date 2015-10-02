@@ -11,20 +11,20 @@ import org.asteriskjava.manager.TimeoutException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.security.access.annotation.Secured;
 
-//<<<<<<< HEAD
+
 import ru.obelisk.monitor.graph.*;
-//=======
 import ru.obelisk.monitor.database.models.services.TimeScheduleGroupService;
 import ru.obelisk.monitor.graph.CalendarNode;
 import ru.obelisk.monitor.graph.HandsetInNode;
 import ru.obelisk.monitor.graph.Node;
-//>>>>>>> develop
+
 
 @Controller
 @RequestMapping("/ivrs")
@@ -56,13 +56,11 @@ public class IvrGraphController {
 		Node node = null;
 		if(schemaMap.containsKey(index)){
 			node = schemaMap.get(index);
-		} else {
-
-			node = getTypedNode(type);
-			node.setIndex(index);
-			node.setType(type);
-		}
-		model.addAttribute("node", node);
+		} 
+		if(node!=null)
+			model.addAttribute("node", node);
+		else 
+			throw new HttpRequestMethodNotSupportedException("getNodeInfo for "+type+" node element"); 
 		
 		switch(type){
 			case "calendar": model.addAttribute("allTimeScheduleGroups", timeSchedGroupService.getAllTimeScheduleGroups()); break;
@@ -82,7 +80,6 @@ public class IvrGraphController {
 		logger.info("Requesting ivr new node info objects");
 
 		Node node = getTypedNode(type);
-
 		node.setIndex(index);
 		node.setType(type);
 		schemaMap.put(index, node);
@@ -94,7 +91,7 @@ public class IvrGraphController {
 		switch(type){
 			case "handsetOut": node = new HandsetOutNode(); break;
 			case "handsetIn": node = new HandsetInNode(); break;
-			case "calendar": node = new CalendarNode(); break;
+			case "calendar": node = new CalendarNode(); break; 
 		}
 		return node;
 	}

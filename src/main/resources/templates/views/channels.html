@@ -2,8 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head th:include="fragment/header :: headerFragment" />
-<div ddl:bundle-includes="websockets,channels-home,bootstrap-table-master,moment-with-locales" />
-
 <script src="/static/assets/views/channels/js/channels.js" th:href="@{/static/assets/views/channels/js/channels.js}" > </script>
 <script src="/static/assets/socket.io.js" th:href="@{/static/assets/socket.io.js}" > </script>
 <script src="/static/assets/sockjs-0.3.4.js" th:href="@{/static/assets/sockjs-0.3.4.js}" > </script>
@@ -94,12 +92,13 @@
 						data-toolbar-align="right"
 	         			
 	         			data-show-refresh="true"
-	         			data-url="channels.json"
+	         			data-url="/channels.json"
 	         			data-show-columns="true" 
 	         			data-maintain-selected="true"
 						data-row-style="myRowStyle">
 					<thead>
 						<tr>
+						
 	        				<th data-formatter="runningFormatter">№</th>
 	        				<th data-field="server" data-sortable="true">Сервер</th>
 	        				<th data-field="calleridname" data-sortable="true">А-имя</th>

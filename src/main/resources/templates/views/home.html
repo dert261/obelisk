@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html 	xmlns="http://www.w3.org/1999/xhtml" 
-		xmlns:th="http://www.thymeleaf.org"
-		xmlns:ddl="http://github.com/dandelion"
->
+		xmlns:th="http://www.thymeleaf.org">
 
 <head th:include="fragment/header :: headerFragment" />
 <script type="text/javascript" src="../static/assets/flot/jquery.flot.js" th:href="@{/static/assets/flot/jquery.flot.js}" charset="utf-8"> </script>
@@ -60,7 +58,7 @@
  					</div>
  				</div>
  			</div>
- 			<a href="channels.html">
+ 			<a href="/channels">
 				<div class="panel-footer">
 					<span class="pull-left">Подробнее</span>
 					<span class="pull-right">
@@ -86,7 +84,7 @@
  					</div>
  				</div>
  			</div>
- 			<a href="peers.html">
+ 			<a href="/peers">
 				<div class="panel-footer">
 					<span class="pull-left">Подробнее</span>
 					<span class="pull-right">

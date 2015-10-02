@@ -13,11 +13,11 @@ import ru.obelisk.monitor.database.models.entity.Location;
 
 public interface LocationRepository extends JpaRepository<Location, Integer> {
 
-	@Query("SELECT loc FROM Location loc LEFT JOIN FETCH loc.pbxStationGroup LEFT JOIN FETCH loc.devicePool LEFT JOIN FETCH loc.devicePool.timezone WHERE loc.name = :name")
+	@Query("SELECT loc FROM Location loc LEFT JOIN FETCH loc.pbxStationGroup LEFT JOIN FETCH loc.devicePool WHERE loc.name = :name")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value ="true") })
 	Location findByName(@Param("name") String name);
 	
-	@Query("SELECT loc FROM Location loc LEFT JOIN FETCH loc.pbxStationGroup LEFT JOIN FETCH loc.devicePool LEFT JOIN FETCH loc.devicePool.timezone WHERE loc.id = :id")
+	@Query("SELECT loc FROM Location loc LEFT JOIN FETCH loc.pbxStationGroup LEFT JOIN FETCH loc.devicePool WHERE loc.id = :id")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value ="true") })
 	Location findOne(@Param("id") int id);
 	

@@ -65,7 +65,7 @@ public class LdapAuthenticationParameters {
 	    @NotNullField(groups=LdapAuthenticationParameters.LdapAuthParamsStepOne.class)
 	    private String searchBase=null;
 	    
-	    @OneToMany(fetch=FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	    @OneToMany(fetch=FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	    @JoinColumn(name="ldapAuthParams_id")
 	    @Valid
 	    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)

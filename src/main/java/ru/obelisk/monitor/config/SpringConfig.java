@@ -1,80 +1,78 @@
 package ru.obelisk.monitor.config;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.format.Formatter;
-import org.springframework.format.support.FormattingConversionServiceFactoryBean;
-import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
-
-
+import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
+import org.springframework.boot.context.embedded.FilterRegistrationBean;
+import org.springframework.web.filter.HiddenHttpMethodFilter;
 import ru.obelisk.message.data.HostInfoListImpl;
-/*import ru.obelisk.message.data.PeersListImpl;
-import ru.obelisk.message.data.ChannelsListImpl;*/
-import ru.obelisk.monitor.web.utils.conversion.DateFormatter;
 
 @Configuration
-public class SpringConfig {
+public class SpringConfig{
 	
+	@Bean
+    public CacheManager cacheManager() {
+        return new ConcurrentMapCacheManager();
+    }
 	
-	@Bean 
-	public FormattingConversionServiceFactoryBean conversionService() {
+	@Bean
+	public FilterRegistrationBean hiddenFilterRegistrationBean() {
+		return new FilterRegistrationBean(new HiddenHttpMethodFilter());
+	}
+	
+	@Bean
+	public PasswordEncoder passwordEncoder () {
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+	    return encoder;
+	}
+	  
+	@Bean
+	public javax.validation.Validator localValidatorFactoryBean() {
+		return new LocalValidatorFactoryBean();
+	}
+	  
+	@Bean
+	public Jackson2ObjectMapperBuilder jacksonBuilder() {
+		Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
+		builder.indentOutput(true).dateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+		return builder;
+	}
+	  
+	@Bean
+	public SecurityInterceptor securityInterceptor(){
+		return new SecurityInterceptor();
+	}
 		
-		FormattingConversionServiceFactoryBean convertor = new FormattingConversionServiceFactoryBean();
-		Set<Formatter<?>> dateFormater=new HashSet<Formatter<?>>();
-		dateFormater.add(new DateFormatter());
-		convertor.setFormatters(dateFormater);
-	    return convertor;
-	}
-	
-	
-	
-/*	@Bean
-	public StringHttpMessageConverter httpMessageConverter(){
-		StringHttpMessageConverter messConverter = new StringHttpMessageConverter();
-		messConverter.setSupportedMediaTypes(Arrays.asList(new MediaType("text", "plain", Charset.forName("UTF-8"))));
-		return messConverter;
-	}
-	
+	@Autowired
+	private DataConfig dataConfig;
+	  
 	@Bean
-	public RequestMappingHandlerAdapter requestMappingHandlerAdapter(){
-		RequestMappingHandlerAdapter req = new RequestMappingHandlerAdapter();
-		List<HttpMessageConverter<?>> messageConverters=new ArrayList<HttpMessageConverter<?>>();
-	    messageConverters.add(httpMessageConverter());
-	    req.setMessageConverters(messageConverters);
-	    req.setCacheSeconds(0);
-	    return req;
+	public RequestMappingHandlerMapping requestMappingHandlerMapping(){
+		Object[] interceptors = {securityInterceptor(),dataConfig.openEntityManagerInViewInterceptor()};
+		RequestMappingHandlerMapping mapping = new RequestMappingHandlerMapping();
+		mapping.setInterceptors(interceptors);
+		return mapping;
 	}
-	*/
-	@SuppressWarnings("deprecation")
+	  
 	@Bean
-	public ContentNegotiatingViewResolver contentNegotiatingResolver(){
-		ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
-		Map<String,String> mediaTypes = new HashMap<String, String>();
-				
-		mediaTypes.put("html","text/html");
-		mediaTypes.put("pdf","application/pdf");
-		mediaTypes.put("xsl","application/vnd.ms-excel");
-		mediaTypes.put("xml","application/xml");
-		mediaTypes.put("json","application/json");
-		resolver.setMediaTypes(mediaTypes);		
-		return resolver;
+	public MessageSource messageSource() {
+		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+	    messageSource.setBasename("messages");
+	    return messageSource;
 	}
-	
-	/*@Bean
-	public ChannelsListImpl channelsList(){
-		return new ChannelsListImpl();
-	}
-	
-	@Bean
-	public PeersListImpl peersList(){
-		return new PeersListImpl();
-	}*/
-	
+		
 	@Bean
 	public HostInfoListImpl hostInfoList(){
 		return new HostInfoListImpl();

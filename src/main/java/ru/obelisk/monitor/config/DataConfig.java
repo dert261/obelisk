@@ -1,49 +1,24 @@
 package ru.obelisk.monitor.config;
 
-/*import org.hibernate.SessionFactory;
-import org.hibernate.internal.SessionFactoryImpl;
-import org.hibernate.jpa.HibernateEntityManagerFactory;
+import java.util.Properties;
+
+import javax.annotation.Resource;
+import javax.sql.DataSource;
+
 import org.hibernate.jpa.HibernatePersistenceProvider;
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.hibernate4.support.OpenSessionInViewInterceptor;
-import org.springframework.orm.jpa.AbstractEntityManagerFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor;
-import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
- 
 
+@Configuration
+public class DataConfig {
 
-
-import org.springframework.transaction.annotation.TransactionManagementConfigurer;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-
-import javax.annotation.Resource;
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-
-import java.util.Properties;
- 
-/*@Configuration
-@EnableTransactionManagement
-@PropertySource("classpath:application.properties")
-@EnableJpaRepositories("ru.obelisk.monitor.database.models.repository")*/
-public class DataConfig{
- 
-/*    private static final String PROP_DATABASE_DRIVER = "db.driver";
+  	
+  	private static final String PROP_DATABASE_DRIVER = "db.driver";
     private static final String PROP_DATABASE_PASSWORD = "db.password";
     private static final String PROP_DATABASE_URL = "db.url";
     private static final String PROP_DATABASE_USERNAME = "db.username";
@@ -51,54 +26,34 @@ public class DataConfig{
     private static final String PROP_HIBERNATE_SHOW_SQL = "hibernate.show_sql";
     private static final String PROP_ENTITYMANAGER_PACKAGES_TO_SCAN = "entitymanager.packages.to.scan";
     private static final String PROP_HIBERNATE_HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
- 
+    
+    private static final String PROP_HIBERNATE_CACHE_REGION_FACTORYCLASS = "hibernate.cache.region.factory_class";
+    private static final String PROP_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE = "hibernate.cache.use_second_level_cache";
+    private static final String PROP_HIBERNATE_CACHE_USE_QUERY_CACHE = "hibernate.cache.use_query_cache";
+    
+   	    		
     @Resource
     private Environment env;
  
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
- 
         dataSource.setDriverClassName(env.getRequiredProperty(PROP_DATABASE_DRIVER));
         dataSource.setUrl(env.getRequiredProperty(PROP_DATABASE_URL));
         dataSource.setUsername(env.getRequiredProperty(PROP_DATABASE_USERNAME));
         dataSource.setPassword(env.getRequiredProperty(PROP_DATABASE_PASSWORD));
- 
         return dataSource;
     }
-	 
-    /*public EntityManagerFactory entityManagerFactory throws Exception {
-    	return entityManagerFactory().getObject();
-    }*/
-    
-    
-	  
-    /*@Override
-	  public void addInterceptors(InterceptorRegistry registry) {
-		  OpenEntityManagerInViewInterceptor interceptor = new OpenEntityManagerInViewInterceptor();
-		  try {
-			interceptor.setEntityManagerFactory(sessionFactory());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		  registry.addWebRequestInterceptor(interceptor);
-	  }*/
-    
-    /*@Bean
-    @Primary
-    @ConditionalOnMissingBean
+		    
+    @Bean(name="openEntityManagerInViewInterceptor")
 	public OpenEntityManagerInViewInterceptor openEntityManagerInViewInterceptor() {
     	OpenEntityManagerInViewInterceptor interceptor = new OpenEntityManagerInViewInterceptor();
 		interceptor.setEntityManagerFactory(entityManagerFactory().getObject());
 		return interceptor; 
 	}
-    */
-    
- //   @Bean
-    /*@Primary
-    @ConditionalOnMissingBean*/
- /*   public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+    	    
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource());
         entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
@@ -113,8 +68,6 @@ public class DataConfig{
     public JpaTransactionManager transactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
-       // transactionManager.
- 
         return transactionManager;
     }
  
@@ -123,8 +76,12 @@ public class DataConfig{
         properties.put(PROP_HIBERNATE_DIALECT, env.getRequiredProperty(PROP_HIBERNATE_DIALECT));
         properties.put(PROP_HIBERNATE_SHOW_SQL, env.getRequiredProperty(PROP_HIBERNATE_SHOW_SQL));
         properties.put(PROP_HIBERNATE_HBM2DDL_AUTO, env.getRequiredProperty(PROP_HIBERNATE_HBM2DDL_AUTO));
- 
+       
+        properties.put(PROP_HIBERNATE_CACHE_REGION_FACTORYCLASS, env.getRequiredProperty(PROP_HIBERNATE_CACHE_REGION_FACTORYCLASS));
+        properties.put(PROP_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE, env.getRequiredProperty(PROP_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE));
+        properties.put(PROP_HIBERNATE_CACHE_USE_QUERY_CACHE, env.getRequiredProperty(PROP_HIBERNATE_CACHE_USE_QUERY_CACHE));
         return properties;
     }
- */
+ 
+	
 }

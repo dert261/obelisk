@@ -668,7 +668,8 @@
 			schemaMap.set(index, data);
 			schemaMap.forEach(logMapElements);
 			infoNode(type,index);	
-			
+		}).fail(function(data){
+			errorElementSettingsView();
 		});
  	}
  	
@@ -702,13 +703,13 @@
 			$("#ivrElementSettings").html(data);
 			var node = schemaMap.get(index);
 			schemaMap.forEach(logMapElements);
-<<<<<<< HEAD
+
 		}).fail(function(){
 			errorElementSettingsView();
-=======
-		}).fail(function(data){
+
+		/*}).fail(function(data){
 			clearElementSettingsView();
->>>>>>> develop
+*/
 		});
  	}
  	
@@ -716,10 +717,10 @@
 		$("#ivrElementSettings").html(emptySelection());
  	}
  	
-<<<<<<< HEAD
+
  	function errorElementSettingsView(){
 		$("#ivrElementSettings").html(elementNotFoundSelection());
-=======
+ 	}	
  	function fadeElementSettingsView(){
  	/*	var options = {
  			bgColor         : '#fff',
@@ -728,7 +729,7 @@
  			classOveride    : false
  		}*/
  		new ajaxLoader($("#ivrElementSettings"));
->>>>>>> develop
+
  	}
  	
  	function nodeSelected(type, index){
